@@ -2,8 +2,8 @@
 
 Placeholder sounds, all CC0 1.0 (public domain dedication,
 https://creativecommons.org/publicdomain/zero/1.0/). No attribution required; credited anyway.
-`scratchpad/sounds/build.sh` downloads the sources and rebuilds these files (trim, mono 44.1 kHz
-16-bit WAV, peak -1 dBFS); `pnpm sounds` then rewrites the manifest.
+Each file is cut from the source below (trimmed, mono 44.1 kHz 16-bit WAV,
+peak -1 dBFS); `pnpm sounds` then rewrites the manifest.
 
 | file | source | original file | license |
 |------|--------|---------------|---------|

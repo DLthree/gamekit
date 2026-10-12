@@ -1,7 +1,7 @@
 /**
  * pnpm sounds: writes content/look/generated/sounds.json from the WAV files in public/sounds/
- * (id = file name, lengthS read from the header). The files are CC0 recordings prepared by
- * scratchpad/sounds/build.sh; sources and licenses are in public/sounds/LICENSE.md.
+ * (id = file name, lengthS read from the header). The files are trimmed CC0
+ * recordings; sources and licenses are in public/sounds/LICENSE.md.
  */
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";

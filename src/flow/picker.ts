@@ -1,7 +1,7 @@
 import type { SimContent } from "@/content/types";
 import { ScenarioError } from "@/sim/scenario";
 
-/** mvp.md: each character's grid is 3 build tiers × 3 threat tiers. */
+/** Each character's grid is 3 build tiers × 3 threat tiers. */
 export const GRID = 3;
 
 export interface PickerCell {

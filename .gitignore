@@ -1,31 +1,14 @@
 .env
 node_modules/
 dist/
-design/mockups/*
-!design/mockups/web/
-!design/mockups/round2/
-design/mockups/round2/*
-# Style references for scripts/gen_concepts.py and scripts/gen_effect_art.py, kept full size.
-!design/mockups/round2/h1-fire.png
-!design/mockups/round2/h4-portrait-phone.png
 __pycache__/
 *.pyc
-scratchpad/clone-check/
 scratchpad/*.log
-design/concept-art/originals/
-scratchpad/concept-art-logs/
-scratchpad/review/
-design/ideas/art/originals/
+scratchpad/*.png
 telemetry/
 shots/
 test-results/
 playwright-report/
 .e2e/
 .phone/
-scratchpad/*.png
-# Web copies of ignored images (scripts/web_copies.py) are committed, even under ignored folder names.
-!archive/**/shots/
-!archive/**/test-results/
-!archive/**/dist/
 .browser.lock
-scratchpad/sounds/raw/
