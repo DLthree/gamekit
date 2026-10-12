@@ -42,7 +42,7 @@ Headless, parallel (cores − 2 workers), the same rows whatever the worker coun
 game's table (`sweepTable` in `src/game/sweep.ts`; the example's: win %, secs, kills, life lost,
 killers).
 
-Before trusting a number, watch the bot: `pnpm film "<query>&bot=<id>" --at 120 --frames 12 --every 30`.
+Before trusting a number, watch the bot: `pnpm film "<query>&bot=<id>" --frames 120 --count 12 --every 30`.
 A bot that stands still or dies to one thing makes every row wrong.
 
 ## Perf (realtime)

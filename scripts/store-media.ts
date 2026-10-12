@@ -50,7 +50,7 @@ const Beat = z.discriminatedUnion("kind", [
     query: z.string(),
     actions: Actions,
     /** Frames after the actions where the beat starts. */
-    from: z.number().int().nonnegative(),
+    frames: z.number().int().nonnegative(),
     seconds: z.number().positive(),
   }),
   z.strictObject({
@@ -186,7 +186,7 @@ async function capture(m: Manifest, only: string[] | null, browser: Browser, bas
     const frames = Math.round(beat.seconds * fps);
     const { page, errors } = await openAt(browser, base, beat.query);
     for (let i = 0; i < frames; i++) {
-      await (i === 0 ? reach(page, beat.actions, beat.from) : reach(page, [], FRAME_HZ / fps));
+      await (i === 0 ? reach(page, beat.actions, beat.frames) : reach(page, [], FRAME_HZ / fps));
       await settleFrame(page);
       if (errors.length > 0) throw new Error(`${beat.name}: page error\n${errors.join("\n")}`);
       const path = join(dir, `${String(i).padStart(5, "0")}.jpg`);

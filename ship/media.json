@@ -12,7 +12,7 @@
         "name": "dragon",
         "kind": "game",
         "query": "char=wizard&build=3&threat=3&bot=kite&seed=8",
-        "from": 3994,
+        "frames": 3994,
         "seconds": 3
       },
       { "name": "end", "kind": "card", "seconds": 1.5, "lines": ["Gamekit Example"] }

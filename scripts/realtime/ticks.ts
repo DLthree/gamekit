@@ -4,7 +4,7 @@
  * Headless, prints the frame of each of a run's telling moments (scripts/realtime/timeline.ts;
  * which ones is the game's tickLine): `<frame> <moment>`. Stepped, a real-time wave runs one tick
  * per kit-clock frame from its address, so these are the frames `pnpm shot --frames` and
- * `pnpm film --at` take (with no --actions; the query's bot plays, else the player stands).
+ * `pnpm film --frames` take (with no --actions; the query's bot plays, else the player stands).
  */
 import { parseArgs } from "node:util";
 import { OVERRIDE_OPTION } from "@scripts/game-page";

@@ -26,14 +26,14 @@ a turn-based game's is a move, and a moment is its moves then a few frames of an
 pnpm ticks "<query>"            # headless: the frame of each spawn, telegraph, death, end
 ```
 
-Its numbers are frames: pass them to `shot --frames` and `film --at` (with no `--actions`).
+Its numbers are frames: pass them to `shot --frames` and `film --frames` (with no `--actions`).
 
 ## Commands
 
 | Need | Command | Output |
 |------|---------|--------|
 | One moment | `pnpm shot "<query>" [--actions '[…]'] --frames 600 [--name N] [--deck \| --phone [--landscape]]` | `shots/<query>[-a<hash>]-f<frames>.png` (or `--name`) + `.json` sidecar |
-| Motion | `pnpm film "<query>" [--actions '[…]'] --at 240 --frames 8 --every 6 [--crop x,y,w,h]` | 8 images, the first `--at` frames after the actions, then one every 6 frames, + `strip.png` in `shots/film/<query>/` |
+| Motion | `pnpm film "<query>" [--actions '[…]'] --frames 240 --count 8 --every 6 [--crop x,y,w,h]` | 8 images, the first `--frames` frames after the actions, then one every 6 frames, + `strip.png` in `shots/film/<query>/` |
 | A/B | `pnpm film "<query A>" --compare "<query B>" ...` | strip with A on top, B under, frame for frame |
 | Pages | `pnpm screens [--screen <id>\|all] [--device desktop\|deck\|phone\|phone-landscape\|all]` | `shots/screens/<screen>-<device>.png` |
 

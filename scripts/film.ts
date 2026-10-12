@@ -1,8 +1,8 @@
 /**
- * pnpm film "<query>" [--actions JSON] [--at N] [--frames N] [--every N] [--crop x,y,w,h] [--viewport desktop|deck|phone|phone-landscape] [--compare "<query>"] [--o PATCH ...] [--out DIR]
+ * pnpm film "<query>" [--actions JSON] [--frames N] [--count N] [--every N] [--crop x,y,w,h] [--viewport desktop|deck|phone|phone-landscape] [--compare "<query>"] [--o PATCH ...] [--out DIR]
  *
  * A strip of frames of the game: the page reaches its moment by the scripted actions (the game's
- * shape, replayed through `window.__game.act`) and --at frames of the kit clock, then N PNGs one
+ * shape, replayed through `window.__game.act`) and --frames frames of the kit clock, then --count PNGs one
  * every --every frames, plus strip.png tiling them in a row (with --compare, a second row from
  * the other query, frame for frame under the first: a before/after or variant A/B). The page
  * runs only when stepped (manual=1, src/core/frames.ts), so the same command films the same
@@ -32,15 +32,15 @@ import {
   withGameBrowser,
 } from "@scripts/game-page";
 
-const USAGE = `usage: pnpm film "<query>" [--actions '[…]'] [--at 300] [--frames 8] [--every 6] [--crop x,y,w,h] [--viewport ${DEVICES.join("|")}] [--compare "<query>"] [--o PATCH ...] [--out DIR]
-  e.g. pnpm film "seed=3" --at 240 --frames 8 --every 6`;
+const USAGE = `usage: pnpm film "<query>" [--actions '[…]'] [--frames 300] [--count 8] [--every 6] [--crop x,y,w,h] [--viewport ${DEVICES.join("|")}] [--compare "<query>"] [--o PATCH ...] [--out DIR]
+  e.g. pnpm film "seed=3" --frames 240 --count 8 --every 6`;
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
   options: {
     actions: ACTIONS_OPTION,
-    at: { type: "string", default: "300" },
-    frames: { type: "string", default: "8" },
+    frames: { type: "string", default: "300" },
+    count: { type: "string", default: "8" },
     every: { type: "string", default: "6" },
     crop: { type: "string" },
     viewport: { type: "string", default: "desktop" },
@@ -54,12 +54,12 @@ const fail = (why: string): never => {
   process.exit(1);
 };
 const query = positionals[0] ?? fail("film needs a query");
-const [actions, at, frames, every] = (() => {
+const [actions, frames, count, every] = (() => {
   try {
     return [
       parseActions(values.actions),
-      wholeArg("at", values.at, 0),
-      wholeArg("frames", values.frames, 1),
+      wholeArg("frames", values.frames, 0),
+      wholeArg("count", values.count, 1),
       wholeArg("every", values.every, 1),
     ] as const;
   } catch (err) {
@@ -95,15 +95,15 @@ async function film(browser: Browser, base: string, q: string, prefix: string): 
   await openGame(page, base, toolQuery(q, values.o));
   const paths: string[] = [];
   let frame = 0;
-  for (let i = 0; i < frames; i++) {
-    frame = i === 0 ? await reach(page, actions, at) : await reach(page, [], every);
+  for (let i = 0; i < count; i++) {
+    frame = i === 0 ? await reach(page, actions, frames) : await reach(page, [], every);
     await settleFrame(page);
     if (errors.length > 0) throw new Error(`${q}: page error\n${errors.join("\n")}`);
     const path = join(out, `${prefix}${String(i).padStart(2, "0")}.png`);
     await page.screenshot({ path, ...(clip === undefined ? {} : { clip }) });
     paths.push(path);
   }
-  console.log(`${q}: ${frames} frames, the last at frame ${frame}`);
+  console.log(`${q}: ${count} images, the last at frame ${frame}`);
   await page.context().close();
   return paths;
 }
@@ -111,7 +111,7 @@ async function film(browser: Browser, base: string, q: string, prefix: string): 
 /** Tiles each row's frames side by side, rows stacked, captioned with the query, on a blank page. */
 async function strip(browser: Browser, rowsOfPaths: string[][]): Promise<string> {
   const page = await (await browser.newContext({ deviceScaleFactor: 1 })).newPage();
-  const cell = `min(${Math.floor(2400 / frames)}px, ${clip?.width ?? 1e4}px)`;
+  const cell = `min(${Math.floor(2400 / count)}px, ${clip?.width ?? 1e4}px)`;
   const html = rowsOfPaths
     .map((paths, r) => {
       const imgs = paths

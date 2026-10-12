@@ -75,7 +75,7 @@ Gate: `pnpm check`, then `pnpm screens` and `pnpm shot "<CELL>"` look right, the
 ## 4. Bot and sweep
 
 - `src/game/bots.ts` `BOTS`: at least one bot that plays like a player (the example's is
-  `kite-bot.ts`). Film it: `pnpm film "<query>&bot=<id>" --at 120 --frames 12 --every 30`.
+  `kite-bot.ts`). Film it: `pnpm film "<query>&bot=<id>" --frames 120 --count 12 --every 30`.
 - `src/game/sweep.ts`: `SweepRow`, `sweepRuns` (the run ids), `playRun` (one run headless),
   `sweepTable` (the summary).
 

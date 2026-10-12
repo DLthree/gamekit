@@ -56,7 +56,7 @@ map and seam: [docs/layout.md](docs/layout.md).
 | `pnpm content:check` | Compile and cross-check `content/`; exit 1 on any problem. |
 | `pnpm content:schema` | Rewrite `content/schema/*.schema.json` from the Zod schemas. |
 | `pnpm shot "<q>" [--actions JSON] [--frames N]` | A PNG of one moment (actions, then N kit-clock frames) + JSON sidecar in `shots/`. |
-| `pnpm film "<q>" [--actions JSON] --at N --frames 8 --every 6` | A frame strip from that moment; `--compare` for A/B. |
+| `pnpm film "<q>" [--actions JSON] --frames N --count 8 --every 6` | A frame strip from that moment; `--compare` for A/B. |
 | `pnpm ticks "<q>"` | *Realtime.* Headless: the frames of a run's telling moments, to aim shot/film. |
 | `pnpm screens` | Every page the game lists (`SCREENS`) at every device size. |
 | `pnpm sweep [--runs] [--seeds N]` | Parallel headless bot runs, summary table. |
