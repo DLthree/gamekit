@@ -1,4 +1,5 @@
-import { CELL, expect, open, test } from "@e2e/fixtures";
+import { expect, open, test } from "@e2e/fixtures";
+import { CELL } from "@/game/links";
 
 test("a manual wave steps, casts and draws effects", async ({ page }) => {
   await open(page, `${CELL}&manual=1&agent=1`);

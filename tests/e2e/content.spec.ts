@@ -1,4 +1,5 @@
-import { CELL, editContent, expect, hotUpdated, open, restoreContent, test } from "@e2e/fixtures";
+import { editContent, expect, hotUpdated, open, restoreContent, test } from "@e2e/fixtures";
+import { CELL } from "@/game/links";
 
 test.afterEach(() => restoreContent());
 

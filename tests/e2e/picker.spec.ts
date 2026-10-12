@@ -1,5 +1,6 @@
-import { CELL, expect, open, test } from "@e2e/fixtures";
+import { expect, open, test } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
+import { CELL } from "@/game/links";
 
 async function screen(page: Page, s: string): Promise<void> {
   await page.waitForFunction((want) => window.__game?.flow().screen === want, s);

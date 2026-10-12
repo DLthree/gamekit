@@ -1,5 +1,6 @@
-import { buttonCenter, CELL, expect, open, playing, test, touch, waitForCast } from "@e2e/fixtures";
+import { buttonCenter, expect, open, playing, test, touch, waitForCast } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
+import { CELL } from "@/game/links";
 
 const REAL = `${CELL}&agent=1`;
 

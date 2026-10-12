@@ -19,8 +19,6 @@ export const test = base.extend<{ errors: string[] }>({
 
 export { expect };
 
-export const CELL = "char=wizard&build=1&threat=1";
-
 /**
  * Opens a URL and waits until the flow reaches `screen`. Appends seed=7 and telemetry=0 unless
  * the query sets them, so ordinary e2e runs don't write telemetry logs; specs that want

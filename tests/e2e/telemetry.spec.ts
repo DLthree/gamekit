@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
-import { CELL, expect, open, test } from "@e2e/fixtures";
+import { expect, open, test } from "@e2e/fixtures";
+import { CELL } from "@/game/links";
 
 // biome-ignore lint/suspicious/noExplicitAny: raw JSON lines from the log, checked field by field
 function logFor(seed: number): any[] {

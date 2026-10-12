@@ -1,4 +1,5 @@
-import { CELL, expect, open, test } from "@e2e/fixtures";
+import { expect, open, test } from "@e2e/fixtures";
+import { CELL } from "@/game/links";
 
 test("a finished wave shows the result, and retry starts run 2 at tick 0", async ({ page }) => {
   await open(page, `${CELL}&manual=1&bot=kite`);

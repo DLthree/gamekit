@@ -9,10 +9,11 @@ import { parseArgs } from "node:util";
 import { devices, webkit } from "@playwright/test";
 import { acquireBrowserLock } from "@scripts/browser-guard";
 import { createServer } from "vite";
+import { PERF_QUERY } from "@/game/links";
 
 const PORT = 5283;
-const USAGE =
-  'usage: pnpm shot "char=wizard&build=1&threat=1&bot=kite" [--tick 600] [--name NAME] [--phone [--landscape]]';
+const USAGE = `usage: pnpm shot "<query>" [--tick 600] [--name NAME] [--phone [--landscape]]
+  e.g. pnpm shot "${PERF_QUERY}"`;
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,

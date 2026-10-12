@@ -5,14 +5,14 @@
 import { execFileSync, spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { PHONE_QUERIES } from "@/game/links";
 
 const PORT = 5282;
 
-/** The grid, the diagonal (balanced), one cell above it (overkill) and one below (struggle). */
+/** The game's phone links (PHONE_QUERIES) on the LAN address. */
 export function phoneUrls(ip: string, port: number): string[] {
   const base = `http://${ip}:${port}`;
-  const cell = (b: number, t: number) => `${base}/?char=wizard&build=${b}&threat=${t}`;
-  return [`${base}/`, cell(1, 1), cell(2, 2), cell(3, 3), cell(3, 1), cell(1, 3)];
+  return PHONE_QUERIES.map((q) => (q === "" ? `${base}/` : `${base}/?${q}`));
 }
 
 function run(

@@ -1,9 +1,9 @@
 /**
- * pnpm perf — a fixed check: the wizard, build 3, threat 3, the kite bot, seed 7. Information
- * only (the phone's telemetry is the real fps judge): it prints frame timings, fx and telegraph
- * counts so a change that's obviously worse doesn't need a phone round-trip to notice. The kite
- * bot may die before the wave ends; a died outcome still reaches the result
- * screen and still prints, same as a survived one.
+ * pnpm perf — a fixed check: the game's PERF_QUERY (src/game/links.ts) with the agent handle on
+ * and telemetry off. Information only (the phone's telemetry is the real fps judge): it prints
+ * frame timings, fx and telegraph counts so a change that's obviously worse doesn't need a phone
+ * round-trip to notice. The bot may die before the wave ends; a died outcome still reaches the
+ * result screen and still prints, same as a survived one.
  *
  * `__game.perf()` (src/agent/perf.ts) is a ring buffer that src/game/main.ts resets every 2 real
  * seconds (its telemetry cadence) — a single read at the end would only cover the last, likely
@@ -17,9 +17,10 @@ import { devices, webkit } from "@playwright/test";
 import { acquireBrowserLock } from "@scripts/browser-guard";
 import { createServer } from "vite";
 import type { PerfSummary } from "@/agent/perf";
+import { PERF_QUERY } from "@/game/links";
 
 const PORT = 5283;
-const QUERY = "char=wizard&build=3&threat=3&seed=7&bot=kite&agent=1&telemetry=0";
+const QUERY = `${PERF_QUERY}&agent=1&telemetry=0`;
 const RESULT_TIMEOUT_MS = 120_000;
 /** Comfortably under PerfMeter's 2 s reset window (src/game/main.ts), so no window is missed. */
 const POLL_MS = 500;

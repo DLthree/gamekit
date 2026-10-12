@@ -1,5 +1,6 @@
-import { CELL, expect, open, test } from "@e2e/fixtures";
+import { expect, open, test } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
+import { CELL } from "@/game/links";
 
 /** Waits for the audio context state; a timeout names the step and the state it was stuck in. */
 async function audioRunning(page: Page, step: string, running: boolean): Promise<void> {
