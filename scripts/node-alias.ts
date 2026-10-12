@@ -8,6 +8,7 @@ const ALIASES: readonly (readonly [string, URL])[] = [
   ["@/", new URL("../src/", import.meta.url)],
   ["@scripts/", new URL("./", import.meta.url)],
   ["@desktop/", new URL("../desktop/", import.meta.url)],
+  ["@deck/", new URL("../tests/deck/", import.meta.url)],
 ];
 
 registerHooks({
