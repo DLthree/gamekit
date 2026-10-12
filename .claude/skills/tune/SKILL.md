@@ -41,7 +41,7 @@ pnpm sweep --seeds 20 --out scratchpad/rows.jsonl
 Headless, parallel (cores − 2 workers), the same rows whatever the worker count. Prints the
 game's table (`sweepTable` in `src/game/sweep.ts`): win %, runs, secs, kills, life lost, killers.
 
-Before trusting a number, watch the bot: `pnpm film "<query>&bot=kite" --at 2 --frames 12 --every 500`.
+Before trusting a number, watch the bot: `pnpm film "<query>&bot=kite" --at 120 --frames 12 --every 30`.
 A bot that stands still or dies to one thing makes every row wrong.
 
 ## Perf

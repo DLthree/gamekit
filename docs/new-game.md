@@ -44,7 +44,7 @@ Replace each `src/game/` module the kit imports, keeping its exports (types may 
 | `setup.ts` | `worldFor(scenario, content)` → kit `createWorld` |
 | `report.ts` | `WaveReport`, `recordEvents` |
 | `wave/director.ts`, `wave/tick.ts` | `WaveState`, `tickWave` (step phase 9: spawns, win/lose) |
-| `handle.ts` | `GameHandle`: the game's part of `window.__game` (its `flow()`, `state()`, and what specs drive) |
+| `handle.ts` | `GameHandle`: the game's part of `window.__game` (its `flow()`, `state()`, and what specs drive); `main.ts` adds `act(action)`, the scripted action tools replay (a move, or a command for N frames), and runs everything that moves in `FrameClock` frames (`src/core/frames.ts`) |
 | `telemetry.ts` | `RunReport`, `GameRecord`, `runLines`, `sessionLines` (a run's record and summary) |
 | `url.ts` | `reproUrl` (and the game's own URL parsing) |
 | `links.ts` | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`, and the ids specs name (`HERO`, `BOT`…) |
@@ -64,7 +64,7 @@ Gate: `pnpm check`, then `pnpm screens` and `pnpm shot "<CELL>"` look right, the
 ## 4. Bot and sweep
 
 - `src/game/bots.ts` `BOTS`: at least one bot that plays like a player (the example's is
-  `kite-bot.ts`). Film it: `pnpm film "<query>&bot=<id>" --at 2 --frames 12 --every 500`.
+  `kite-bot.ts`). Film it: `pnpm film "<query>&bot=<id>" --at 120 --frames 12 --every 30`.
 - `src/game/sweep.ts`: `SweepRow`, `sweepRuns` (the run ids), `playRun` (one run headless),
   `sweepTable` (the summary).
 

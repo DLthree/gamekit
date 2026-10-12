@@ -7,7 +7,7 @@ A gamekit game. README.md has the commands; docs/layout.md has the kit/game map 
 | To | Use | Skill |
 |----|-----|-------|
 | See a moment, a stretch, a page | `pnpm shot`, `pnpm film`, `pnpm screens`; aim with `pnpm ticks` | `see` |
-| Drive the game | URLs: `?seed=`, `?bot=kite`, `?manual=1&agent=1` (step and read events through `window.__game`), `?stage=<id>&dev=1` | `see`, `tune` |
+| Drive the game | URLs: `?seed=`, `?bot=kite`, `?manual=1&agent=1` (step the kit frame clock, replay actions and read events through `window.__game`), `?stage=<id>&dev=1` | `see`, `tune` |
 | Tune | `?o=<folder>/<file>.<path>=<json>` overrides, `?on=<switch>`, stages, `pnpm sweep`, `pnpm perf` | `tune` |
 | Diagnose | `pnpm telemetry`, `pnpm run-record`, replay links | `diagnose` |
 | Make art | `scripts/qwen_image.py`, `sheet.py`, `install_art.py`, `pnpm atlas` | `art` |

@@ -54,9 +54,9 @@ map and seam: [docs/layout.md](docs/layout.md).
 | `pnpm test` / `test:py` | vitest; pytest over `scripts/*_test.py`. |
 | `pnpm content:check` | Compile and cross-check `content/`; exit 1 on any problem. |
 | `pnpm content:schema` | Rewrite `content/schema/*.schema.json` from the Zod schemas. |
-| `pnpm shot "<q>" [--tick N]` | A PNG of one moment + JSON sidecar in `shots/`. |
-| `pnpm film "<q>" --at S --frames N --every MS` | A frame strip over sim time; `--compare` for A/B. |
-| `pnpm ticks "<q>"` | Headless: ticks of a run's telling moments, to aim shot/film. |
+| `pnpm shot "<q>" [--actions JSON] [--frames N]` | A PNG of one moment (actions, then N kit-clock frames) + JSON sidecar in `shots/`. |
+| `pnpm film "<q>" [--actions JSON] --at N --frames 8 --every 6` | A frame strip from that moment; `--compare` for A/B. |
+| `pnpm ticks "<q>"` | Real-time, headless: the frames of a run's telling moments, to aim shot/film. |
 | `pnpm screens` | Every non-wave page at every device size. |
 | `pnpm sweep [--runs] [--seeds N]` | Parallel headless bot runs, summary table. |
 | `pnpm perf` / `perf:check` | Frame, sim and render timings of the heaviest scenario; `:check` fails on a floor. |
