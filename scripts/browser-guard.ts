@@ -6,21 +6,16 @@
  *
  * WebKit runs also appear to leave near-zero memory held by kernel_task after they exit (106 GB
  * on 2026-09-27, filling the memory compressor until macOS killed its own daemons in a loop), so
- * a run also refuses when kernel_task is already large, and while the sysmon recorder is installed
- * (scripts/sysmon.sh, temporary for diagnosis) every run is marked in its log with the kernel
- * numbers before and after.
+ * a run also refuses when kernel_task is already large.
  */
 import { execFileSync } from "node:child_process";
-import { closeSync, existsSync, openSync, readFileSync, unlinkSync, writeSync } from "node:fs";
-import { homedir } from "node:os";
-import { join } from "node:path";
+import { closeSync, openSync, readFileSync, unlinkSync, writeSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 export const E2E_MAX_WORKERS = 3; // ~2.4 GB each; safe since the trace-screenshot leak fix
 export const E2E_MAX_REPEAT = 3;
 const MIN_FREE_PERCENT = 30;
 const MAX_KERNEL_GB = 20;
-const SYSMON = join(homedir(), ".local/bin/sysmon");
 const LOCK = fileURLToPath(new URL("../.browser.lock", import.meta.url));
 
 /** Throws on Playwright CLI flags that raise the worker count or repeat runs past the caps. */
@@ -63,11 +58,6 @@ function kernelGb(): number {
   return parseTopMemGb(out.trim().split("\n").at(-1) ?? "");
 }
 
-/** Appends a marker to the sysmon log while the recorder is installed; it expires by itself. */
-export function sysmonMark(text: string): void {
-  if (existsSync(SYSMON)) execFileSync(SYSMON, ["mark", text]);
-}
-
 function alive(pid: number): boolean {
   try {
     process.kill(pid, 0);
@@ -97,13 +87,11 @@ export function acquireBrowserLock(what: string): () => void {
       const fd = openSync(LOCK, "wx");
       writeSync(fd, `${process.pid} ${what}\n`);
       closeSync(fd);
-      sysmonMark(`start ${what}`);
       let released = false;
       const release = () => {
         if (released) return;
         released = true;
         unlinkSync(LOCK);
-        sysmonMark(`end ${what}`);
       };
       process.on("exit", release);
       return release;
