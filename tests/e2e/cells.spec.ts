@@ -1,10 +1,11 @@
 import { expect, open, test } from "@e2e/fixtures";
+import { BOT, HERO } from "@/game/links";
 
 for (const build of [1, 2, 3]) {
-  test(`wizard build ${build} × threat 1 plays a whole wave in the browser, dropping nothing`, async ({
+  test(`${HERO} build ${build} × threat 1 plays a whole wave in the browser, dropping nothing`, async ({
     page,
   }) => {
-    await open(page, `char=wizard&build=${build}&threat=1&manual=1&bot=kite&agent=1`);
+    await open(page, `char=${HERO}&build=${build}&threat=1&manual=1&bot=${BOT}&agent=1`);
     await page.evaluate(() => window.__game?.step(20_000));
     const report = await page.evaluate(() => window.__game?.report());
     expect(report?.outcome).not.toBeNull();

@@ -1,7 +1,8 @@
 import { expect, open, test } from "@e2e/fixtures";
+import { HERO } from "@/game/links";
 
 /** Threat 3's boss spawns at wave second 50; an unkillable wizard waits for it standing still. */
-const CELL = "char=wizard&build=1&threat=3&o=characters/wizard.stats.life=1000000";
+const CELL = `char=${HERO}&build=1&threat=3&o=characters/${HERO}.stats.life=1000000`;
 
 test("the threat 3 boss telegraphs its slam, then the slam resolves", async ({ page }) => {
   await open(page, `${CELL}&manual=1&agent=1`);

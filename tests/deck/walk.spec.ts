@@ -10,6 +10,7 @@ import {
   sticks,
 } from "@deck/pad";
 import { expect, type Page, test } from "@playwright/test";
+import { HERO } from "@/game/links";
 
 // The example game's Steam Deck walk, on demand only (`pnpm deck:check`): every step is a
 // scripted pad press at the Deck's 1280×800; findings are collected (soft) so one walk reports
@@ -102,7 +103,7 @@ test("walk: the grid, a fight, pause and back, by pad only", async ({ page }) =>
 test("result: a won wave's page and back to the grid, by pad", async ({ page }) => {
   await open(
     page,
-    "char=wizard&build=3&threat=1&manual=1&o=characters/wizard.stats.life=1000000",
+    `char=${HERO}&build=3&threat=1&manual=1&o=characters/${HERO}.stats.life=1000000`,
     "wave",
   );
   await page.evaluate(() => window.__game?.step(20_000));

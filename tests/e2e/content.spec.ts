@@ -1,13 +1,13 @@
 import { editContent, expect, hotUpdated, open, restoreContent, test } from "@e2e/fixtures";
-import { CELL } from "@/game/links";
+import { BOT, CAST_SKILL, CELL } from "@/game/links";
 
 test.afterEach(() => restoreContent());
 
 test("@content a half-saved JSON file stops the game and names the file", async ({ page }) => {
   await open(page, CELL);
-  await editContent("skills/fireball.json", (t) => t.slice(0, Math.floor(t.length / 2)));
+  await editContent(`skills/${CAST_SKILL}.json`, (t) => t.slice(0, Math.floor(t.length / 2)));
   await page.waitForFunction(() => window.__game?.flow().screen === "error");
-  await expect(page.locator("#error")).toContainText("skills/fireball.json");
+  await expect(page.locator("#error")).toContainText(`skills/${CAST_SKILL}.json`);
   await expect(page.locator("vite-error-overlay")).toHaveCount(0);
   restoreContent();
   await page.waitForFunction(() => window.__game?.flow().screen === "wave");
@@ -40,7 +40,7 @@ test("@content a sim edit restarts the wave; hot=keep keeps it", async ({ page }
   // bot=kite finishes the wave itself, so retry() (only valid from the result screen) has
   // something to act on; this proves hot=keep's new content actually reaches the next run,
   // not just that the current one was left alone.
-  await open(page, `${CELL}&manual=1&bot=kite&hot=keep`);
+  await open(page, `${CELL}&manual=1&bot=${BOT}&hot=keep`);
   const before = await page.evaluate(() => window.__game?.state().durationTicks);
   await page.evaluate(() => window.__game?.step(20_000));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");

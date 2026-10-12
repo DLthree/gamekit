@@ -41,7 +41,7 @@ Replace each `src/game/` module the kit imports, keeping its exports (types may 
 | `wave/director.ts`, `wave/tick.ts` | `WaveState`, `tickWave` (step phase 9: spawns, win/lose) |
 | `flow.ts` | `Flow` (screen state machine) |
 | `url.ts` | `reproUrl` (and the game's own URL parsing) |
-| `links.ts` | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS` |
+| `links.ts` | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`, and the ids specs name (`HERO`, `BOT`…) |
 | `headless.ts` | `worldForQuery`, `tickLine` (what `pnpm ticks` prints) |
 | `record.ts` | `recordOf`, `replayQuery` |
 | `switches.ts` | `SWITCHES` (may be `{}`) |
@@ -49,7 +49,8 @@ Replace each `src/game/` module the kit imports, keeping its exports (types may 
 
 Then the rest of the game: `main.ts`, `wave-session.ts`, `ui/` screens, `ui/pad-keys.ts`,
 `index.html`, and `tests/e2e/*.spec.ts` (keep `fixtures.ts`; keep a `layout.spec.ts` that holds
-each screen's boxes fixed across states).
+each screen's boxes fixed across states). Specs and game tests take ids from `links.ts`; set those
+first, then rewrite the specs that test the example's rules.
 
 Gate: `pnpm check`, then `pnpm screens` and `pnpm shot "<CELL>"` look right, then `pnpm verify`.
 

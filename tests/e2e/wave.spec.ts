@@ -1,5 +1,5 @@
 import { expect, open, test } from "@e2e/fixtures";
-import { CELL } from "@/game/links";
+import { BOT, CAST_SKILL, CELL } from "@/game/links";
 
 test("a manual wave steps, casts and draws effects", async ({ page }) => {
   await open(page, `${CELL}&manual=1&agent=1`);
@@ -10,15 +10,16 @@ test("a manual wave steps, casts and draws effects", async ({ page }) => {
     window.__game?.step(1, { moveX: 0, moveY: 0, cast: { slot: "cast", aim: { x: 1, y: 0 } } }),
   );
   await page.evaluate(() => window.__game?.step(120));
-  const fireballs = await page.evaluate(
-    () => window.__game?.events(0).filter((e) => e.t === "cast" && e.skill === "fireball").length,
+  const casts = await page.evaluate(
+    (skill) => window.__game?.events(0).filter((e) => e.t === "cast" && e.skill === skill).length,
+    CAST_SKILL,
   );
-  expect(fireballs).toBe(1);
+  expect(casts).toBe(1);
   expect((await page.evaluate(() => window.__game?.fx()))?.total).toBeGreaterThan(0);
 });
 
-test("the kite bot finishes the wave with kills", async ({ page }) => {
-  await open(page, `${CELL}&manual=1&bot=kite`);
+test(`the ${BOT} bot finishes the wave with kills`, async ({ page }) => {
+  await open(page, `${CELL}&manual=1&bot=${BOT}`);
   await page.evaluate(() => window.__game?.step(20_000));
   const report = await page.evaluate(() => window.__game?.report());
   expect(report?.outcome).not.toBeNull();
@@ -26,7 +27,7 @@ test("the kite bot finishes the wave with kills", async ({ page }) => {
 });
 
 test("effects drain to zero once spawning stops", async ({ page }) => {
-  await open(page, `${CELL}&manual=1&bot=kite`);
+  await open(page, `${CELL}&manual=1&bot=${BOT}`);
   await page.evaluate(() => window.__game?.step(600));
   await page.evaluate(() => window.__game?.stopFx());
   await page.evaluate(() => window.__game?.step(600));

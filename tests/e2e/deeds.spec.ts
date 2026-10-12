@@ -1,10 +1,11 @@
 import { expect, open, test } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
+import { HERO } from "@/game/links";
 
 // Deeds (the example's achievements): listed under the grid, earned by a wave's result, kept in
 // the save (localStorage on the web, a file in the desktop shell) across a reload.
 
-const WIN = "char=wizard&build=3&threat=1&o=characters/wizard.stats.life=1000000&manual=1";
+const WIN = `char=${HERO}&build=3&threat=1&o=characters/${HERO}.stats.life=1000000&manual=1`;
 
 function rowBoxes(page: Page) {
   return page

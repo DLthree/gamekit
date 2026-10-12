@@ -1,6 +1,6 @@
 import { expect, open, test } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
-import { CELL } from "@/game/links";
+import { CELL, HERO } from "@/game/links";
 
 // Stable layout: a screen's elements keep their exact boxes whatever its state shows, so nothing
 // a player reads or presses ever jumps. A longer text is cut, never reflowed.
@@ -62,7 +62,7 @@ async function resultOf(page: Page, query: string): Promise<[string, Record<stri
 test("the result keeps its boxes whether the wave was survived or lost", async ({ page }) => {
   const [won, survived] = await resultOf(
     page,
-    `char=wizard&build=3&threat=3&o=characters/wizard.stats.life=1000000`,
+    `char=${HERO}&build=3&threat=3&o=characters/${HERO}.stats.life=1000000`,
   );
   const [lost, defeated] = await resultOf(page, CELL);
   expect([won, lost]).toEqual(["Survived", "Defeated"]);

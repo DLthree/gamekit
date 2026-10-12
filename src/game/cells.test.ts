@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { kite } from "@/game/kite-bot";
+import { BOT } from "@/game/links";
 import { worldFor } from "@/game/setup";
 import { step } from "@/sim/step";
 
@@ -21,7 +22,7 @@ for (const character of Object.keys(content.characters)) {
 
 describe("every shipped cell", () => {
   it.each(cells)(
-    "%s build %i × threat %i plays a whole wave with the kite bot",
+    `%s build %i × threat %i plays a whole wave with the ${BOT} bot`,
     (character, buildTier, threatTier) => {
       const w = worldFor({ character, buildTier, threatTier, seed: SEED, overrides: [] }, content);
       for (let i = 0; i < 20_000 && w.phase !== "ended"; i++) step(w, kite(w));

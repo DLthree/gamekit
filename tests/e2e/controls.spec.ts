@@ -1,6 +1,6 @@
 import { buttonCenter, expect, open, playing, test, touch, waitForCast } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
-import { CELL } from "@/game/links";
+import { CAST_SKILL, CELL } from "@/game/links";
 
 const REAL = `${CELL}&agent=1`;
 
@@ -25,7 +25,7 @@ test("absolute aim casts from the player toward the finger", async ({ page, erro
   await touch(page, 2, "pointermove", b.x - 60, b.y - 60);
   await touch(page, 2, "pointermove", p.x, p.y - 160);
   await touch(page, 2, "pointerup", p.x, p.y - 160);
-  const aim = await waitForCast(page, "fireball", since);
+  const aim = await waitForCast(page, CAST_SKILL, since);
   expect(aim.ay).toBeLessThan(-0.95);
   expect(errors).toEqual([]);
 });
@@ -48,7 +48,7 @@ test("relative aim casts along the drag from the button's centre", async ({ page
   await touch(page, 2, "pointerdown", b.x, b.y);
   await touch(page, 2, "pointermove", b.x - 100, b.y);
   await touch(page, 2, "pointerup", b.x - 100, b.y);
-  const aim = await waitForCast(page, "fireball", since);
+  const aim = await waitForCast(page, CAST_SKILL, since);
   expect(aim.ax).toBeLessThan(-0.95);
 });
 
@@ -59,7 +59,7 @@ test("a tap quick-casts with finite positions", async ({ page }) => {
   const since = await tick(page);
   await touch(page, 2, "pointerdown", b.x, b.y);
   await touch(page, 2, "pointerup", b.x, b.y);
-  const aim = await waitForCast(page, "fireball", since);
+  const aim = await waitForCast(page, CAST_SKILL, since);
   expect(Math.hypot(aim.ax, aim.ay)).toBeCloseTo(1, 5);
   const volumes = await page.evaluate(() => window.__game?.state().volumes ?? []);
   for (const v of volumes) expect(Number.isFinite(v.x) && Number.isFinite(v.y)).toBe(true);
@@ -80,8 +80,9 @@ test("dragging back onto the button cancels", async ({ page }) => {
   const up = await tick(page);
   await page.waitForFunction((t) => (window.__game?.state().tick ?? 0) >= t + 30, up);
   const casts = await page.evaluate(
-    (s) => window.__game?.events(s).filter((e) => e.t === "cast" && e.skill === "fireball").length,
-    since,
+    ([s, skill]) =>
+      window.__game?.events(s).filter((e) => e.t === "cast" && e.skill === skill).length,
+    [since, CAST_SKILL] as const,
   );
   expect(casts).toBe(0);
 });
@@ -103,7 +104,7 @@ test("two thumbs: the stick moves the player while the other thumb aims and cast
   if (p === undefined) throw new Error("no player position");
   await touch(page, 2, "pointermove", p.x, p.y - 160);
   await touch(page, 2, "pointerup", p.x, p.y - 160);
-  const aim = await waitForCast(page, "fireball", since);
+  const aim = await waitForCast(page, CAST_SKILL, since);
   expect(aim.ay).toBeLessThan(-0.9);
   await playerPast(page, x1);
   await touch(page, 1, "pointerup", 160, b.y - 40);
@@ -129,6 +130,6 @@ test("rotating mid-wave resizes the canvas and absolute aim still follows the fi
   await touch(page, 2, "pointermove", b.x - 80, b.y - 80);
   await touch(page, 2, "pointermove", p.x + 180, p.y);
   await touch(page, 2, "pointerup", p.x + 180, p.y);
-  const aim = await waitForCast(page, "fireball", since);
+  const aim = await waitForCast(page, CAST_SKILL, since);
   expect(aim.ax).toBeGreaterThan(0.95);
 });

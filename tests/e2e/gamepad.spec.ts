@@ -1,6 +1,6 @@
 import { expect, open, playing, test, waitForCast } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
-import { CELL } from "@/game/links";
+import { CAST_SKILL, CELL } from "@/game/links";
 import { PAD, type PadButton } from "@/input/gamepad";
 
 // A scripted standard pad stands in for the Gamepad API (src/input/gamepad.ts), set from the
@@ -87,7 +87,7 @@ test("a pad picks a cell, moves, aims and casts, and pauses and resumes", async 
   await setPad(page, [], up);
   await page.waitForTimeout(60);
   await press(page, "a", up);
-  const aim = await waitForCast(page, "fireball", since);
+  const aim = await waitForCast(page, CAST_SKILL, since);
   expect(aim.ay).toBeLessThan(-0.9);
   await setPad(page, []);
 

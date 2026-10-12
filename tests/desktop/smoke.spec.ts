@@ -3,11 +3,20 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { _electron, type ElectronApplication, expect, type Page, test } from "@playwright/test";
 import { compileShell } from "@scripts/desktop-build";
+import { formatContentError } from "@/content/errors";
+import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
+import { deedList } from "@/game/deeds";
 
 // The desktop app (desktop/, unpacked: `electron .` on dist/, the release build) keeps its saves
 // in <userData>/save/ across a quit: a deed earned shows as earned after a relaunch.
 
 const ROOT = resolve(".");
+
+const loaded = loadContentDir(REPO_CONTENT_DIR, []);
+if (!loaded.ok) throw new Error(loaded.errors.map(formatContentError).join("\n"));
+const DEEDS = deedList(loaded.content.sim);
+/** The deed the test earns: the game's first. */
+const DEED = DEEDS[0].id;
 
 /** Electron on `appDir`, with userData in `dir`, windowed (fullscreen makes macOS switch Spaces). */
 async function launch(
@@ -35,14 +44,16 @@ test("a deed earned in the desktop app is still earned after a quit and relaunch
     expect(await first.page.evaluate(() => typeof window.gameDesktop)).toBe("object");
     // The release build: no agent handle, and the deeds list on the grid.
     expect(await first.page.evaluate(() => typeof window.__game)).toBe("undefined");
-    await expect(first.page.locator("#picker .deeds li")).toHaveCount(3);
+    await expect(first.page.locator("#picker .deeds li")).toHaveCount(DEEDS.length);
     await expect(first.page.locator("#picker .deeds li.earned")).toHaveCount(0);
     // The save port, through the preload's IPC: written atomically, read back on a reload.
-    await first.page.evaluate(() =>
-      window.gameDesktop?.storage.setItem("deeds", '{"version":1,"earned":["lion-tamer"]}'),
+    await first.page.evaluate(
+      (id) =>
+        window.gameDesktop?.storage.setItem("deeds", JSON.stringify({ version: 1, earned: [id] })),
+      DEED,
     );
     await first.page.reload();
-    await expect(first.page.locator('#picker .deeds li[data-deed="lion-tamer"]')).toHaveClass(
+    await expect(first.page.locator(`#picker .deeds li[data-deed="${DEED}"]`)).toHaveClass(
       /earned/,
     );
     // The telemetry flush runs every 5 s.
@@ -51,9 +62,7 @@ test("a deed earned in the desktop app is still earned after a quit and relaunch
   } finally {
     await first.app.close();
   }
-  expect(JSON.parse(readFileSync(join(dir, "save", "deeds.json"), "utf8")).earned).toEqual([
-    "lion-tamer",
-  ]);
+  expect(JSON.parse(readFileSync(join(dir, "save", "deeds.json"), "utf8")).earned).toEqual([DEED]);
 
   const second = await launch(dir);
   try {

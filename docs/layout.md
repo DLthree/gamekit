@@ -67,7 +67,7 @@ seam modules listed below.
 | `headless.ts` | A query's world without the renderer, and the events `pnpm ticks` lists. |
 | `sweep.ts` | The run model `pnpm sweep` plays: run ids, one run with the kite bot, the summary table. |
 | `record.ts` | The example's run record: its choices (the replay address's parameters) and `replayQuery`. |
-| `links.ts` | Addresses the tools open: `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`. |
+| `links.ts` | Addresses the tools open (`CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`) and the ids specs and tests name (`HERO`, `CAST_SKILL`, `BOT`, `SWITCH`, `STAGE`). |
 | `test-files.ts` | The game's files in the kit's test content (`heroBuild`, `GAME_TEST_FILES`) and the names it uses (`TEST_NAMES`). |
 
 ## The seam
@@ -90,7 +90,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/headless` | `scripts/timeline.ts` | `worldForQuery`, `tickLine` |
 | `@/game/sweep` | `scripts/sweep*.ts` | `SweepRow`, `sweepRuns`, `playRun`, `sweepTable` |
 | `@/game/record` | `scripts/run-record-read.ts` | `recordOf`, `replayQuery` |
-| `@/game/deeds` | `scripts/steam-dashboard.ts` | `deedList` |
+| `@/game/deeds` | `scripts/steam-dashboard.ts`, `tests/desktop/` | `deedList` |
 | `@/game/setup`, `@/game/test-files` | `src/test/`, sim tests | `worldFor`, `heroBuild`, `GAME_TEST_FILES`, `TEST_NAMES` |
 
 Role-specific looks live in content: `look/feedback.json` `bigDeathRoles`.

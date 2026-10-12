@@ -3,6 +3,7 @@ import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { tickSeconds } from "@/core/clock";
 import { kite } from "@/game/kite-bot";
+import { HERO } from "@/game/links";
 import { worldFor } from "@/game/setup";
 import { applyEvents } from "@/present/feedback";
 import { createPresentation } from "@/present/presentation";
@@ -14,7 +15,7 @@ function load(overrides: string[]) {
   return loaded.content;
 }
 /** The whole wave, however the bot fares: an unkillable wizard sees every spawn of the timeline. */
-const UNKILLABLE = "characters/wizard.stats.life=1000000";
+const UNKILLABLE = `characters/${HERO}.stats.life=1000000`;
 
 /**
  * Each shipped wizard tier plays a whole wave with the kite bot through
@@ -22,7 +23,7 @@ const UNKILLABLE = "characters/wizard.stats.life=1000000";
  * dropped. Evict kinds replace their oldest instance at their cap, which is not a drop, and the
  * caps sum below the pool's capacity, so any drop is a tuning error to fix here.
  */
-describe("shipped wizard tiers at full load", () => {
+describe(`shipped ${HERO} tiers at full load`, () => {
   it.each([
     [1, 1],
     [2, 1],
@@ -32,10 +33,7 @@ describe("shipped wizard tiers at full load", () => {
     const seed = 7;
     const overrides = threatTier === 1 ? [] : [UNKILLABLE];
     const content = load(overrides);
-    const w = worldFor(
-      { character: "wizard", buildTier, threatTier, seed, overrides },
-      content.sim,
-    );
+    const w = worldFor({ character: HERO, buildTier, threatTier, seed, overrides }, content.sim);
     const p = createPresentation(content, seed);
     let zones = 0;
     let peak = 0;
