@@ -33,7 +33,7 @@ seam modules listed below.
 | `assets/style/` | game | The house style: `presets.json` (prompt wrappers for `qwen_image.py --preset`) and `anchor.png`, the style reference. |
 | `public/atlas/`, `public/sounds/` | game | Packed atlas and sounds the game loads; `public/sounds/LICENSE.md` credits each sound (CC0 only). |
 | `index.html` | game | The page: canvas, controls, and one element per screen. |
-| `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `run-record` + `run-record-read.ts` (records → replay links), `perf` / `perf:check` (timings of `PERF_QUERY`), `phone`, `telemetry`, `content-check`, `e2e` + browser guard (one machine-wide lock, `~/.cache/browser-guard/lock`), and the art and audio pipeline and the ship tools (below). |
+| `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `run-record` + `run-record-read.ts` (records → replay links), `perf` / `perf:check` (timings of `PERF_QUERY`), `phone`, `telemetry`, `content-check`, `e2e` + browser guard (one machine-wide lock, `~/.cache/browser-guard/lock`), and the art, audio and ship tools (README.md's command table; `.claude/skills/` for each family). |
 | `scripts/build-sounds.sh` | kit + game | The loudness and loop functions are kit; the fetch and `oneshot` lines are the example's sounds, replaced per game. |
 | `scripts/game-page.ts` | kit | The WebKit tools' shared setup: browser lock, own server on 5283, device pages, `toolQuery`. |
 | `tests/e2e/fixtures.ts` | kit | Playwright fixtures: error capture, `open`, touch helpers, content edits. |
@@ -41,6 +41,7 @@ seam modules listed below.
 | `tests/deck/pad.ts`, `setup.ts`, `teardown.ts` | kit | The Deck check's scripted pad, focus walker, text measure and report. |
 | `tests/deck/walk.spec.ts` | game | The example's pad-only walk. |
 | `tests/e2e/*.spec.ts` | game | Browser tests of the example game; `layout.spec.ts` holds each screen's element boxes equal across its states (stable layout), `gamepad.spec.ts` plays it with a scripted pad. |
+| `README.md`, `CLAUDE.md`, `docs/`, `.claude/skills/` | kit | What the kit is, the agent's project instructions, this map, the new-game steps, one skill per tool family. |
 | configs (`package.json`, `vite.config.ts`, `playwright.config.ts`, `playwright.desktop.config.ts`, `playwright.deck.config.ts`, `tsconfig.json`, `biome.json`, `.claude/`) | kit | Build, dev server, test runner, lint, agent hooks. |
 
 ## src/game
@@ -103,44 +104,3 @@ stride, idle breath); layer 3 (`layer3.ts`) poses a held prop at the bent hand. 
 combines them into a `MeshDraw`, and `src/render/mesh-view.ts` draws it as a Phaser Mesh2D. The
 numbers are content: `look/creatures.json` (gait, mesh, prop per creature) and
 `look/feedback.json` (springs, lunge, death).
-
-## Art and audio pipeline
-
-Python scripts carry their dependencies inline and run with `uv run`; their tests
-(`scripts/*_test.py`) run in `pnpm check` as `pnpm test:py`.
-
-| Step | Command | What it does |
-|------|---------|--------------|
-| Generate | `uv run scripts/qwen_image.py "SUBJECT" -o scratchpad/art/cand.png --preset sprite --seed N` | Qwen Image via kie.ai (`KIE_API_KEY` from the env or the gitignored `.env`). `--preset` wraps the subject in a style from `assets/style/presets.json` (`sprite`, `fx`, `concept`) with its anchor as the reference; writes `cand.json` beside the image (subject, prompt, preset, seed, references, cost). `--batch jobs.json` runs a resumable list, four at a time, with retries. The provider is one function, `generate()`. |
-| Compare | `uv run scripts/sheet.py out.png IMAGE... [--trim]` | A labelled grid of candidates. With `--game [--height H]`: each image alone, in game beside the player on the floor colour, and at phone size. |
-| Install | `uv run scripts/install_art.py sprite ID cand.png --role fodder --height 28` or `... fx ID a.png b.png --world-size 40 --atlas-px 192 --tintable` | Trims to the alpha box, pivots a creature at its feet, writes the sidecar (the generation record is the provenance), then runs `pnpm atlas` and `pnpm content:check`. |
-| Pack | `pnpm atlas` | `scripts/build_atlas.py`: `assets/` → `public/atlas/game.png` + `game.json` + `content/look/generated/sprites.json`. |
-| Sounds | `pnpm sounds` | `scripts/build-sounds.sh`: downloads the CC0 sources into `scratchpad/sounds/raw/`, trims, loops, matches loudness (-16 LUFS), then `pnpm sounds:manifest`. `scripts/analyze-sounds.sh FILE...` prints length, loudness and brightness. |
-| Listen | `pnpm sound-sheet` | `scratchpad/sound-sheet/index.html`: every sound embedded, with its game level, tuning and credit. |
-
-`pnpm content:check` holds the generated manifests to the files: every sprite frame in the
-atlas, every sound file present at its manifest length. A test holds every shipped sound to a
-CC0 row in `public/sounds/LICENSE.md`.
-
-## Ship
-
-`pnpm build` (`vite build --mode release`) is the shipped game: the URL refuses the dev
-parameters (`RELEASE_REFUSED` in `src/agent/url-options.ts`), there are no stages, no
-`window.__game`, telemetry never POSTs (the desktop shell writes it to `<userData>/telemetry/`),
-the result has no replay address, and the error panel puts its raw lines behind Details.
-`scripts/release-build.test.ts` builds it in memory and holds it to that. `pnpm preview` serves
-it on 0.0.0.0:5289.
-
-| Command | What it does |
-|---------|--------------|
-| `pnpm desktop` / `pnpm desktop:steam` | The release build in Electron, itch or Steam flavour (`electron .`). |
-| `pnpm desktop:dist --itch\|--steam [--mac] [--win] [--linux] [--dir]` | Packages into `release/<flavour>/` (gitignored), unsigned. The Steam flavour fails while `ship/config.json`'s Steam IDs are TODO or `vendor/steamworks_sdk/` lacks an OS's library. |
-| `pnpm desktop:smoke` | Electron e2e on the release build, through `pnpm e2e`. |
-| `pnpm steam:achievements` | `release/steam-dashboard/achievements.{csv,json}` from the deeds. |
-| `pnpm steam:upload [--upload --user U]` | SteamPipe scripts in `release/steampipe/`; a dry run printing the steamcmd line unless `--upload`. Refuses TODO IDs and Spacewar (480). |
-| `pnpm itch:push [--upload]` | butler pushes to `ship/config.json`'s `itch.target`, one channel per OS; a dry run unless `--upload`. |
-| `pnpm store-media [all\|shots\|art\|capture\|trailer\|gifs\|sheet]` | From `ship/media.json`: screenshots, capsules (`scripts/store_media_art.py`), a frame-stepped trailer and GIFs, a contact sheet, in `release/store/`. |
-| `pnpm deck:check` | On demand, outside the gate: Chromium at 1280×800, a pad-only walk of every screen (reach, presses, real input), text sizes, mouse/keyboard words, a shot per screen → `shots/deck-check/`. |
-
-A new game fills in `ship/config.json` (name, bundle id, then the Steam and itch ids when it has
-them), its `ship/icon.png` and `ship/media.json`, and its deeds in `content/deeds/`.
