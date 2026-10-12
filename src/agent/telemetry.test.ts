@@ -31,7 +31,16 @@ describe("Telemetry", () => {
     tel.record({
       kind: "perf",
       tick: 60,
-      perf: { frames: 1, meanMs: 16, p95Ms: 16, maxMs: 16, longFrames: 0, simMeanMs: 1 },
+      perf: {
+        frames: 1,
+        meanMs: 16,
+        p95Ms: 16,
+        maxMs: 16,
+        longFrames: 0,
+        simMeanMs: 1,
+        renderMeanMs: 2,
+        frozenSteps: 0,
+      },
     });
     expect(sent).toEqual([]);
     tel.flush(false);
@@ -58,7 +67,16 @@ describe("Telemetry", () => {
       record: null,
     });
     expect(sent).toHaveLength(1);
-    const perf = { frames: 1, meanMs: 16, p95Ms: 16, maxMs: 16, longFrames: 0, simMeanMs: 1 };
+    const perf = {
+      frames: 1,
+      meanMs: 16,
+      p95Ms: 16,
+      maxMs: 16,
+      longFrames: 0,
+      simMeanMs: 1,
+      renderMeanMs: 2,
+      frozenSteps: 0,
+    };
     for (let i = 0; i < 49; i++) tel.record({ kind: "perf", tick: i, perf });
     expect(tel.pending).toBe(49);
     tel.record({ kind: "perf", tick: 49, perf });

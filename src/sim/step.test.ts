@@ -26,13 +26,14 @@ describe("step", () => {
     expect(w.events.items).toEqual([]);
   });
 
-  it("does not advance the tick or the wave timer while frozen by hit-stop", () => {
+  it("does not advance the tick or the wave timer while frozen by hit-stop, and counts the steps", () => {
     const w = testWorld();
     run(w, 10);
     w.freezeTicks = 3;
     run(w, 3);
     expect(w.tick).toBe(10);
     expect(w.wave.elapsed).toBe(10);
+    expect(w.frozenSteps).toBe(3);
     run(w, 1);
     expect(w.tick).toBe(11);
   });

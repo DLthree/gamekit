@@ -53,6 +53,8 @@ export interface World {
   scenario: Scenario;
   tick: number;
   freezeTicks: number;
+  /** Steps the world stood frozen (hit-stop) so far: the perf meter counts them. */
+  frozenSteps: number;
   countdownTicks: number;
   durationTicks: number;
   maxEnemies: number;
@@ -130,6 +132,7 @@ export function createWorld(content: SimContent, init: WorldInit): World {
     scenario: init.scenario,
     tick: 0,
     freezeTicks: 0,
+    frozenSteps: 0,
     countdownTicks,
     durationTicks: init.durationTicks,
     maxEnemies: init.maxEnemies,

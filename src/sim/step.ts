@@ -28,6 +28,7 @@ export function step(world: World, command: Command): void {
   if (world.phase === "ended") return;
   if (world.freezeTicks > 0) {
     world.freezeTicks -= 1;
+    world.frozenSteps += 1;
     return;
   }
   world.tick += 1;

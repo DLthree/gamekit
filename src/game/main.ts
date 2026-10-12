@@ -221,6 +221,7 @@ function startWave(scenario: Scenario): void {
 function frame(timeMs: number): void {
   if (wave === null) return;
   const started = performance.now();
+  const frozenBefore = wave.world.frozenSteps;
   try {
     wave.frame(timeMs / 1000);
     hud.update(hudModel(wave.world));
@@ -228,7 +229,15 @@ function frame(timeMs: number): void {
     crash(err);
     return;
   }
-  if (lastFrameMs !== null) perf.frame(timeMs - lastFrameMs, performance.now() - started);
+  if (scene === null) throw new Error("a frame before boot");
+  // Phaser renders after this callback: its time is the last frame's render.
+  if (lastFrameMs !== null)
+    perf.frame(
+      timeMs - lastFrameMs,
+      performance.now() - started,
+      scene.renderMs,
+      wave.world.frozenSteps - frozenBefore,
+    );
   lastFrameMs = timeMs;
   const nowS = timeMs / 1000;
   if (nowS - lastPerfS >= 2) {

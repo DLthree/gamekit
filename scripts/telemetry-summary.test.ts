@@ -41,7 +41,16 @@ describe("summarizeTelemetry", () => {
       line({
         kind: "perf",
         tick: 600,
-        perf: { frames: 600, meanMs: 16.8, p95Ms: 19.2, maxMs: 40, longFrames: 2, simMeanMs: 1.2 },
+        perf: {
+          frames: 600,
+          meanMs: 16.8,
+          p95Ms: 19.2,
+          maxMs: 40,
+          longFrames: 2,
+          simMeanMs: 1.2,
+          renderMeanMs: 3,
+          frozenSteps: 4,
+        },
       }),
       line({
         kind: "wave",

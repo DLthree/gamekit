@@ -42,6 +42,8 @@ export interface RenderFrame {
 export class WorldScene extends Phaser.Scene {
   /** The app's per-frame callback, run before Phaser renders (rAF time in ms). */
   onFrame: (timeMs: number) => void = () => {};
+  /** Phaser's last render, prerender to postrender (ms): the perf meter's render time. */
+  renderMs = 0;
   private readonly bootContent: Content;
   private readonly ready: (scene: WorldScene) => void;
   private readonly fail: (err: Error) => void;
@@ -92,6 +94,13 @@ export class WorldScene extends Phaser.Scene {
     }
     this.softEllipse("shadow", 0x000000);
     this.softEllipse("clearing", 0xffffff);
+    let renderFrom = 0;
+    this.game.events.on(Phaser.Core.Events.PRE_RENDER, () => {
+      renderFrom = performance.now();
+    });
+    this.game.events.on(Phaser.Core.Events.POST_RENDER, () => {
+      this.renderMs = performance.now() - renderFrom;
+    });
     this.ready(this);
   }
 
