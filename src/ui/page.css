@@ -73,6 +73,8 @@ body {
   min-height: 0;
   overflow-y: auto;
   touch-action: pan-y;
+  /* Room for a focus ring inside the scrolling box, which would clip it at the edge. */
+  padding: 6px;
 }
 
 .page-buttons {
@@ -81,6 +83,10 @@ body {
   justify-content: center;
   gap: 12px;
   margin-top: 12px;
+}
+
+.page-buttons:empty {
+  display: none;
 }
 
 /* A screen's action button (src/ui/button.ts). */
@@ -92,6 +98,7 @@ body {
   border: 3px solid var(--act-ink);
   border-radius: 12px;
   background: var(--act-bg);
+  margin: 6px;
   cursor: pointer;
 }
 

@@ -1,6 +1,7 @@
 import { expect, fingerTap, mouseClick, open, test } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
 import { BOT, CAST_SKILL, CELL, HERO } from "@/game/links";
+import { idWords } from "@/ui/vocabulary";
 
 async function screen(page: Page, s: string): Promise<void> {
   await page.waitForFunction((want) => window.__game?.flow().screen === want, s);
@@ -46,7 +47,7 @@ test(`the result's Grid button returns to the ${HERO}'s grid, and a reload stays
   expect(new URL(page.url()).search).toBe(`?char=${HERO}&manual=1&bot=${BOT}&telemetry=0&seed=7`);
   await page.reload();
   await screen(page, "picker");
-  await expect(page.locator("#picker h1")).toHaveText(HERO);
+  await expect(page.locator("#picker .character")).toHaveText(idWords(HERO));
 });
 
 test("an unknown character in the URL shows the error panel", async ({ page }) => {

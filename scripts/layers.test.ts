@@ -45,6 +45,8 @@ const KIT_TEST_FILES = [
   "tests/desktop/smoke.spec.ts",
   "tests/e2e/turn-clock.spec.ts",
   "tests/fixtures/turn/main.ts",
+  "tests/e2e/menu-page.spec.ts",
+  "tests/fixtures/menu/main.ts",
 ];
 const ALIASES: readonly (readonly [string, string])[] = [
   ["@/", "src/"],

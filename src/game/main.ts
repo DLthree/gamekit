@@ -19,9 +19,9 @@ import type { WaveReport } from "@/game/report";
 import { checkScenario, type Scenario, scenarioLabel, stageScenario } from "@/game/scenario";
 import { Hud, hudModel } from "@/game/ui/hud";
 import { PAD_KEYS } from "@/game/ui/pad-keys";
-import { hidePause, showPause } from "@/game/ui/pause";
-import { type DeedRow, hidePicker, type LastCell, showPicker } from "@/game/ui/picker";
-import { hideResult, resultModel, showResult } from "@/game/ui/result";
+import { showPause } from "@/game/ui/pause";
+import { type DeedRow, type LastCell, showPicker } from "@/game/ui/picker";
+import { resultModel, showResult } from "@/game/ui/result";
 import { type CellRequest, parseUrl, reproUrl, type UrlTarget, urlFor } from "@/game/url";
 import { WaveSession } from "@/game/wave-session";
 import { installIosGuards } from "@/input/ios-guards";
@@ -36,6 +36,7 @@ import { summarize } from "@/realtime/sim/snapshot";
 import { hideError, showError } from "@/ui/error";
 import { markPadKeys } from "@/ui/pad-keys";
 import { startPadNav } from "@/ui/pad-nav";
+import { hidePage } from "@/ui/page";
 
 function el(id: string): HTMLElement {
   const e = document.getElementById(id);
@@ -81,9 +82,9 @@ function show(prev: Flow): void {
   document.body.dataset.screen = flow.screen;
   const address = urlFor(flow, location.search);
   if (address !== null) history.replaceState(null, "", address);
-  if (flow.screen !== "result") hideResult(el("result"));
-  if (flow.screen !== "picker") hidePicker(el("picker"));
-  if (flow.screen !== "wave" || !flow.paused) hidePause(el("pause"));
+  if (flow.screen !== "result") hidePage(el("result"));
+  if (flow.screen !== "picker") hidePage(el("picker"));
+  if (flow.screen !== "wave" || !flow.paused) hidePage(el("pause"));
   if (flow.screen === "error") {
     endWave();
     telemetry.record({
@@ -416,7 +417,6 @@ document.addEventListener("visibilitychange", () => {
 el("pause-button").addEventListener("click", () => dispatch({ e: "pause" }));
 startPadNav({
   modals: ["error"],
-  screens: ["pause", "picker", "result"],
   inFight: () => flow.screen === "wave" && !flow.paused,
   start: () => {
     if (flow.screen === "wave") dispatch({ e: flow.paused ? "resume" : "pause" });

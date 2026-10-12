@@ -56,8 +56,6 @@ function shown(e: Element): boolean {
 export interface PadNavOptions {
   /** Screen root ids that take the pad alone while shown, as a dialog would (an error panel). */
   modals: readonly string[];
-  /** The other screen root ids, topmost first. */
-  screens: readonly string[];
   /** The run's controls have the pad (a wave, not paused): the menus leave it alone. */
   inFight(): boolean;
   /** Start (or Escape): pauses a fight, resumes a paused one. */
@@ -67,8 +65,10 @@ export interface PadNavOptions {
 }
 
 /**
- * The gamepad over the DOM screens, polled each animation frame: the D-pad or left stick moves
- * focus to the nearest button that way, A presses the focused one, else the screen's A shortcut
+ * The gamepad over the DOM screens, polled each animation frame. It reaches every shown menu page
+ * (`showPage`, src/ui/page.ts, marks its root `data-page`), or an open modal alone. The D-pad or
+ * left stick moves focus to the nearest button that way, A presses the focused one, else the
+ * screen's A shortcut
  * (its primary action). B, X, Y and Start press the screen's shortcut buttons (`data-pad`, set by
  * src/ui/pad-keys.ts); B is the way back (as Backspace is), Start pauses or resumes a fight (as
  * Escape does). It marks which device was used last on the body (`data-input="pad"` or
@@ -90,18 +90,15 @@ export function startPadNav(o: PadNavOptions): void {
     { capture: true },
   );
 
-  /** The screens the pad can reach now: an open modal alone, else every visible screen. */
+  /** The screens the pad can reach now: an open modal alone, else every shown page. */
   const liveRoots = (): HTMLElement[] => {
     for (const id of o.modals) {
       const e = document.getElementById(id);
       if (e !== null && !e.hidden && shown(e)) return [e];
     }
-    const roots: HTMLElement[] = [];
-    for (const id of o.screens) {
-      const e = document.getElementById(id);
-      if (e !== null && !e.hidden && shown(e)) roots.push(e);
-    }
-    return roots;
+    return [...document.querySelectorAll<HTMLElement>("[data-page]")].filter(
+      (e) => !e.hidden && shown(e),
+    );
   };
   const targets = (): HTMLElement[] => {
     const out: HTMLElement[] = [];

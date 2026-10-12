@@ -61,6 +61,8 @@ A turn-based game deletes `src/realtime/`, `scripts/realtime/` and the realtime 
 then names every package.json script and import left pointing at them.
 
 Then the rest of the game: `main.ts`, `wave-session.ts`, `ui/` screens, `ui/pad-keys.ts`,
+(menus: `showPage` from `src/ui/page.ts` gives each a title, a body that scrolls in a short window
+and a button row; `startPadNav` once in `main.ts` lets the pad reach every page it shows),
 `index.html`, and `tests/e2e/*.spec.ts` (keep `fixtures.ts`; keep a `layout.spec.ts` that holds
 each screen's boxes fixed across states). Specs and game tests take ids from `links.ts`; set those
 first, then rewrite the specs that test the example's rules. Where a player presses something, a

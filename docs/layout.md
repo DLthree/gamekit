@@ -45,7 +45,7 @@ Tools by layer:
 | `src/agent/` | core | `window.__game` handle (`KitHandle`: screen, state, the clock's `frame`/`frames`, the game's `act`), URL options, telemetry client, run record (`record.ts`). |
 | `src/app/` | core | Content hot reload, telemetry setup, audio unlock, `platform.ts` (the save port: disk in the desktop shell, localStorage on the web; Steam's problem and deed unlocks). |
 | `src/input/` | core | Gamepad (`gamepad.ts`), iOS Safari guards. |
-| `src/ui/` | core | Blocking error panel, base page styles on theme variables (`page.css`: `--page-bg`, `--page-ink`, `--panel-bg`, `--act-bg`, `--act-ink`, `--page-font`; `.panel`, `.act`), the action button (`button.ts`), gamepad menu navigation (`pad-nav.ts`) and pad shortcut hints (`pad-keys.ts`, from a game's `PadKeyMap`), and the dev terms no player may read (`vocabulary.ts`, checked by the game's `ui/vocabulary.test.ts`). |
+| `src/ui/` | core | Blocking error panel, base page styles on theme variables (`page.css`: `--page-bg`, `--page-ink`, `--panel-bg`, `--act-bg`, `--act-ink`, `--page-font`; `.panel`, `.page`, `.act`), the menu page shell (`page.ts`: `showPage(root, { title, body, buttons })`, `hidePage`), the action button (`button.ts`), gamepad menu navigation (`pad-nav.ts`, reaching every shown page) and pad shortcut hints (`pad-keys.ts`, from a game's `PadKeyMap`), and the dev terms no player may read (`vocabulary.ts`, checked by the game's `ui/vocabulary.test.ts`). |
 | `src/test/` | core | Kit test helpers: the repo's content patched (`testFiles`, `testContent`) and found without naming game files (`aCollection`, `aSimEdit`); a kit test skips when the game has none of a thing. `contentFixture` builds a layer's own small fixture; `KIT_TEST_FILES` is the kit's kinds in one. A fake pad (`pad.ts`). |
 | `src/realtime/sim/` | realtime | Headless sim: world, 10-phase step, actors, AI, skills, volumes, combat, stats, events, snapshot; `stage.ts`, a running bench (actors placed on tick 1, respawned at their places; the player's life floors at 1). |
 | `src/realtime/present/` | realtime | Sim events → what to draw and play: animation poses, fx pool and recipes, camera, telegraphs, sound plan. |
@@ -71,6 +71,7 @@ Tools by layer:
 | `scripts/game-page.ts` | core | The WebKit tools' shared setup: browser lock, own server on the tools port, device pages, `toolQuery`, `reach` (actions, then frames). |
 | `tests/e2e/fixtures.ts` | core | Playwright fixtures: error capture, `open`, `mouseClick` / `fingerTap` (reach an element by wheel or swipe as a player does, fail if it is covered or out of reach, then press it for real), raw touch pointer events, content edits. |
 | `tests/fixtures/turn/`, `tests/e2e/turn-clock.spec.ts` | core | A turn-based page in miniature (an action, then a 30-frame slide) proving the tools' time model without a game. |
+| `tests/fixtures/menu/`, `tests/e2e/menu-page.spec.ts` | core | A menu page in miniature: the page shell in a short window, reached by wheel and by finger. |
 | `tests/desktop/` | core | The desktop smoke test (`pnpm desktop:smoke`): saves across a relaunch, a corrupt save, the Steam build without Steam. |
 | `tests/deck/pad.ts`, `setup.ts`, `teardown.ts` | core | The Deck check's scripted pad, focus walker, text measure and report. |
 | `tests/deck/walk.spec.ts` | game | The example's pad-only walk. |
