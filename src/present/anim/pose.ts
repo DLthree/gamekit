@@ -15,12 +15,10 @@ import {
 } from "@/present/anim/layer1";
 import { depthFor } from "@/present/layers";
 
-/** Everything the renderer sets on one creature image and its shadow this frame. */
+/** A creature's body transform, flash and shadow this frame (its grid bends the image). */
 export interface ActorDraw {
   visible: boolean;
   frame: string;
-  originX: number;
-  originY: number;
   x: number;
   y: number;
   scaleX: number;
@@ -40,8 +38,6 @@ export function newActorDraw(): ActorDraw {
   return {
     visible: false,
     frame: "",
-    originX: 0.5,
-    originY: 1,
     x: 0,
     y: 0,
     scaleX: 1,
@@ -78,8 +74,6 @@ function base(content: Content, def: string, x: number, y: number, out: ActorDra
   const shadow = content.look.feedback.shadow;
   out.visible = true;
   out.frame = sprite.frame;
-  out.originX = sprite.pivot[0];
-  out.originY = sprite.pivot[1];
   out.shadowX = x;
   out.shadowY = y;
   out.shadowW = sprite.world[0] * shadow.width * (sprite.flying ? 0.6 : 1);
