@@ -1,6 +1,6 @@
-import type { DamageType } from "@/content/schema/vocab";
 import { DAMAGE_TYPES } from "@/game/vocab";
 import type { DeliveryNode } from "@/realtime/content/schema/skill";
+import type { DamageType } from "@/realtime/content/schema/vocab";
 import { type Id, idGeneration, idIndex, nextGeneration, packId } from "@/realtime/core/ids";
 import type { Team, VolumeKind, VolumeShape } from "@/realtime/sim/events";
 import type { ResolvedSkill } from "@/realtime/sim/skills/instance";

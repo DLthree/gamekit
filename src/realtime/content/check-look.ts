@@ -1,20 +1,9 @@
+import type { Push } from "@/content/errors";
 import type { Content } from "@/content/types";
-import type { Push } from "@/realtime/content/check-tree";
 import { BANDS } from "@/realtime/content/schema/look";
 
 export function checkLook(c: Content, push: Push): void {
-  const {
-    palette,
-    fx,
-    feedback,
-    camera,
-    controls,
-    layers,
-    sprites,
-    creatures,
-    sounds,
-    soundManifest,
-  } = c.look;
+  const { palette, fx, feedback, camera, controls, layers, sprites, creatures, sounds } = c.look;
   const colour = (file: string, path: string, name: string) => {
     if (!Object.hasOwn(palette.colors, name)) push(file, path, `no palette colour ${name}`);
   };
@@ -33,19 +22,6 @@ export function checkLook(c: Content, push: Push): void {
       push(file, path, `sound ${id} does not loop; ground vfx need a loop`);
     if (!mustLoop && tuning.loop) push(file, path, `sound ${id} loops; only ground vfx may loop`);
   };
-  const soundFiles = new Set(soundManifest.sounds.map((s) => s.id));
-  for (const id of Object.keys(sounds.sounds)) {
-    if (!soundFiles.has(id))
-      push(
-        "look/sounds.json",
-        `sounds.${id}`,
-        `not in look/generated/sounds.json; run pnpm sounds`,
-      );
-  }
-  for (const id of soundFiles) {
-    if (!Object.hasOwn(sounds.sounds, id))
-      push("look/sounds.json", "sounds", `no tuning for ${id}`);
-  }
   const textures = new Map(sprites.fx.map((t) => [t.id, t]));
   const spriteIds = new Set(sprites.sprites.map((s) => s.id));
 

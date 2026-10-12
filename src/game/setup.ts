@@ -1,9 +1,9 @@
-import type { SourcedMod } from "@/content/schema/vocab";
 import type { SimContent } from "@/content/types";
 import { ticks } from "@/core/clock";
 import { checkTunnelling, enemyTemplates, playerSkills } from "@/game/loadout";
 import { createReport } from "@/game/report";
 import { checkScenario, type Scenario } from "@/game/scenario";
+import type { SourcedMod } from "@/realtime/content/schema/vocab";
 import { createStageState } from "@/realtime/sim/stage";
 import { resolveActorStats } from "@/realtime/sim/stats/resolve";
 import { createWorld, type World } from "@/realtime/sim/world";

@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { ContentId, SchemaRef, StatMod } from "@/content/schema/vocab";
+import { ContentId, SchemaRef } from "@/content/schema/vocab";
+import { StatMod } from "@/realtime/content/schema/vocab";
 
 /** Spawns per second ramping linearly from rate[0] to rate[1] over [from, to) seconds. */
 export const RampSpawn = z.strictObject({

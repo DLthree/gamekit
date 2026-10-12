@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { Role } from "@/content/schema/vocab";
 import { tickSeconds } from "@/core/clock";
+import type { Role } from "@/realtime/content/schema/vocab";
 import { applyEvents } from "@/realtime/present/feedback";
 import { createPresentation, type Presentation } from "@/realtime/present/presentation";
 import type { WarningDraw } from "@/realtime/present/spawn-warnings";

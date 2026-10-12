@@ -1,4 +1,3 @@
-import type { ActorStats, Role } from "@/content/schema/vocab";
 import type { SimContent } from "@/content/types";
 import { ticks } from "@/core/clock";
 import { createRng, type Rng } from "@/core/rng";
@@ -6,6 +5,7 @@ import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
 import type { WaveState } from "@/game/wave/director";
 import type { DeliveryNode } from "@/realtime/content/schema/skill";
+import type { ActorStats, Role } from "@/realtime/content/schema/vocab";
 import { type Id, idIndex } from "@/realtime/core/ids";
 import { SpatialHash } from "@/realtime/core/spatial-hash";
 import {

@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/realtime/sim/events";
 import { playerOf } from "@/realtime/sim/world";
+import { quietZap } from "@/realtime/test/content";
 import { DMG_A, ROLE_A, TAG_A, TAG_B } from "@/realtime/test/vocab";
 import { castAt, place, run, testWorld } from "@/realtime/test/world";
-import { quietZap } from "@/test/content";
 
 function boom(patch: { hitStop?: boolean } = {}) {
   return {

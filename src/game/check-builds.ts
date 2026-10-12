@@ -1,15 +1,11 @@
-import { ACTOR_STAT_IDS, SlotId, type StatMod, type Tag } from "@/content/schema/vocab";
+import type { Push } from "@/content/errors";
 import type { Content } from "@/content/types";
 import { enemyTemplates, playerSkills, tunnellingProblem } from "@/game/loadout";
 import type { BuildTier, SlotLoadout } from "@/game/schema/build";
-import {
-  checkMods,
-  type Push,
-  type TreeProblem,
-  treeProblems,
-} from "@/realtime/content/check-tree";
+import { checkMods, type TreeProblem, treeProblems } from "@/realtime/content/check-tree";
 import { type AppliedModifier, applyTags, mergeSkill, nodesOf } from "@/realtime/content/loadout";
 import { type DeliveryNode, PRIMITIVE_KINDS, type Skill } from "@/realtime/content/schema/skill";
+import { ACTOR_STAT_IDS, SlotId, type StatMod, type Tag } from "@/realtime/content/schema/vocab";
 import { hasSkillStat, type SkillStatId } from "@/realtime/content/skill-stats";
 
 const ACTOR_STATS: readonly string[] = ACTOR_STAT_IDS;

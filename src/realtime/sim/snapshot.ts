@@ -1,5 +1,5 @@
-import type { DamageType, SlotId } from "@/content/schema/vocab";
 import type { Scenario } from "@/game/scenario";
+import type { DamageType, SlotId } from "@/realtime/content/schema/vocab";
 import type { SkillStatId } from "@/realtime/content/skill-stats";
 import type { Actor } from "@/realtime/sim/actors/store";
 import type { Outcome, Team, VolumeKind } from "@/realtime/sim/events";

@@ -5,8 +5,8 @@ import { IDLE } from "@/realtime/sim/command";
 import { summarize } from "@/realtime/sim/snapshot";
 import { step } from "@/realtime/sim/step";
 import { playerOf } from "@/realtime/sim/world";
+import { quietZap } from "@/realtime/test/content";
 import { place, testWorld } from "@/realtime/test/world";
-import { quietZap } from "@/test/content";
 
 /** Where the kite loop pulls toward on this tick (LOOP_RADIUS 90, LOOP_S 14 in kite.ts). */
 function loopPoint(tick: number): { x: number; y: number } {

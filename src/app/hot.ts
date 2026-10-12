@@ -1,3 +1,4 @@
+import { GENERATED_LOOK_KEYS } from "@/content/kinds";
 import type { loadContent as LoadContent } from "@/content/load";
 import type { Content } from "@/content/types";
 
@@ -12,13 +13,10 @@ export type ContentChange = "none" | "look" | "sim" | "assets";
 
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
-/** What a valid reload changed; new assets (atlas or sound files) need a page reload to load. */
+/** What a valid reload changed; new assets (a generated manifest: atlas, sounds) need a page reload. */
 export function classifyChange(prev: Content, next: Content): ContentChange {
-  if (
-    !same(prev.look.sprites, next.look.sprites) ||
-    !same(prev.look.soundManifest, next.look.soundManifest)
-  )
-    return "assets";
+  const look = (c: Content) => c.look as Readonly<Record<string, unknown>>;
+  if (GENERATED_LOOK_KEYS.some((key) => !same(look(prev)[key], look(next)[key]))) return "assets";
   if (!same(prev.sim, next.sim)) return "sim";
   if (!same(prev.look, next.look)) return "look";
   return "none";

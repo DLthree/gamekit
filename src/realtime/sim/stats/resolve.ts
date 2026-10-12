@@ -1,3 +1,4 @@
+import { DAMAGE_TYPES } from "@/game/vocab";
 import type {
   ActorStats,
   DamageType,
@@ -5,8 +6,7 @@ import type {
   StatId,
   StatMod,
   Tag,
-} from "@/content/schema/vocab";
-import { DAMAGE_TYPES } from "@/game/vocab";
+} from "@/realtime/content/schema/vocab";
 import { modApplies } from "@/realtime/content/skill-stats";
 import { clampStat } from "@/realtime/sim/stats/ids";
 

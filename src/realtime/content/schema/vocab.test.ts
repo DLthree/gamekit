@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { StatMod } from "@/content/schema/vocab";
 import { DAMAGE_TYPES, TAGS } from "@/game/vocab";
+import { StatMod } from "@/realtime/content/schema/vocab";
 
 describe("vocab", () => {
   it("every damage type is also a tag (damage type is an implicit tag)", () => {

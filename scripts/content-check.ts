@@ -1,7 +1,7 @@
 /**
- * pnpm content:check   compile content/, check the JSON Schemas are current and every sprite
- *                      frame exists in the atlas and every sound file matches the sound manifest;
- *                      print every problem; exit 1 if any.
+ * pnpm content:check   compile content/, check the JSON Schemas are current, every sound file
+ *                      matches the sound manifest and the game's files (`checkGameFiles`: the
+ *                      example's atlas frames); print every problem; exit 1 if any.
  * pnpm content:schema  (re)write content/schema/*.schema.json from the Zod schemas.
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -12,6 +12,7 @@ import { z } from "zod";
 import { formatContentError } from "@/content/errors";
 import { KINDS } from "@/content/kinds";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
+import { checkGameFiles } from "@/game/check";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const SCHEMA_DIR = join(REPO_CONTENT_DIR, "schema");
@@ -49,17 +50,11 @@ const r = loadContentDir(REPO_CONTENT_DIR, []);
 if (!r.ok) {
   problems.push(...r.errors.map(formatContentError));
 } else {
-  const sprites = r.content.look.sprites;
-  const atlasPath = join(ROOT, "public", sprites.atlas.json);
-  const atlas = JSON.parse(readFileSync(atlasPath, "utf8")) as { frames: Record<string, unknown> };
-  const frames = [...sprites.sprites.map((s) => s.frame), ...sprites.fx.flatMap((f) => f.frames)];
-  for (const frame of frames) {
-    if (!Object.hasOwn(atlas.frames, frame)) {
-      problems.push(
-        `look/generated/sprites.json: frame ${frame} is not in public/${sprites.atlas.json}`,
-      );
-    }
-  }
+  const readPublic = (path: string) => {
+    const file = join(ROOT, "public", path);
+    return existsSync(file) ? readFileSync(file, "utf8") : null;
+  };
+  problems.push(...checkGameFiles(r.content, readPublic));
   for (const s of r.content.look.soundManifest.sounds) {
     const path = join(ROOT, "public", s.file);
     if (!existsSync(path)) {

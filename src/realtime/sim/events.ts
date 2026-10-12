@@ -1,5 +1,5 @@
-import type { Role } from "@/content/schema/vocab";
 import type { OUTCOMES } from "@/game/vocab";
+import type { Role } from "@/realtime/content/schema/vocab";
 import type { Id } from "@/realtime/core/ids";
 
 export type Team = "player" | "enemy";

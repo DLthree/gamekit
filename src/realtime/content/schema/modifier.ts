@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { ContentId, SchemaRef, StatMod, Tag } from "@/content/schema/vocab";
+import { ContentId, SchemaRef } from "@/content/schema/vocab";
 import { DeliveryNode, LookKind, Multishot, PrimitiveKind } from "@/realtime/content/schema/skill";
+import { StatMod, Tag } from "@/realtime/content/schema/vocab";
 
 /** An action a modifier adds under every node of one primitive kind in its skill's tree. */
 export const Attach = z.strictObject({

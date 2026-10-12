@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { SimEvent } from "@/realtime/sim/events";
 import { playerOf, type World } from "@/realtime/sim/world";
+import { quietZap } from "@/realtime/test/content";
 import { DMG_A, ROLE_A, TAG_B, TAG_C } from "@/realtime/test/vocab";
 import { castAt, enemies, place, run, runUntilEvent, testWorld } from "@/realtime/test/world";
-import { quietZap } from "@/test/content";
 
 /**
  * The player at the origin (its zap too short to fire) and one "caster" enemy at (x, 0) whose

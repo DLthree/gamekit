@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { Activation, DamageType, SchemaRef, Tag } from "@/content/schema/vocab";
+import { SchemaRef } from "@/content/schema/vocab";
+import { Activation, DamageType, Tag } from "@/realtime/content/schema/vocab";
 
 export const Target = z.enum(["nearest", "aim", "player"]);
 export type Target = z.infer<typeof Target>;

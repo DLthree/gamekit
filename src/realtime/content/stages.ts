@@ -1,5 +1,5 @@
+import type { Push } from "@/content/errors";
 import type { Content } from "@/content/types";
-import type { Push } from "@/realtime/content/check-tree";
 
 /** Each stage actor names an enemy. (The game checks `from`: it owns its addresses.) */
 export function checkStages(c: Content, push: Push): void {

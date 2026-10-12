@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { ActorStats, ContentId, Role, SchemaRef } from "@/content/schema/vocab";
+import { ContentId, SchemaRef } from "@/content/schema/vocab";
+import { ActorStats, Role } from "@/realtime/content/schema/vocab";
 
 export const Behavior = z.discriminatedUnion("kind", [
   z.strictObject({ kind: z.literal("chase") }),

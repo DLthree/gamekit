@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { Activation, ActorStats, SchemaRef, SlotId } from "@/content/schema/vocab";
+import { SchemaRef } from "@/content/schema/vocab";
+import { Activation, ActorStats, SlotId } from "@/realtime/content/schema/vocab";
 
 export const Character = z.strictObject({
   $schema: SchemaRef,

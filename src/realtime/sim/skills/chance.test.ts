@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { quietZap } from "@/realtime/test/content";
 import { DMG_A, TAG_A, TAG_B } from "@/realtime/test/vocab";
 import { castAt, run, testWorld } from "@/realtime/test/world";
-import { quietZap } from "@/test/content";
 
 const CASTS = 2000;
 

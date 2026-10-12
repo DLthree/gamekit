@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { StatMod } from "@/content/schema/vocab";
+import type { StatMod } from "@/realtime/content/schema/vocab";
 import { hasSkillStat, modApplies, SKILL_STAT_IDS } from "@/realtime/content/skill-stats";
 import { DMG_A, TAG_A, TAG_B } from "@/realtime/test/vocab";
 

@@ -1,5 +1,5 @@
-import type { StatId, StatMod, Tag } from "@/content/schema/vocab";
 import type { SkillStats } from "@/realtime/content/schema/skill";
+import type { StatId, StatMod, Tag } from "@/realtime/content/schema/vocab";
 
 /** Skill stats besides damage. Each is optional in a skill file except range and knockback. */
 export const SKILL_STAT_IDS = [

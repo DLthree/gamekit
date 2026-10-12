@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/realtime/sim/events";
+import { quietZap } from "@/realtime/test/content";
 import { DMG_A, ROLE_A, TAG_A } from "@/realtime/test/vocab";
 import { castAt, place, run, testWorld } from "@/realtime/test/world";
-import { quietZap } from "@/test/content";
 
 /** A manual bolt (2 units a tick by default) that pierces `pierce` bodies. */
 function lance(pierce: number | null, projectileSpeed = 120) {

@@ -1,5 +1,5 @@
-import type { DamageType, Tag } from "@/content/schema/vocab";
 import { DAMAGE_TYPES } from "@/game/vocab";
+import type { DamageType, Tag } from "@/realtime/content/schema/vocab";
 import type { Id } from "@/realtime/core/ids";
 import { knockbackImpulse } from "@/realtime/sim/combat/knockback";
 

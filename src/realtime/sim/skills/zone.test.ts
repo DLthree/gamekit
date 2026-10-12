@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/realtime/sim/events";
+import { quietZap } from "@/realtime/test/content";
 import { DMG_A, ROLE_A, TAG_A, TAG_B } from "@/realtime/test/vocab";
 import { castAt, place, run, testWorld } from "@/realtime/test/world";
-import { quietZap } from "@/test/content";
 
 /** A manual skill that drops a zone at the caster: 4 damage per pulse, 4 pulses, radius 30. */
 function pool(node: Record<string, unknown> = {}) {

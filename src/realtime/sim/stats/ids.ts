@@ -1,4 +1,4 @@
-import type { StatId } from "@/content/schema/vocab";
+import type { StatId } from "@/realtime/content/schema/vocab";
 
 /**
  * The legal range of every stat, applied after resolution. Typed over every StatId, so adding a

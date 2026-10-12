@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { SimEvent } from "@/realtime/sim/events";
 import type { World } from "@/realtime/sim/world";
+import { quietZap } from "@/realtime/test/content";
 import { DMG_A, ROLE_A, TAG_B, TAG_C } from "@/realtime/test/vocab";
 import { enemies, place, run, runUntilEvent, testWorld } from "@/realtime/test/world";
-import { quietZap } from "@/test/content";
 
 /**
  * A "caster" enemy at (x, 0) whose only skill is `charge`: an auto lane burst on the player,

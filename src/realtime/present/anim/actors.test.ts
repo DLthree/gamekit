@@ -3,8 +3,9 @@ import { createRng } from "@/core/rng";
 import { ActorDraws } from "@/realtime/present/anim/actors";
 import { ActorAnims } from "@/realtime/present/anim/creatures";
 import { playerOf } from "@/realtime/sim/world";
+import { bruteFiles, staffFiles } from "@/realtime/test/content";
 import { place, testWorld } from "@/realtime/test/world";
-import { bruteFiles, staffFiles, testContent } from "@/test/content";
+import { testContent } from "@/test/content";
 
 const anims = () => new ActorAnims(createRng(1), 0);
 

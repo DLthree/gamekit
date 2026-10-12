@@ -1,5 +1,5 @@
-import type { SlotId } from "@/content/schema/vocab";
 import type { Vec } from "@/core/vec";
+import type { SlotId } from "@/realtime/content/schema/vocab";
 
 /** A cast request: an aim direction in world axes (any length), or "auto" (quick-cast). */
 export interface CastCommand {

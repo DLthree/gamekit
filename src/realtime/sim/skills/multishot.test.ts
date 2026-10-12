@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { heroBuild } from "@/game/test-files";
 import type { Multishot } from "@/realtime/content/schema/skill";
 import type { SimEvent } from "@/realtime/sim/events";
+import { quietZap } from "@/realtime/test/content";
 import { DMG_A, ROLE_A, TAG_A } from "@/realtime/test/vocab";
 import { castAt, place, run, testWorld } from "@/realtime/test/world";
-import { quietZap } from "@/test/content";
 
 /** A manual multishot bolt; dummies that never move or bite back at these distances. */
 function shot(multishot: Multishot, projectileCount: number, spread = 0) {

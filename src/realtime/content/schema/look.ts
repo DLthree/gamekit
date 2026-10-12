@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { ContentId, Role, SchemaRef } from "@/content/schema/vocab";
+import { ContentId, SchemaRef } from "@/content/schema/vocab";
+import { Role } from "@/realtime/content/schema/vocab";
 
 const positive = z.number().positive();
 const nonNegative = z.number().nonnegative();

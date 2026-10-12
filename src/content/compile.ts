@@ -1,8 +1,9 @@
 import { checkContent } from "@/content/check";
 import type { ContentError } from "@/content/errors";
-import { KINDS, type Kind, schemaRefFor } from "@/content/kinds";
+import { isKind, type Kind, type KindTree } from "@/content/kind";
+import { KIT_KINDS, schemaRefFor } from "@/content/kinds";
 import { applyOverrides, isOverride, type Override, parseOverride } from "@/content/overrides";
-import type { Content, GameSimContent } from "@/content/types";
+import type { Content } from "@/content/types";
 import { GAME_KINDS } from "@/game/content";
 
 export type CompileResult = { ok: true; content: Content } | { ok: false; errors: ContentError[] };
@@ -117,83 +118,45 @@ export function deepFreeze<T>(value: T): T {
   return value;
 }
 
+/** Compiles every kind in `tree`; null when one single file is missing or invalid. */
+function compileTree(
+  files: Readonly<Record<string, unknown>>,
+  tree: KindTree,
+  claimed: Set<string>,
+  errors: ContentError[],
+): Record<string, unknown> | null {
+  const out: Record<string, unknown> = {};
+  let ok = true;
+  for (const [key, node] of Object.entries(tree)) {
+    const value = isKind(node)
+      ? node.collection
+        ? collection(files, node, claimed, errors)
+        : single(files, node, claimed, errors)
+      : compileTree(files, node, claimed, errors);
+    if (value === null) ok = false;
+    out[key] = value;
+  }
+  return ok ? out : null;
+}
+
 /** Parsed JSON files → one valid, frozen Content, or every error found. */
 export function compileContent(files: Readonly<Record<string, unknown>>): CompileResult {
   const errors: ContentError[] = [];
   const claimed = new Set<string>();
-  const characters = collection(files, KINDS.characters, claimed, errors);
-  const skills = collection(files, KINDS.skills, claimed, errors);
-  const modifiers = collection(files, KINDS.modifiers, claimed, errors);
-  const enemies = collection(files, KINDS.enemies, claimed, errors);
-  const stages = collection(files, KINDS.stages, claimed, errors);
-  const arena = single(files, KINDS.arena, claimed, errors);
-  const movement = single(files, KINDS.movement, claimed, errors);
-  const feel = single(files, KINDS.feel, claimed, errors);
-  const limits = single(files, KINDS.limits, claimed, errors);
-  const palette = single(files, KINDS.palette, claimed, errors);
-  const lookCharacters = single(files, KINDS.lookCharacters, claimed, errors);
-  const creatures = single(files, KINDS.creatures, claimed, errors);
-  const fx = single(files, KINDS.fx, claimed, errors);
-  const feedback = single(files, KINDS.feedback, claimed, errors);
-  const camera = single(files, KINDS.camera, claimed, errors);
-  const controls = single(files, KINDS.controls, claimed, errors);
-  const layers = single(files, KINDS.layers, claimed, errors);
-  const sprites = single(files, KINDS.sprites, claimed, errors);
-  const sounds = single(files, KINDS.sounds, claimed, errors);
-  const soundManifest = single(files, KINDS.soundManifest, claimed, errors);
-  const game = Object.fromEntries(
-    Object.entries(GAME_KINDS).map(([key, kind]) => [
-      key,
-      collection<unknown>(files, kind, claimed, errors),
-    ]),
-  ) as GameSimContent;
+  const gameSim = compileTree(files, GAME_KINDS.sim, claimed, errors);
+  const gameLook = compileTree(files, GAME_KINDS.look, claimed, errors);
+  const kitLook = compileTree(files, KIT_KINDS.look, claimed, errors);
   for (const file of Object.keys(files).sort()) {
     if (!claimed.has(file)) errors.push({ file, path: "", message: "not a known content file" });
   }
-  if (
-    errors.length > 0 ||
-    arena === null ||
-    movement === null ||
-    feel === null ||
-    limits === null ||
-    palette === null ||
-    lookCharacters === null ||
-    creatures === null ||
-    fx === null ||
-    feedback === null ||
-    camera === null ||
-    controls === null ||
-    layers === null ||
-    sprites === null ||
-    sounds === null ||
-    soundManifest === null
-  ) {
+  if (errors.length > 0 || gameSim === null || gameLook === null || kitLook === null) {
     return { ok: false, errors };
   }
-  const content: Content = {
-    sim: {
-      characters,
-      skills,
-      modifiers,
-      enemies,
-      stages,
-      ...game,
-      rules: { arena, movement, feel, limits },
-    },
-    look: {
-      palette,
-      characters: lookCharacters,
-      creatures,
-      fx,
-      feedback,
-      camera,
-      controls,
-      layers,
-      sprites,
-      sounds,
-      soundManifest,
-    },
-  };
+  // The trees' shapes are SimContent and LookContent by construction (Compiled<…>).
+  const content = {
+    sim: gameSim,
+    look: { ...gameLook, ...kitLook },
+  } as unknown as Content;
   const crossErrors = checkContent(content);
   if (crossErrors.length > 0) return { ok: false, errors: crossErrors };
   return { ok: true, content: deepFreeze(content) };

@@ -1,4 +1,3 @@
-import type { SourcedMod, Tag } from "@/content/schema/vocab";
 import type { Modifier } from "@/realtime/content/schema/modifier";
 import {
   type DeliveryNode,
@@ -8,6 +7,7 @@ import {
   type PrimitiveKind,
   type Skill,
 } from "@/realtime/content/schema/skill";
+import type { SourcedMod, Tag } from "@/realtime/content/schema/vocab";
 
 export interface AppliedModifier {
   id: string;

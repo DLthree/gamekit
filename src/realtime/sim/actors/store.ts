@@ -1,4 +1,4 @@
-import type { Role } from "@/content/schema/vocab";
+import type { Role } from "@/realtime/content/schema/vocab";
 import { type Id, idGeneration, idIndex, nextGeneration, packId } from "@/realtime/core/ids";
 import type { Team } from "@/realtime/sim/events";
 import type { SkillInstance } from "@/realtime/sim/skills/instance";
