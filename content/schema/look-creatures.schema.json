@@ -44,6 +44,11 @@
             "type": "string",
             "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
           },
+          "scale": {
+            "default": 1,
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
           "gait": {
             "type": "object",
             "properties": {
@@ -53,7 +58,8 @@
                   "waddle",
                   "hop",
                   "slide",
-                  "flap"
+                  "flap",
+                  "rigid"
                 ]
               },
               "hz": {

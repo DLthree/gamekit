@@ -19,8 +19,17 @@ export function spriteOf(content: Content, id: string): SpriteDef {
   return s;
 }
 
+/** A creature's sprite and its drawn size in world units (the sprite's size times its scale). */
+export function bodyOf(
+  content: Content,
+  creature: Creature,
+): { sprite: SpriteDef; w: number; h: number } {
+  const sprite = spriteOf(content, creature.sprite);
+  return { sprite, w: sprite.world[0] * creature.scale, h: sprite.world[1] * creature.scale };
+}
+
 export function bodyHeight(content: Content, def: string): number {
-  return spriteOf(content, creatureOf(content, def).sprite).world[1];
+  return bodyOf(content, creatureOf(content, def)).h;
 }
 
 interface AnimState {

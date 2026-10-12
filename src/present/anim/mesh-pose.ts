@@ -1,5 +1,12 @@
+import type { MeshBend } from "@/content/schema/look";
 import type { Content } from "@/content/types";
-import { type ActorAnims, creatureOf, type Ghost, spriteOf } from "@/present/anim/creatures";
+import {
+  type ActorAnims,
+  bodyOf,
+  creatureOf,
+  type Ghost,
+  spriteOf,
+} from "@/present/anim/creatures";
 import {
   buildGrid,
   deformGrid,
@@ -41,22 +48,17 @@ export interface MeshDraw {
 }
 
 const clock: MeshClock = { t: 0, gaitHz: 1, breathHz: 1, walk: 0 };
+/** A rigid creature's bend: none. */
+const STILL: MeshBend = { lean: 0, sway: 0, stride: 0, spread: 0, breath: 0, hip: 0.5 };
 const pp = newPropPose();
 const hand = { x: 0, y: 0 };
 const world = { x: 0, y: 0 };
 
 export function newMeshDraw(content: Content, def: string): MeshDraw {
   const creature = creatureOf(content, def);
-  const sprite = spriteOf(content, creature.sprite);
+  const { sprite, w, h } = bodyOf(content, creature);
   const g = content.look.creatures.meshGrid;
-  const grid = buildGrid(
-    g.cols,
-    g.rows,
-    sprite.world[0],
-    sprite.world[1],
-    sprite.pivot[0],
-    sprite.pivot[1],
-  );
+  const grid = buildGrid(g.cols, g.rows, w, h, sprite.pivot[0], sprite.pivot[1]);
   const prop =
     creature.prop === null
       ? null
@@ -118,10 +120,10 @@ function bend(
   out: MeshDraw,
 ): MeshDraw {
   const creature = creatureOf(content, def);
-  const mesh = creature.mesh;
-  const sprite = spriteOf(content, creature.sprite);
+  const mesh = creature.gait.kind === "rigid" ? STILL : creature.mesh;
+  const { sprite, w, h } = bodyOf(content, creature);
   const body = out.body;
-  const k = sprite.world[0] / sprite.px[0];
+  const k = w / sprite.px[0];
   body.scaleX /= k;
   body.scaleY /= k;
   clock.t = clockT;
@@ -133,12 +135,12 @@ function bend(
   const pd = out.prop;
   if (prop === null || pd === null) return out;
   const u = sinceThrust / prop.thrustS;
-  if (u >= 0 && u <= 1) staffThrust(u, prop.restDeg, sprite.world[1], pp);
+  if (u >= 0 && u <= 1) staffThrust(u, prop.restDeg, h, pp);
   else propRest(prop.restDeg, clock.t, pp);
   meshPoint(prop.hand[0], prop.hand[1], out.grid, mesh, clock, hand);
   bodyToWorld(body, hand.x + pp.dx, hand.y + pp.dy, world);
   const ps = spriteOf(content, prop.sprite);
-  const kp = (ps.world[0] / ps.px[0]) * prop.scale * (popping ? body.scaleY : 1);
+  const kp = (ps.world[0] / ps.px[0]) * prop.scale * creature.scale * (popping ? body.scaleY : 1);
   pd.frame = ps.frame;
   pd.originX = ps.pivot[0];
   pd.originY = ps.pivot[1];

@@ -1,6 +1,6 @@
 import type { Content } from "@/content/types";
 import type { Id } from "@/core/ids";
-import { type ActorAnims, creatureOf, type Ghost, spriteOf } from "@/present/anim/creatures";
+import { type ActorAnims, bodyOf, creatureOf, type Ghost } from "@/present/anim/creatures";
 import {
   applyLunge,
   applyRecoil,
@@ -70,16 +70,16 @@ const death = newDeathLook();
 
 function base(content: Content, def: string, x: number, y: number, out: ActorDraw) {
   const creature = creatureOf(content, def);
-  const sprite = spriteOf(content, creature.sprite);
+  const { sprite, w } = bodyOf(content, creature);
   const shadow = content.look.feedback.shadow;
   out.visible = true;
   out.frame = sprite.frame;
   out.shadowX = x;
   out.shadowY = y;
-  out.shadowW = sprite.world[0] * shadow.width * (sprite.flying ? 0.6 : 1);
+  out.shadowW = w * shadow.width * (sprite.flying ? 0.6 : 1);
   out.shadowH = out.shadowW * shadow.height * 2;
   out.shadowAlpha = shadow.alpha * (sprite.flying ? 0.7 : 1);
-  return { creature, sprite, k: sprite.world[0] / sprite.px[0] };
+  return { creature, sprite, k: w / sprite.px[0] };
 }
 
 /**
@@ -94,7 +94,7 @@ export function actorPose(
   out: Pose,
 ): number {
   const creature = creatureOf(content, a.def);
-  const h = spriteOf(content, creature.sprite).world[1];
+  const { h } = bodyOf(content, creature);
   const fb = content.look.feedback;
   const s = anims.state(a.id);
   s.facing = a.facing;

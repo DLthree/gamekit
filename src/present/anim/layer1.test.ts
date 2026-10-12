@@ -32,6 +32,14 @@ describe("layer 1", () => {
     expect(p.rot).toBe(0);
   });
 
+  it("a rigid object neither breathes nor walks; it only hovers", () => {
+    const rigid: Gait = { ...waddle, kind: "rigid", hover: 3 };
+    for (const walk of [0, 1]) {
+      const p = bodyPose(rigid, 40, 0.25, walk, newPose());
+      expect(p).toEqual({ dx: 0, dy: -3, sx: 1, sy: 1, rot: 0 });
+    }
+  });
+
   it("a walking waddle bounces up and rocks", () => {
     const p = bodyPose(waddle, 40, 0.25, 1, newPose());
     expect(p.dy).toBeCloseTo(-4);

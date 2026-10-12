@@ -16,7 +16,29 @@ const hero = {
   isPlayer: true,
 };
 
+/** The test hero patched: a rigid gait, drawn at `scale`. */
+function heroAs(gaitKind: string, scale: number) {
+  const files = staffFiles();
+  const creatures = files["look/creatures.json"] as {
+    creatures: Record<string, { gait: Record<string, unknown>; scale?: number }>;
+  };
+  creatures.creatures.hero.gait.kind = gaitKind;
+  creatures.creatures.hero.scale = scale;
+  return testContent(files);
+}
+
 describe("drawMeshActor", () => {
+  it("leaves a rigid creature's grid at rest while it walks, and draws it at its scale", () => {
+    const c = heroAs("rigid", 2);
+    const walking = { ...hero, moveX: 1 };
+    const rest = newMeshDraw(c, "hero");
+    const at = [...rest.grid.vertices];
+    const d = drawMeshActor(c, new ActorAnims(createRng(1), 0), walking, 0.3, rest);
+    expect(d.grid.vertices).toEqual(at);
+    expect(d.grid.height).toBe(40);
+    expect(d.prop?.scaleX).toBeCloseTo((2 * 4) / 20);
+  });
+
   it("draws the body in world units (no image scale) and the prop at the hand", () => {
     const c = meshContent();
     const d = drawMeshActor(c, new ActorAnims(createRng(1), 0), hero, 0, newMeshDraw(c, "hero"));

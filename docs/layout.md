@@ -103,5 +103,6 @@ Every creature is one still image. `src/present/anim/` moves it in code: layer 1
 cast recoil, the death pop); layer 2 (`layer2.ts`) bends a grid over the image (walk lean,
 stride, idle breath); layer 3 (`layer3.ts`) poses a held prop at the bent hand. `mesh-pose.ts`
 combines them into a `MeshDraw`, and `src/render/mesh-view.ts` draws it as a Phaser Mesh2D. The
-numbers are content: `look/creatures.json` (gait, mesh, prop per creature) and
+numbers are content: `look/creatures.json` (gait, mesh, prop and scale per creature; gait kind
+`rigid` turns layers 1–2 off for objects) and
 `look/feedback.json` (springs, lunge, death).

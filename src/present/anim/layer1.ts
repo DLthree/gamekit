@@ -29,6 +29,12 @@ export function bodyPose(g: Gait, height: number, t: number, walk: number, out: 
   out.dx = 0;
   out.dy = 0;
   out.rot = 0;
+  if (g.kind === "rigid") {
+    out.sx = 1;
+    out.sy = 1;
+    out.dy = -g.hover;
+    return out;
+  }
   const breath = Math.sin(TAU * g.breathHz * t) * g.breath;
   out.sy = 1 + breath * (1 - walk);
   out.sx = 1 - breath * 0.5 * (1 - walk);

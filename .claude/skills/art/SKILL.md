@@ -49,4 +49,6 @@ install runs it for you.
 
 - `--role` is a role from `src/game/vocab.ts` (or `player`, `prop`); `--height` is world units.
 - Generations cost money; batch candidates with a few seeds rather than one at a time.
-- A creature also needs its `content/look/creatures.json` entry (sprite, gait, mesh, prop).
+- A creature also needs its `content/look/creatures.json` entry (sprite, gait, mesh, prop,
+  optional `scale`). `scale` draws one sprite at several sizes (a rock large, medium, small); gait
+  kind `rigid` is for objects (a ship, a rock): no gait, breath or bend.

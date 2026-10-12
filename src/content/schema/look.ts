@@ -19,9 +19,13 @@ export const LookCharacters = z.strictObject({
 });
 export type LookCharacters = z.infer<typeof LookCharacters>;
 
-/** Layer-1 whole-sprite motion: amplitudes are fractions of body height or degrees. */
+/**
+ * Layer-1 whole-sprite motion: amplitudes are fractions of body height or degrees. `rigid` is an
+ * object, not a body (a ship, a rock): no gait or breath, and no layer-2 bend; only `hover` and
+ * the hit and cast feedback move it.
+ */
 export const Gait = z.strictObject({
-  kind: z.enum(["waddle", "hop", "slide", "flap"]),
+  kind: z.enum(["waddle", "hop", "slide", "flap", "rigid"]),
   hz: positive,
   bob: nonNegative,
   squash: nonNegative,
@@ -63,6 +67,8 @@ export type Prop = z.infer<typeof Prop>;
 
 export const Creature = z.strictObject({
   sprite: ContentId,
+  /** Drawn at this multiple of its sprite's world size, so one image serves several sizes. */
+  scale: positive.default(1),
   gait: Gait,
   /** Layer-2 bend: every creature is one image drawn as a Mesh2D and bent by these. */
   mesh: MeshBend,
