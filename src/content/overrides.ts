@@ -24,7 +24,7 @@ export function parseOverride(raw: string): Override | ContentError {
   const slash = lhs.lastIndexOf("/");
   const dot = lhs.indexOf(".", slash + 1);
   if (slash <= 0 || dot === -1 || dot === lhs.length - 1) {
-    return fail(raw, "expected <folder>/<file>.<field path>, e.g. skills/fireball.stats.area");
+    return fail(raw, "expected <folder>/<file>.<field path>, e.g. rules/feel.hitStopS");
   }
   let value: unknown;
   try {

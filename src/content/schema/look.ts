@@ -50,7 +50,7 @@ export type MeshBend = z.infer<typeof MeshBend>;
 
 const Unit2 = z.tuple([unitInterval, unitInterval]);
 
-/** Layer-3 prop held at the bent hand: the wizard's staff. */
+/** Layer-3 prop held at the bent hand (a staff, a sword). */
 export const Prop = z.strictObject({
   sprite: ContentId,
   /** The hand in the body image (0..1), where the prop's grip sits. */

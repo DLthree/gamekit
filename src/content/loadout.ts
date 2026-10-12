@@ -42,7 +42,7 @@ export function nodesOf<K extends PrimitiveKind>(root: DeliveryNode, kind: K): N
   return out;
 }
 
-/** The tier `look` key for one kind of node in one skill: "fire-bolt.projectile". */
+/** The tier `look` key for one kind of node in one skill: "<skill>.projectile". */
 export function lookKey(skill: string, kind: LookKind): string {
   return `${skill}.${kind}`;
 }

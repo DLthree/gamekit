@@ -154,7 +154,7 @@ export const TelegraphVfx = z.strictObject({
   outline: z.strictObject({ width: positive, alpha: unitInterval }),
   /** The hatching grows from the centre (circle) or the start (lane) as the warning runs out. */
   fill: z.enum(["grow", "full"]),
-  /** Ink stone lobbed from the owner to the mark during the warning (stone-volley); null = none. */
+  /** Ink stone lobbed from the owner to the mark during the warning; null = none. */
   lob: z.strictObject({ size: positive, arc: nonNegative }).nullable(),
   /**
    * On resolve: a ring of fx kind `kind` (an ink kind tinted white), its diameter

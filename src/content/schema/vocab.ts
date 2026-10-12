@@ -60,7 +60,7 @@ export const StatMod = z.strictObject({
 });
 export type StatMod = z.infer<typeof StatMod>;
 
-/** A StatMod with where it came from ("builds/wizard.json tier 1", "modifiers/volley.json"). */
+/** A StatMod with where it came from ("builds/<id>.json tier 1", "modifiers/<id>.json"). */
 export interface SourcedMod {
   mod: StatMod;
   source: string;

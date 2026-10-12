@@ -24,7 +24,7 @@ export function modApplies(mod: StatMod, tags: readonly Tag[]): boolean {
 
 /**
  * Whether a skill has a stat: a base number in its file, or an applicable flat line that creates
- * it from 0 (burning-ground gives fireball a duration it doesn't have). Checks and resolution
+ * it from 0 (a modifier can give a skill a duration its file lacks). Checks and resolution
  * both ask this, so content that passes the check never reaches a missing stat in the sim.
  */
 export function hasSkillStat(

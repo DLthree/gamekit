@@ -11,8 +11,8 @@ import {
 import type { World } from "@/sim/world";
 
 /**
- * Every creature's draw this frame: flat images (fodder, death ghosts, creatures without a
- * bend) and the bent ones (the player, elites, bosses). Each mesh draw and its grid live as
+ * Every creature's draw this frame: flat images (death ghosts, creatures without a bend)
+ * and the bent ones (look/creatures.json meshRoles). Each mesh draw and its grid live as
  * long as this object and are reused by index, because the renderer's Mesh2D keeps the grid's
  * vertex array.
  */
