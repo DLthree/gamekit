@@ -13,11 +13,6 @@
   "worldSize": 44,
   "atlasPx": 256,
   "note": "wide low burning-grass strips for the T3 burning ground",
-  "sources": [
-    "prototypes/3-color-flood-vfx/assets/fx/grassfire/chosen-1.png",
-    "prototypes/3-color-flood-vfx/assets/fx/grassfire/chosen-2.png",
-    "prototypes/3-color-flood-vfx/assets/fx/grassfire/chosen-3.png"
-  ],
   "candidates": [
     1,
     4,
@@ -29,7 +24,7 @@
       "seed": 22001,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
@@ -52,7 +47,7 @@
       "seed": 22004,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
@@ -75,7 +70,7 @@
       "seed": 22003,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",

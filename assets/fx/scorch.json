@@ -11,9 +11,6 @@
   "worldSize": 50,
   "atlasPx": 192,
   "note": "solid black; use at low alpha (~0.3) as soot, black competes with threat telegraphs",
-  "sources": [
-    "prototypes/3-color-flood-vfx/assets/fx/scorch/chosen.png"
-  ],
   "candidates": [
     2
   ],
@@ -23,7 +20,7 @@
       "seed": 15002,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",

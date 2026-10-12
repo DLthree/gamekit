@@ -11,9 +11,6 @@
   "worldSize": 30,
   "atlasPx": 160,
   "note": "hit splatter, untinted black ink",
-  "sources": [
-    "prototypes/3-color-flood-vfx/assets/fx/splatter/chosen.png"
-  ],
   "candidates": [
     1
   ],

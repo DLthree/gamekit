@@ -13,11 +13,6 @@
   "worldSize": 36,
   "atlasPx": 192,
   "note": "tint dark grey for soot, or the build color",
-  "sources": [
-    "prototypes/3-color-flood-vfx/assets/fx/smoke/chosen-1.png",
-    "prototypes/3-color-flood-vfx/assets/fx/smoke/chosen-2.png",
-    "prototypes/3-color-flood-vfx/assets/fx/smoke/chosen-3.png"
-  ],
   "candidates": [
     3,
     4,
@@ -29,7 +24,7 @@
       "seed": 13003,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
@@ -52,7 +47,7 @@
       "seed": 13004,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
@@ -75,7 +70,7 @@
       "seed": 13002,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",

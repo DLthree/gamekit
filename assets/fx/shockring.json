@@ -12,10 +12,6 @@
   "worldSize": 70,
   "atlasPx": 256,
   "note": "brief black-ink shock ring on T2/T3 impacts",
-  "sources": [
-    "prototypes/3-color-flood-vfx/assets/fx/shockring/chosen-1.png",
-    "prototypes/3-color-flood-vfx/assets/fx/shockring/chosen-2.png"
-  ],
   "candidates": [
     1,
     3
@@ -26,7 +22,7 @@
       "seed": 21001,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
@@ -49,7 +45,7 @@
       "seed": 21003,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",

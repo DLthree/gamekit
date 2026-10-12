@@ -13,11 +13,6 @@
   "worldSize": 12,
   "atlasPx": 72,
   "note": null,
-  "sources": [
-    "prototypes/3-color-flood-vfx/assets/fx/gold/chosen-1.png",
-    "prototypes/3-color-flood-vfx/assets/fx/gold/chosen-2.png",
-    "prototypes/3-color-flood-vfx/assets/fx/gold/chosen-3.png"
-  ],
   "candidates": [
     1,
     2,
@@ -29,7 +24,7 @@
       "seed": 18001,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
@@ -52,7 +47,7 @@
       "seed": 18002,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
@@ -75,7 +70,7 @@
       "seed": 18003,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",

@@ -12,12 +12,7 @@
   "tintable": true,
   "worldSize": 40,
   "atlasPx": 192,
-  "note": "chosen-1/2 = flame tongues, chosen-3 = teardrop (fireball body / bolt head)",
-  "sources": [
-    "prototypes/3-color-flood-vfx/assets/fx/flame/chosen-1.png",
-    "prototypes/3-color-flood-vfx/assets/fx/flame/chosen-2.png",
-    "prototypes/3-color-flood-vfx/assets/fx/flame/chosen-3.png"
-  ],
+  "note": "frames 0-1 = flame tongues, 2 = teardrop (fireball body / bolt head)",
   "candidates": [
     4,
     1,
@@ -29,7 +24,7 @@
       "seed": 12004,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
@@ -52,7 +47,7 @@
       "seed": 12001,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
@@ -75,7 +70,7 @@
       "seed": 12002,
       "model": "qwen2-1/image-to-image",
       "references": [
-        "ref/snail-anchor.png"
+        "assets/style/anchor.png"
       ],
       "inputs": {
         "aspect_ratio": "auto",
