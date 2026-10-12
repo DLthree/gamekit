@@ -20,9 +20,12 @@ seam modules listed below.
 | `src/present/` | kit | Sim events → what to draw and play: animation poses, fx pool and recipes, camera, telegraphs, sound plan. |
 | `src/render/` | kit | Phaser boot, the world scene and its views, audio output and unlock. |
 | `src/input/` | kit | Touch stick, skill button, keyboard, mouse, gamepad (`gamepad.ts`) → one `Command` per tick. |
-| `src/app/` | kit | Real-time loop, content hot reload, aim view, telemetry setup. |
+| `src/app/` | kit | Real-time loop, content hot reload, aim view, telemetry setup, `platform.ts` (the save port: disk in the desktop shell, localStorage on the web; Steam's problem and deed unlocks). |
+| `src/content/achievements.ts` | kit | Deeds → Steam achievements (`DEED_<ID>` API names) and their checks. |
 | `src/agent/` | kit | `window.__game` handle, URL options, perf meter, telemetry client, run record (`record.ts`). |
 | `src/ui/` | kit | Blocking error panel, base page styles (canvas, controls, `.panel`, `.act`), the action button (`button.ts`), gamepad menu navigation (`pad-nav.ts`) and pad shortcut hints (`pad-keys.ts`, from a game's `PadKeyMap`), and the dev terms no player may read (`vocabulary.ts`, checked by the game's `ui/vocabulary.test.ts`). |
+| `desktop/` | kit | The Electron shell: `main.ts` (app:// on dist/, window mode, single instance), `preload.ts` (`window.gameDesktop`), atomic saves and telemetry files (`files.ts`), `ship.ts` (reads and checks `ship/config.json`), Steam (`steam*.ts`, the Steam flavour only). |
+| `ship/` | game | What the game publishes as: `config.json` (product name, bundle id, Steam App and depot IDs, itch target; "TODO" placeholders until filled), `media.json` (the store media manifest), `icon.png`. |
 | `src/test/` | kit | Test helpers: small synthetic content and worlds built through the game's setup. |
 | `src/game/` | game | The example game's rules, screens and wiring (below). |
 | `content/` | game | The example's JSON content (`content/stages/`: its benches); `content/schema/` is generated (`pnpm content:schema`). |
@@ -30,12 +33,15 @@ seam modules listed below.
 | `assets/style/` | game | The house style: `presets.json` (prompt wrappers for `qwen_image.py --preset`) and `anchor.png`, the style reference. |
 | `public/atlas/`, `public/sounds/` | game | Packed atlas and sounds the game loads; `public/sounds/LICENSE.md` credits each sound (CC0 only). |
 | `index.html` | game | The page: canvas, controls, and one element per screen. |
-| `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `run-record` + `run-record-read.ts` (records → replay links), `perf` / `perf:check` (timings of `PERF_QUERY`), `phone`, `telemetry`, `content-check`, `e2e` + browser guard (one machine-wide lock, `~/.cache/browser-guard/lock`), and the art and audio pipeline (below). |
+| `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `run-record` + `run-record-read.ts` (records → replay links), `perf` / `perf:check` (timings of `PERF_QUERY`), `phone`, `telemetry`, `content-check`, `e2e` + browser guard (one machine-wide lock, `~/.cache/browser-guard/lock`), and the art and audio pipeline and the ship tools (below). |
 | `scripts/build-sounds.sh` | kit + game | The loudness and loop functions are kit; the fetch and `oneshot` lines are the example's sounds, replaced per game. |
 | `scripts/game-page.ts` | kit | The WebKit tools' shared setup: browser lock, own server on 5283, device pages, `toolQuery`. |
 | `tests/e2e/fixtures.ts` | kit | Playwright fixtures: error capture, `open`, touch helpers, content edits. |
+| `tests/desktop/` | kit | The desktop smoke test (`pnpm desktop:smoke`): saves across a relaunch, a corrupt save, the Steam build without Steam. |
+| `tests/deck/pad.ts`, `setup.ts`, `teardown.ts` | kit | The Deck check's scripted pad, focus walker, text measure and report. |
+| `tests/deck/walk.spec.ts` | game | The example's pad-only walk. |
 | `tests/e2e/*.spec.ts` | game | Browser tests of the example game; `layout.spec.ts` holds each screen's element boxes equal across its states (stable layout), `gamepad.spec.ts` plays it with a scripted pad. |
-| configs (`package.json`, `vite.config.ts`, `playwright.config.ts`, `tsconfig.json`, `biome.json`, `.claude/`) | kit | Build, dev server, test runner, lint, agent hooks. |
+| configs (`package.json`, `vite.config.ts`, `playwright.config.ts`, `playwright.desktop.config.ts`, `playwright.deck.config.ts`, `tsconfig.json`, `biome.json`, `.claude/`) | kit | Build, dev server, test runner, lint, agent hooks. |
 
 ## src/game
 
@@ -50,7 +56,8 @@ seam modules listed below.
 | `loadout.ts` | Player skills from a build tier; enemy templates with threat mods; tunnelling check. |
 | `wave/` | Threat timeline director, win/lose outcome, `tickWave` (step phase 9). |
 | `report.ts` | The wave report built from sim events. |
-| `content.ts`, `schema/` | Game content kinds (`builds/`, `threats/`) and their schemas. |
+| `content.ts`, `schema/` | Game content kinds (`builds/`, `threats/`, `deeds/`) and their schemas. |
+| `deeds.ts` | Deeds: which a wave meets, the `deeds` save, `deedList` for the kit. |
 | `check.ts`, `check-builds.ts` | Cross-file checks for builds, modifiers and threats. |
 | `switches.ts` | The example's feature switches (`throwers`) and what each cuts when off. |
 | `vocab.ts` | Name lists: tags, damage types, enemy roles. |
@@ -82,6 +89,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/headless` | `scripts/timeline.ts` | `worldForQuery`, `tickLine` |
 | `@/game/sweep` | `scripts/sweep*.ts` | `SweepRow`, `sweepRuns`, `playRun`, `sweepTable` |
 | `@/game/record` | `scripts/run-record-read.ts` | `recordOf`, `replayQuery` |
+| `@/game/deeds` | `scripts/steam-dashboard.ts` | `deedList` |
 | `@/game/setup`, `@/game/test-files` | `src/test/`, sim tests | `worldFor`, `heroBuild` |
 
 Role-specific looks live in content: `look/feedback.json` `bigDeathRoles`.
@@ -113,3 +121,26 @@ Python scripts carry their dependencies inline and run with `uv run`; their test
 `pnpm content:check` holds the generated manifests to the files: every sprite frame in the
 atlas, every sound file present at its manifest length. A test holds every shipped sound to a
 CC0 row in `public/sounds/LICENSE.md`.
+
+## Ship
+
+`pnpm build` (`vite build --mode release`) is the shipped game: the URL refuses the dev
+parameters (`RELEASE_REFUSED` in `src/agent/url-options.ts`), there are no stages, no
+`window.__game`, telemetry never POSTs (the desktop shell writes it to `<userData>/telemetry/`),
+the result has no replay address, and the error panel puts its raw lines behind Details.
+`scripts/release-build.test.ts` builds it in memory and holds it to that. `pnpm preview` serves
+it on 0.0.0.0:5289.
+
+| Command | What it does |
+|---------|--------------|
+| `pnpm desktop` / `pnpm desktop:steam` | The release build in Electron, itch or Steam flavour (`electron .`). |
+| `pnpm desktop:dist --itch\|--steam [--mac] [--win] [--linux] [--dir]` | Packages into `release/<flavour>/` (gitignored), unsigned. The Steam flavour fails while `ship/config.json`'s Steam IDs are TODO or `vendor/steamworks_sdk/` lacks an OS's library. |
+| `pnpm desktop:smoke` | Electron e2e on the release build, through `pnpm e2e`. |
+| `pnpm steam:achievements` | `release/steam-dashboard/achievements.{csv,json}` from the deeds. |
+| `pnpm steam:upload [--upload --user U]` | SteamPipe scripts in `release/steampipe/`; a dry run printing the steamcmd line unless `--upload`. Refuses TODO IDs and Spacewar (480). |
+| `pnpm itch:push [--upload]` | butler pushes to `ship/config.json`'s `itch.target`, one channel per OS; a dry run unless `--upload`. |
+| `pnpm store-media [all\|shots\|art\|capture\|trailer\|gifs\|sheet]` | From `ship/media.json`: screenshots, capsules (`scripts/store_media_art.py`), a frame-stepped trailer and GIFs, a contact sheet, in `release/store/`. |
+| `pnpm deck:check` | On demand, outside the gate: Chromium at 1280×800, a pad-only walk of every screen (reach, presses, real input), text sizes, mouse/keyboard words, a shot per screen → `shots/deck-check/`. |
+
+A new game fills in `ship/config.json` (name, bundle id, then the Steam and itch ids when it has
+them), its `ship/icon.png` and `ship/media.json`, and its deeds in `content/deeds/`.
