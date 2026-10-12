@@ -37,8 +37,9 @@ reads `KIE_API_KEY` from the env or a gitignored `.env`.
 ## Kit and game
 
 Every file is **kit** (keep) or **game** (the example; replace). Kit code never names game
-content; the game reaches the kit through `content/` and the seam modules in `src/game/`. The
-file map and the seam's exports: [docs/layout.md](docs/layout.md).
+content; the game reaches the kit through `content/` and the seam modules in `src/game/`. The kit
+is two layers: core (any game) and the opt-in real-time layer (`src/realtime/`). The layers, file
+map and seam: [docs/layout.md](docs/layout.md).
 
 ## Commands
 

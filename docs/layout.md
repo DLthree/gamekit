@@ -5,45 +5,66 @@ Every file is **kit** (keep it when you make a new game) or **game** (the exampl
 content (wizard, fireball, snail…). Game behaviour reaches the kit through content data and the
 seam modules listed below.
 
+## Layers
+
+The kit has two layers; dependencies point down only: game → realtime → core.
+
+- **core**: real-time and genre agnostic. Content pipeline (sound kinds only), seeded RNG, clock,
+  vectors, agent handle (kit part), telemetry, run record, save, error panel, menu input and UI,
+  the tools, the desktop shell. A turn-based game keeps only this.
+- **realtime** (`src/realtime/`, `scripts/realtime/`): opt-in. Sim, presentation, renderer,
+  stick/gesture/aim input, the loop, the perf meter, the real-time content kinds and checks
+  (`REALTIME_KINDS`, `checkRealtime`), and the `ticks` and `perf` tools. A turn-based game deletes
+  both folders and their package.json scripts.
+- **game**: `src/game/`, `content/`, `assets/`, the e2e specs. The example uses core + realtime.
+
+`scripts/layers.test.ts` fails if core imports realtime, or core or realtime import a game module
+outside the seam below.
+
 ## Map
 
-| Path | Side | What it does |
-|------|------|--------------|
-| `src/core/` | kit | Fixed-tick clock, seeded RNG, packed ids, vectors, spatial hash. |
-| `src/content/` | kit | Content pipeline: load (browser and Node), overrides, compile, cross-file checks, errors. |
-| `src/content/kinds.ts` | kit | The kit's content kinds (folder or file → schema); spreads in `GAME_KINDS`. |
-| `src/realtime/content/stages.ts`, `schema/stage.ts` | kit | Stages: data-defined benches (`?stage=<id>&dev=1`) — schema and actor checks. |
-| `src/realtime/sim/stage.ts` | kit | A running stage: actors placed on tick 1, respawned at their places; the player's life floors at 1. |
-| `src/content/switches.ts` | kit | Feature switches: `on=a,b` parsing (unknown ids fail) and `switchOn`, which cuts the off systems from a frozen copy. |
-| `src/content/schema/` | kit | Zod schemas for skills, modifiers, characters, enemies, rules, look, sounds, sprites, vocab. |
-| `src/realtime/sim/` | kit | Headless sim: world, 10-phase step, actors, AI, skills, volumes, combat, stats, events, snapshot. |
-| `src/realtime/present/` | kit | Sim events → what to draw and play: animation poses, fx pool and recipes, camera, telegraphs, sound plan. |
-| `src/render/` | kit | Phaser boot, the world scene and its views, audio output and unlock. |
-| `src/input/` | kit | Touch stick, skill button, keyboard, mouse, gamepad (`gamepad.ts`) → one `Command` per tick. |
-| `src/app/` | kit | Real-time loop, content hot reload, aim view, telemetry setup, `platform.ts` (the save port: disk in the desktop shell, localStorage on the web; Steam's problem and deed unlocks). |
-| `src/content/achievements.ts` | kit | Deeds → Steam achievements (`DEED_<ID>` API names) and their checks. |
-| `src/agent/` | kit | `window.__game` handle, URL options, perf meter, telemetry client, run record (`record.ts`). |
-| `src/ui/` | kit | Blocking error panel, base page styles (canvas, controls, `.panel`, `.act`), the action button (`button.ts`), gamepad menu navigation (`pad-nav.ts`) and pad shortcut hints (`pad-keys.ts`, from a game's `PadKeyMap`), and the dev terms no player may read (`vocabulary.ts`, checked by the game's `ui/vocabulary.test.ts`). |
-| `desktop/` | kit | The Electron shell: `main.ts` (app:// on dist/, window mode, single instance), `preload.ts` (`window.gameDesktop`), atomic saves and telemetry files (`files.ts`), `ship.ts` (reads and checks `ship/config.json`), Steam (`steam*.ts`, the Steam flavour only). |
+| Path | Layer | What it does |
+|------|-------|--------------|
+| `src/core/` | core | Fixed-tick clock, seeded RNG, vectors. |
+| `src/content/` | core | Content pipeline: load (browser and Node), overrides, compile, cross-file checks, errors. |
+| `src/content/kind.ts`, `kinds.ts` | core | A kind (folder or file → schema), `Compiled<…>` types; the kit's kinds (sounds) beside the game's `GAME_KINDS` (`{ sim, look }`). |
+| `src/content/switches.ts` | core | Feature switches: `on=a,b` parsing (unknown ids fail) and `switchOn`, which cuts the off systems from a frozen copy. |
+| `src/content/schema/` | core | Zod schemas for sounds, `SchemaRef`, `ContentId`. |
+| `src/content/achievements.ts` | core | Deeds → Steam achievements (`DEED_<ID>` API names) and their checks. |
+| `src/agent/` | core | `window.__game` handle (`KitHandle`), URL options, telemetry client, run record (`record.ts`). |
+| `src/app/` | core | Content hot reload, telemetry setup, audio unlock, `platform.ts` (the save port: disk in the desktop shell, localStorage on the web; Steam's problem and deed unlocks). |
+| `src/input/` | core | Gamepad (`gamepad.ts`), iOS Safari guards. |
+| `src/ui/` | core | Blocking error panel, base page styles (canvas, controls, `.panel`, `.act`), the action button (`button.ts`), gamepad menu navigation (`pad-nav.ts`) and pad shortcut hints (`pad-keys.ts`, from a game's `PadKeyMap`), and the dev terms no player may read (`vocabulary.ts`, checked by the game's `ui/vocabulary.test.ts`). |
+| `src/test/` | core | Test content: the kit's files plus the game's `GAME_TEST_FILES`, compiled. |
+| `src/realtime/sim/` | realtime | Headless sim: world, 10-phase step, actors, AI, skills, volumes, combat, stats, events, snapshot; `stage.ts`, a running bench (actors placed on tick 1, respawned at their places; the player's life floors at 1). |
+| `src/realtime/present/` | realtime | Sim events → what to draw and play: animation poses, fx pool and recipes, camera, telegraphs, sound plan. |
+| `src/realtime/render/` | realtime | Phaser boot, the world scene and its views, audio output. |
+| `src/realtime/input/` | realtime | Touch stick, skill button, keyboard, mouse → one `Command` per tick. |
+| `src/realtime/app/` | realtime | The fixed-tick loop, aim. |
+| `src/realtime/content/` | realtime | `REALTIME_KINDS` (characters, skills, modifiers, enemies, stages, rules, look, sprites), their schemas and vocab, `checkRealtime`, loadouts, the atlas frame check. |
+| `src/realtime/agent/` | realtime | Perf meter; perf and gesture telemetry records and their summary lines. |
+| `src/realtime/core/` | realtime | Packed ids, spatial hash. |
+| `src/realtime/test/` | realtime | Test files for the real-time kinds, worlds built through the game's setup, `vocab.ts` (the game's `TEST_NAMES`, never the example's words). |
+| `desktop/` | core | The Electron shell: `main.ts` (app:// on dist/, window mode, single instance), `preload.ts` (`window.gameDesktop`), atomic saves and telemetry files (`files.ts`), `ship.ts` (reads and checks `ship/config.json`), Steam (`steam*.ts`, the Steam flavour only). |
 | `ship/` | game | What the game publishes as: `config.json` (product name, bundle id, Steam App and depot IDs, itch target; "TODO" placeholders until filled), `media.json` (the store media manifest), `icon.png`. |
-| `src/test/` | kit | Test helpers: small synthetic content and worlds built through the game's setup; `vocab.ts` gives kit tests the game's names (`TEST_NAMES`), never the example's words. |
 | `src/game/` | game | The example game's rules, screens and wiring (below). |
 | `content/` | game | The example's JSON content (`content/stages/`: its benches); `content/schema/` is generated (`pnpm content:schema`). |
 | `assets/` | game | Source art that `pnpm atlas` packs: `creatures/<id>.png` + sidecar, `fx/<id>/<n>.png` + `fx/<id>.json`. |
 | `assets/style/` | game | The house style: `presets.json` (prompt wrappers for `qwen_image.py --preset`) and `anchor.png`, the style reference. |
 | `public/atlas/`, `public/sounds/` | game | Packed atlas and sounds the game loads; `public/sounds/LICENSE.md` credits each sound (CC0 only). |
 | `index.html` | game | The page: canvas, controls, and one element per screen. |
-| `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `run-record` + `run-record-read.ts` (records → replay links), `perf` / `perf:check` (timings of `PERF_QUERY`), `phone`, `telemetry`, `content-check`, `e2e` + browser guard (one machine-wide lock, `~/.cache/browser-guard/lock`), and the art, audio and ship tools (README.md's command table; `.claude/skills/` for each family). |
-| `scripts/build-sounds.sh` | kit + game | The loudness and loop functions are kit; the fetch and `oneshot` lines are the example's sounds, replaced per game. |
-| `scripts/game-page.ts` | kit | The WebKit tools' shared setup: browser lock, own server on the tools port, device pages, `toolQuery`. |
-| `tests/e2e/fixtures.ts` | kit | Playwright fixtures: error capture, `open`, touch helpers, content edits. |
-| `tests/desktop/` | kit | The desktop smoke test (`pnpm desktop:smoke`): saves across a relaunch, a corrupt save, the Steam build without Steam. |
-| `tests/deck/pad.ts`, `setup.ts`, `teardown.ts` | kit | The Deck check's scripted pad, focus walker, text measure and report. |
+| `scripts/` | core | `shot`, `film` (frame strips over sim time), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `run-record` + `run-record-read.ts` (records → replay links), `phone`, `telemetry`, `content-check`, `e2e` + browser guard (one machine-wide lock, `~/.cache/browser-guard/lock`), and the art, audio and ship tools (README.md's command table; `.claude/skills/` for each family). |
+| `scripts/realtime/` | realtime | `ticks` + `timeline.ts` (headless event ticks), `perf` / `perf:check` (timings of `PERF_QUERY`). |
+| `scripts/build-sounds.sh` | core + game | The loudness and loop functions are kit; the fetch and `oneshot` lines are the example's sounds, replaced per game. |
+| `scripts/game-page.ts` | core | The WebKit tools' shared setup: browser lock, own server on the tools port, device pages, `toolQuery`. |
+| `tests/e2e/fixtures.ts` | core | Playwright fixtures: error capture, `open`, touch helpers, content edits. |
+| `tests/desktop/` | core | The desktop smoke test (`pnpm desktop:smoke`): saves across a relaunch, a corrupt save, the Steam build without Steam. |
+| `tests/deck/pad.ts`, `setup.ts`, `teardown.ts` | core | The Deck check's scripted pad, focus walker, text measure and report. |
 | `tests/deck/walk.spec.ts` | game | The example's pad-only walk. |
 | `tests/e2e/*.spec.ts` | game | Browser tests of the example game; `layout.spec.ts` holds each screen's element boxes equal across its states (stable layout), `gamepad.spec.ts` plays it with a scripted pad. |
-| `README.md`, `CLAUDE.md`, `docs/`, `.claude/skills/` | kit | What the kit is, the agent's project instructions, this map, the new-game steps, one skill per tool family. |
-| `scripts/ports.ts` | kit | Every server port, from one base; configs and scripts read it. |
-| configs (`package.json`, `vite.config.ts`, `playwright.config.ts`, `playwright.desktop.config.ts`, `playwright.deck.config.ts`, `tsconfig.json`, `biome.json`, `.claude/`) | kit | Build, dev server, test runner, lint, agent hooks. |
+| `README.md`, `CLAUDE.md`, `docs/`, `.claude/skills/` | core | What the kit is, the agent's project instructions, this map, the new-game steps, one skill per tool family. |
+| `scripts/ports.ts` | core | Every server port, from one base; configs and scripts read it. |
+| configs (`package.json`, `vite.config.ts`, `playwright.config.ts`, `playwright.desktop.config.ts`, `playwright.deck.config.ts`, `tsconfig.json`, `biome.json`, `.claude/`) | core | Build, dev server, test runner, lint, agent hooks. |
 
 ## src/game
 
@@ -58,9 +79,11 @@ seam modules listed below.
 | `loadout.ts` | Player skills from a build tier; enemy templates with threat mods; tunnelling check. |
 | `wave/` | Threat timeline director, win/lose outcome, `tickWave` (step phase 9). |
 | `report.ts` | The wave report built from sim events. |
-| `content.ts`, `schema/` | Game content kinds (`builds/`, `threats/`, `deeds/`) and their schemas. |
+| `handle.ts` | `GameHandle`: the example's part of `window.__game` (wave state, step, events, fx, sound…). |
+| `telemetry.ts` | `RunReport` (the wave report + sound), `GameRecord` (perf, gestures) and their `pnpm telemetry` lines. |
+| `content.ts`, `schema/` | `GAME_KINDS`: the real-time kinds plus the example's (`builds/`, `threats/`, `deeds/`) and their schemas. |
 | `deeds.ts` | Deeds: which a wave meets, the `deeds` save, `deedList` for the kit. |
-| `check.ts`, `check-builds.ts` | Cross-file checks for builds, modifiers and threats. |
+| `check.ts`, `check-builds.ts` | Cross-file checks: `checkRealtime`, then builds, modifiers and threats; `checkGameFiles` (the atlas). |
 | `switches.ts` | The example's feature switches (`throwers`) and what each cuts when off. |
 | `vocab.ts` | Name lists: tags, damage types, enemy roles, wave outcomes. |
 | `bots.ts`, `kite-bot.ts` | Bots `?bot=` can name. |
@@ -70,31 +93,34 @@ seam modules listed below.
 | `sweep.ts` | The run model `pnpm sweep` plays: run ids, one run with the kite bot, the summary table. |
 | `record.ts` | The example's run record: its choices (the replay address's parameters) and `replayQuery`. |
 | `links.ts` | Addresses the tools open (`CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`) and the ids specs and tests name (`HERO`, `CAST_SKILL`, `BOT`, `SWITCH`, `STAGE`). |
-| `test-files.ts` | The game's files in the kit's test content (`heroBuild`, `GAME_TEST_FILES`) and the names it uses (`TEST_NAMES`). |
+| `test-files.ts` | The game's files in the kit's test content (the real-time files, `heroBuild`, `GAME_TEST_FILES`) and the names it uses (`TEST_NAMES`). |
 
 ## The seam
 
-The kit imports only these game modules. A new game provides the same exports.
+Core and realtime import only these game modules (`scripts/layers.test.ts` lists them too). A new
+game provides the core ones; a real-time game also the realtime ones.
 
-| Module | Used by | Exports |
-|--------|---------|---------|
-| `@/game/content` | content compile, kinds, types | `GAME_KINDS` |
-| `@/game/check` | `src/content/check.ts` | `checkGame`, `checkGameResolved` |
-| `@/game/vocab` | content schemas, stats, events | `TAGS`, `DAMAGE_TYPES`, `ROLES`, `OUTCOMES` |
-| `@/game/scenario` | world, snapshot, telemetry | `Scenario` |
-| `@/game/report` | step, world, handle, telemetry | `WaveReport`, `recordEvents` |
-| `@/game/wave/director`, `@/game/wave/tick` | world, step | `WaveState`, `tickWave` |
-| `@/game/flow` | agent handle | `Flow` |
-| `@/game/bots` | URL options | `BOTS` |
-| `@/game/behaviors` | AI (step phase 2), content check | `BEHAVIORS` (may be `{}`) |
-| `@/game/switches` | `src/content/switches.ts` | `SWITCHES` |
-| `@/game/url` | `scripts/telemetry-summary.ts` | `reproUrl` |
-| `@/game/links` | `perf`, `phone`, `shot`, `film`, `ticks`, `screens`, e2e specs | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS` |
-| `@/game/headless` | `scripts/realtime/timeline.ts` | `worldForQuery`, `tickLine` |
-| `@/game/sweep` | `scripts/sweep*.ts` | `SweepRow`, `sweepRuns`, `playRun`, `sweepTable` |
-| `@/game/record` | `scripts/run-record-read.ts` | `recordOf`, `replayQuery` |
-| `@/game/deeds` | `scripts/steam-dashboard.ts`, `tests/desktop/` | `deedList` |
-| `@/game/setup`, `@/game/test-files` | `src/test/`, sim tests | `worldFor`, `heroBuild`, `GAME_TEST_FILES`, `TEST_NAMES` |
+| Module | Layer | Used by | Exports |
+|--------|-------|---------|---------|
+| `@/game/content` | core | content compile, kinds, types | `GAME_KINDS` |
+| `@/game/check` | core | `src/content/check.ts`, `content-check` | `checkGame`, `checkGameResolved`, `checkGameFiles` |
+| `@/game/scenario` | core, realtime | telemetry; world, snapshot | `Scenario` |
+| `@/game/handle` | core | agent handle | `GameHandle` |
+| `@/game/telemetry` | core | telemetry, `telemetry-summary` | `RunReport`, `GameRecord`, `runLines`, `sessionLines` |
+| `@/game/bots` | core, realtime | URL options; `timeline` | `BOTS` |
+| `@/game/switches` | core | `src/content/switches.ts` | `SWITCHES` |
+| `@/game/url` | core | `scripts/telemetry-summary.ts` | `reproUrl` |
+| `@/game/links` | core, realtime | `phone`, `shot`, `film`, `screens`; `perf`, `ticks` | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS` |
+| `@/game/sweep` | core | `scripts/sweep*.ts` | `SweepRow`, `sweepRuns`, `playRun`, `sweepTable` |
+| `@/game/record` | core | `scripts/run-record-read.ts` | `recordOf`, `replayQuery` |
+| `@/game/deeds` | core | `scripts/steam-dashboard.ts`, `tests/desktop/` | `deedList` |
+| `@/game/test-files` | core, realtime | `src/test/`; `src/realtime/test/`, sim tests | `GAME_TEST_FILES`, `TEST_NAMES`, `heroBuild` |
+| `@/game/vocab` | realtime | content schemas, stats, events | `TAGS`, `DAMAGE_TYPES`, `ROLES`, `OUTCOMES` |
+| `@/game/report` | realtime | step, world | `WaveReport`, `recordEvents` |
+| `@/game/wave/director`, `@/game/wave/tick` | realtime | world, step | `WaveState`, `tickWave` |
+| `@/game/behaviors` | realtime | AI (step phase 2), content check | `BEHAVIORS` (may be `{}`) |
+| `@/game/headless` | realtime | `scripts/realtime/timeline.ts` | `worldForQuery`, `tickLine` |
+| `@/game/setup` | realtime | `src/realtime/test/world.ts` | `worldFor` |
 
 Role-specific looks live in content: `look/feedback.json` `bigDeathRoles`.
 

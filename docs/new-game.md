@@ -21,10 +21,11 @@ Gate: `pnpm verify`.
 First map the game's mechanics onto docs/layout.md "What the sim expresses": what is content,
 what is game code at a seam, and what (if anything) is a kit edit.
 
-- Kit kinds (`src/content/kinds.ts`: skills, modifiers, characters, enemies, rules, look, stages…)
-  stay; change their files in `content/`.
-- Game kinds: replace `src/game/content.ts` `GAME_KINDS` and `src/game/schema/*` with the new
-  game's folders (the example has `builds/`, `threats/`, `deeds/`).
+- Kit kinds (`src/content/kinds.ts`: sounds) stay. A real-time game keeps the real-time kinds
+  (`src/realtime/content/kinds.ts`: skills, modifiers, characters, enemies, rules, look, stages…)
+  spread into its `GAME_KINDS` and changes their files in `content/`; a turn-based one drops them.
+- Game kinds: replace `src/game/content.ts` `GAME_KINDS` (`{ sim, look }`) and `src/game/schema/*`
+  with the new game's folders (the example has `builds/`, `threats/`, `deeds/`).
 - Names: `src/game/vocab.ts` `TAGS`, `DAMAGE_TYPES`, `ROLES`, `OUTCOMES` (how a wave ends). Then
   `src/game/test-files.ts` `TEST_NAMES`: which of them the kit's test content uses (3 tags, 1–2
   damage types, 2 roles).
@@ -43,7 +44,8 @@ Replace each `src/game/` module the kit imports, keeping its exports (types may 
 | `setup.ts` | `worldFor(scenario, content)` → kit `createWorld` |
 | `report.ts` | `WaveReport`, `recordEvents` |
 | `wave/director.ts`, `wave/tick.ts` | `WaveState`, `tickWave` (step phase 9: spawns, win/lose) |
-| `flow.ts` | `Flow` (screen state machine) |
+| `handle.ts` | `GameHandle`: the game's part of `window.__game` (its `flow()`, `state()`, and what specs drive) |
+| `telemetry.ts` | `RunReport`, `GameRecord`, `runLines`, `sessionLines` (a run's record and summary) |
 | `url.ts` | `reproUrl` (and the game's own URL parsing) |
 | `links.ts` | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`, and the ids specs name (`HERO`, `BOT`…) |
 | `headless.ts` | `worldForQuery`, `tickLine` (what `pnpm ticks` prints) |
