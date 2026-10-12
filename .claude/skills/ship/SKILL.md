@@ -10,7 +10,7 @@ description: Build and release the game. Use when making a release or desktop bu
 `pnpm build` (`vite build --mode release`) is what players get: dev URL parameters are refused
 (`RELEASE_REFUSED` in `src/agent/url-options.ts`), no stages, no `window.__game`, telemetry never
 POSTs, the error panel hides raw lines behind Details. `scripts/release-build.test.ts` holds it to
-that. `pnpm preview` serves it on 0.0.0.0:5289.
+that. `pnpm preview` serves it on 0.0.0.0 (`PORTS.preview`, scripts/ports.ts).
 
 ## Desktop (Electron)
 

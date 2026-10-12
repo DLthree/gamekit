@@ -25,8 +25,8 @@ Notes:
 
 ```sh
 pnpm install
-pnpm dev                 # dev server, 0.0.0.0:5280
-pnpm phone <sha>         # pinned build of a commit for the phone, :5282
+pnpm dev                 # dev server on 0.0.0.0 (ports: scripts/ports.ts)
+pnpm phone <sha>         # pinned build of a commit for the phone
 pnpm verify              # check + e2e, the full gate
 ```
 
@@ -43,8 +43,8 @@ file map and the seam's exports: [docs/layout.md](docs/layout.md).
 
 | Command | What it does |
 |---------|--------------|
-| `pnpm dev` | Vite dev server on 5280 with hot content reload. |
-| `pnpm phone <ref>` | Builds `<ref>` in `.phone/` and serves it to the LAN on 5282; prints the links. |
+| `pnpm dev` | Vite dev server with hot content reload. |
+| `pnpm phone <ref>` | Builds `<ref>` in `.phone/` and serves it to the LAN; prints the links. |
 | `pnpm check` | typecheck, lint, content:check, test, test:py. The commit gate. |
 | `pnpm verify` | check + e2e. The push gate. |
 | `pnpm e2e [args]` | Playwright, the only way to run browser tests (browser lock, capped workers). |
@@ -68,7 +68,7 @@ file map and the seam's exports: [docs/layout.md](docs/layout.md).
 | `uv run scripts/sheet.py` | Contact sheet of images, or each in game and at phone size. |
 | `uv run scripts/install_art.py` | Trim, pivot and install a picked image, then pack. |
 | `uv run scripts/icon.py <sprite>` | `ship/icon.png` from a sprite. |
-| `pnpm build` / `preview` | The release build (dev surface stripped); preview on 5289. |
+| `pnpm build` / `preview` | The release build (dev surface stripped) and its preview server. |
 | `pnpm desktop` / `desktop:steam` | The release build in Electron, itch or Steam flavour. |
 | `pnpm desktop:dist --itch\|--steam` | Package into `release/<flavour>/`. |
 | `pnpm desktop:compile` | Compile the Electron shell only (used by the commands above). |

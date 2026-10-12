@@ -1,5 +1,6 @@
 import { defineConfig } from "@playwright/test";
 import { checkE2eArgs, E2E_MAX_WORKERS } from "@scripts/browser-guard";
+import { PORTS } from "@scripts/ports";
 
 // The Steam Deck check (tests/deck): on demand only, never part of `pnpm check`, `pnpm verify`
 // or the hooks. `pnpm deck:check` runs it through `pnpm e2e`, which takes the browser lock and
@@ -8,7 +9,7 @@ if (process.env.GAMEKIT_E2E_GUARD !== "1")
   throw new Error("run through `pnpm deck:check`, not `playwright test` directly");
 checkE2eArgs(process.argv);
 
-const PORT = 5284;
+const PORT = PORTS.deck;
 
 export default defineConfig({
   testDir: "tests/deck",

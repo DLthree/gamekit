@@ -13,7 +13,7 @@ Try values at runtime first; write them into `content/` once picked.
 
 ```sh
 pnpm film "<query>" --o rules/feel.hitStopS=0.12 --compare "<query>"
-http://<lan-ip>:5280/?char=wizard&build=1&threat=1&o=rules/feel.hitStopS=0.12
+http://<lan-ip>:<dev port>/?<CELL>&o=rules/feel.hitStopS=0.12
 ```
 
 A bad path or value stops the game with the error panel naming it.

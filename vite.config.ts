@@ -4,6 +4,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Connect, Plugin } from "vite";
 import { defineConfig } from "vitest/config";
+import { PORTS } from "./scripts/ports.ts";
 
 const src = fileURLToPath(new URL("./src", import.meta.url));
 const scripts = fileURLToPath(new URL("./scripts", import.meta.url));
@@ -88,8 +89,8 @@ export default defineConfig(({ mode }) => {
         { find: "@", replacement: src },
       ],
     },
-    server: { host: "0.0.0.0", port: 5280, strictPort: true },
-    preview: { host: "0.0.0.0", port: 5289, strictPort: true },
+    server: { host: "0.0.0.0", port: PORTS.dev, strictPort: true },
+    preview: { host: "0.0.0.0", port: PORTS.preview, strictPort: true },
     // The app with Phaser is one ~1.7 MB chunk (~430 kB gzipped) and the game can't start without
     // Phaser, so splitting it buys nothing; the limit sits just above it to catch real growth.
     build: { chunkSizeWarningLimit: 1800 },

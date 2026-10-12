@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 import { checkE2eArgs, E2E_MAX_WORKERS } from "@scripts/browser-guard";
+import { PORTS } from "@scripts/ports";
 
 // Every worker is a WebKit browser running the game; unguarded parallel runs froze the dev
 // machine (scripts/browser-guard.ts). `pnpm e2e` takes the browser lock and sets the mark.
@@ -7,7 +8,7 @@ if (process.env.GAMEKIT_E2E_GUARD !== "1")
   throw new Error("run e2e through `pnpm e2e` (scripts/e2e.ts), not `playwright test` directly");
 checkE2eArgs(process.argv);
 
-const PORT = 5281;
+const PORT = PORTS.e2e;
 const TOUCH_SPECS = ["controls.spec.ts", "sound.spec.ts"];
 
 export default defineConfig({

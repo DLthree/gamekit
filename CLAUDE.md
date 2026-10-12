@@ -31,13 +31,14 @@ modules in docs/layout.md. A new seam import goes in that table.
 
 ## Ports
 
-dev 5280, e2e 5281, phone 5282, shot tools 5283, deck check 5284, preview 5289. Servers bind
-0.0.0.0; links you give out use the LAN IP (`ipconfig getifaddr en0`), never localhost.
+All in `scripts/ports.ts`, one base (5280): dev +0, e2e +1, phone +2, shot tools +3, deck check
++4, preview +9. Servers bind 0.0.0.0; links you give out use the LAN IP (`ipconfig getifaddr en0`),
+never localhost.
 
 ## Phone playtest
 
 The phone is the playtest channel. Give the director links from `pnpm phone <sha>` (a pinned build
-of a commit, on 5282), never the dev server: the dev server serves your work in progress and
+of a commit, on the phone port), never the dev server: the dev server serves your work in progress and
 reloads under them. Their runs land in `telemetry/<date>.jsonl`.
 
 ## Uploads

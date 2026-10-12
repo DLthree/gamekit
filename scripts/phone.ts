@@ -1,13 +1,14 @@
 /**
- * pnpm phone <ref>: build <ref> in the detached worktree .phone/ and serve it to the LAN on 5282,
+ * pnpm phone <ref>: build <ref> in the detached worktree .phone/ and serve it to the LAN on PORTS.phone,
  * with telemetry going to this checkout's telemetry/ folder.
  */
 import { execFileSync, spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { PORTS } from "@scripts/ports";
 import { PHONE_QUERIES } from "@/game/links";
 
-const PORT = 5282;
+const PORT = PORTS.phone;
 
 /** The game's phone links (PHONE_QUERIES) on the LAN address. */
 export function phoneUrls(ip: string, port: number): string[] {

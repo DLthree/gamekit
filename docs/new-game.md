@@ -9,10 +9,9 @@ docs/layout.md says which files are kit (keep) and game (replace).
 - Name: `package.json` `name`, `index.html` `<title>`, `public/manifest.webmanifest`,
   `ship/config.json` (`productName`, `appId`, `executableName`), `ship/media.json` `title`, the
   expectation in `scripts/desktop-build.test.ts`, the top of README.md.
-- Ports, only if another gamekit game runs on this machine (all are `strictPort`): dev and preview
-  in `vite.config.ts`, e2e in `playwright.config.ts`, deck in `playwright.deck.config.ts`, phone in
-  `scripts/phone.ts`, shot tools in `scripts/game-page.ts`, the replay port in
-  `scripts/run-record.ts`, and their tests (`rg -n '528[0-9]'`). Update the ports in CLAUDE.md.
+- Ports, if another gamekit game (this template's checkout counts) runs on this machine: `BASE`
+  in `scripts/ports.ts` (every config and script reads it; all are `strictPort`), and the base in
+  CLAUDE.md's Ports line.
 
 Gate: `pnpm verify`.
 

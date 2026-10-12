@@ -2,12 +2,13 @@
  * pnpm run-record <telemetry.jsonl | rr1;… record text>
  *
  * Each run record in the input (src/agent/record.ts) laid out with its replay address on the dev
- * server (pnpm dev, LAN IP, port 5280). Run it on the record's build (its commit, a clean tree)
+ * server (pnpm dev, LAN IP, PORTS.dev). Run it on the record's build (its commit, a clean tree)
  * for the replay to be exact; a different build is flagged.
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { PORTS } from "@scripts/ports";
 import { describe, recordsIn } from "@scripts/run-record-read";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
@@ -28,7 +29,7 @@ const build = execFileSync("git", ["describe", "--always", "--dirty", "--exclude
 function devBase(): string {
   for (const dev of ["en0", "en1"]) {
     try {
-      return `http://${execFileSync("ipconfig", ["getifaddr", dev]).toString().trim()}:5280`;
+      return `http://${execFileSync("ipconfig", ["getifaddr", dev]).toString().trim()}:${PORTS.dev}`;
     } catch {}
   }
   throw new Error("no LAN address on en0 or en1");

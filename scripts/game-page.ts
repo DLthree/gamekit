@@ -5,9 +5,10 @@
  */
 import { type Browser, devices, type Page, webkit } from "@playwright/test";
 import { acquireBrowserLock } from "@scripts/browser-guard";
+import { PORTS } from "@scripts/ports";
 import { createServer } from "vite";
 
-const TOOL_PORT = 5283;
+const TOOL_PORT = PORTS.tools;
 
 export const DEVICES = ["desktop", "deck", "phone", "phone-landscape"] as const;
 export type Device = (typeof DEVICES)[number];

@@ -5,7 +5,7 @@ description: Look at the running game. Use when you need to see a moment (a hit,
 
 # See the game
 
-Every tool opens its own server on 5283 and takes the machine's browser lock (runs queue).
+Every tool opens its own server (`PORTS.tools`) and takes the machine's browser lock (runs queue).
 A query is a game URL's search part, e.g. `char=wizard&build=3&threat=3&seed=7&bot=kite`.
 Tools add `seed=7`, `dev=1`, `telemetry=0`, `manual=1&agent=1` unless the query sets them, so the
 same command gives the same frames.
