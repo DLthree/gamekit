@@ -1,11 +1,11 @@
-import { checkLook } from "@/content/check-look";
-import { type Push, treeProblems } from "@/content/check-tree";
 import type { ContentError } from "@/content/errors";
-import { hasSkillStat, type SkillStatId } from "@/content/skill-stats";
-import { checkStages } from "@/content/stages";
 import type { Content } from "@/content/types";
 import { BEHAVIORS } from "@/game/behaviors";
 import { checkGame, checkGameResolved } from "@/game/check";
+import { checkLook } from "@/realtime/content/check-look";
+import { type Push, treeProblems } from "@/realtime/content/check-tree";
+import { hasSkillStat, type SkillStatId } from "@/realtime/content/skill-stats";
+import { checkStages } from "@/realtime/content/stages";
 
 function checkSkills(c: Content, push: Push): void {
   for (const [id, skill] of Object.entries(c.sim.skills)) {
@@ -24,7 +24,7 @@ function checkSkills(c: Content, push: Push): void {
     }
     const has = (stat: SkillStatId) => hasSkillStat(skill.stats, stat, [], skill.tags);
     // The skill file's own base value. Mods can't take the resolved stat below the zone floor:
-    // STAT_CLAMPS' minimums meet it (src/sim/stats/resolve.test.ts).
+    // STAT_CLAMPS' minimums meet it (src/realtime/sim/stats/resolve.test.ts).
     const get = (stat: SkillStatId) => skill.stats[stat];
     for (const p of treeProblems(c, skill.deliver, has, get)) {
       push(file, p.stat === null ? p.path : `stats.${p.stat}`, p.message);

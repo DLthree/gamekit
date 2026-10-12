@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { ticks } from "@/core/clock";
-import { run, testWorld } from "@/test/world";
+import { run, testWorld } from "@/realtime/test/world";
 
 function threat(spawns: unknown[]) {
   return { "threats/tier-1.json": { durationS: 10, maxAlive: 200, spawns } };

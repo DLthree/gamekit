@@ -28,7 +28,7 @@ Try a tuning value with an `o=` override or a sweep before writing it into conte
 
 ## Kit and game
 
-Kit code (`src/core`, `src/sim`, `src/content`, `scripts/`, `desktop/`…) never names game content.
+Kit code (`src/core`, `src/realtime/sim`, `src/content`, `scripts/`, `desktop/`…) never names game content.
 Game behaviour goes in `content/` or `src/game/`; the kit reaches `src/game/` only through the seam
 modules in docs/layout.md. A new seam import goes in that table.
 

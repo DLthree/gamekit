@@ -1,5 +1,5 @@
-import type { Actor } from "@/sim/actors/store";
-import type { World } from "@/sim/world";
+import type { Actor } from "@/realtime/sim/actors/store";
+import type { World } from "@/realtime/sim/world";
 
 /**
  * The game's own enemy behaviours, beside the kit's (chase, keepDistance): an enemy file names

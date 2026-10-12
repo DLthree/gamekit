@@ -1,6 +1,4 @@
 import type { UrlOptions } from "@/agent/url-options";
-import { buildAim } from "@/app/aim";
-import { GameLoop } from "@/app/loop";
 import type { Content } from "@/content/types";
 import { TICK_HZ, tickSeconds } from "@/core/clock";
 import type { Vec } from "@/core/vec";
@@ -8,9 +6,11 @@ import { BOTS } from "@/game/bots";
 import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
 import { worldFor } from "@/game/setup";
-import { type ControlElements, type ControlState, Controls } from "@/input/controls";
-import type { SkillTrace } from "@/input/skill-button";
-import { ActorDraws } from "@/present/anim/actors";
+import { buildAim } from "@/realtime/app/aim";
+import { GameLoop } from "@/realtime/app/loop";
+import { type ControlElements, type ControlState, Controls } from "@/realtime/input/controls";
+import type { SkillTrace } from "@/realtime/input/skill-button";
+import { ActorDraws } from "@/realtime/present/anim/actors";
 import {
   computeViewport,
   followCamera,
@@ -18,21 +18,21 @@ import {
   updateLead,
   type Viewport,
   worldToCss,
-} from "@/present/camera";
-import { applyEvents } from "@/present/feedback";
-import type { HeadDraw } from "@/present/fx/recipes/projectile";
+} from "@/realtime/present/camera";
+import { applyEvents } from "@/realtime/present/feedback";
+import type { HeadDraw } from "@/realtime/present/fx/recipes/projectile";
 import {
   createPresentation,
   type Presentation,
   swapPresentationLook,
-} from "@/present/presentation";
-import type { WarningDraw } from "@/present/spawn-warnings";
-import type { TelegraphDraw } from "@/present/telegraphs";
-import type { AudioOut } from "@/render/audio";
-import type { WorldScene } from "@/render/world-scene";
-import type { Command } from "@/sim/command";
-import type { SimEvent } from "@/sim/events";
-import { playerOf, type World } from "@/sim/world";
+} from "@/realtime/present/presentation";
+import type { WarningDraw } from "@/realtime/present/spawn-warnings";
+import type { TelegraphDraw } from "@/realtime/present/telegraphs";
+import type { AudioOut } from "@/realtime/render/audio";
+import type { WorldScene } from "@/realtime/render/world-scene";
+import type { Command } from "@/realtime/sim/command";
+import type { SimEvent } from "@/realtime/sim/events";
+import { playerOf, type World } from "@/realtime/sim/world";
 
 export interface WaveSetup {
   content: Content;

@@ -1,9 +1,9 @@
-import type { PerfSummary } from "@/agent/perf";
 import type { UrlOptions } from "@/agent/url-options";
 import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
-import type { SkillTrace } from "@/input/skill-button";
-import type { SoundStatus } from "@/present/sound";
+import type { PerfSummary } from "@/realtime/agent/perf";
+import type { SkillTrace } from "@/realtime/input/skill-button";
+import type { SoundStatus } from "@/realtime/present/sound";
 
 /**
  * `commit` is the build's `git describe --always --dirty`; with the scenario and options, a

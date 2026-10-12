@@ -5,9 +5,9 @@ import { tickSeconds } from "@/core/clock";
 import { kite } from "@/game/kite-bot";
 import { HERO } from "@/game/links";
 import { worldFor } from "@/game/setup";
-import { applyEvents } from "@/present/feedback";
-import { createPresentation } from "@/present/presentation";
-import { step } from "@/sim/step";
+import { applyEvents } from "@/realtime/present/feedback";
+import { createPresentation } from "@/realtime/present/presentation";
+import { step } from "@/realtime/sim/step";
 
 function load(overrides: string[]) {
   const loaded = loadContentDir(REPO_CONTENT_DIR, overrides);

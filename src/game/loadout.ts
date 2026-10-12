@@ -1,11 +1,11 @@
-import { type AppliedModifier, mergeSkill, nodesOf } from "@/content/loadout";
 import type { SourcedMod } from "@/content/schema/vocab";
 import type { SimContent } from "@/content/types";
 import { TICK_S } from "@/core/clock";
 import { ScenarioError } from "@/game/scenario";
-import { resolveSkill, type SkillInstance, skillStat } from "@/sim/skills/instance";
-import { resolveActorStats } from "@/sim/stats/resolve";
-import type { EnemyTemplate } from "@/sim/world";
+import { type AppliedModifier, mergeSkill, nodesOf } from "@/realtime/content/loadout";
+import { resolveSkill, type SkillInstance, skillStat } from "@/realtime/sim/skills/instance";
+import { resolveActorStats } from "@/realtime/sim/stats/resolve";
+import type { EnemyTemplate } from "@/realtime/sim/world";
 
 /** Every enemy kind with the threat tier's StatMods applied (enemy skills take no modifiers). */
 export function enemyTemplates(

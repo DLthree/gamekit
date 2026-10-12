@@ -1,13 +1,13 @@
-import type { PerfSummary } from "@/agent/perf";
 import type { SwitchId } from "@/content/switches";
 import type { Vec } from "@/core/vec";
 import type { Flow } from "@/game/flow";
 import type { WaveReport } from "@/game/report";
-import type { FxCounts } from "@/present/fx/pool";
-import type { SoundStatus } from "@/present/sound";
-import type { Command } from "@/sim/command";
-import type { SimEvent } from "@/sim/events";
-import type { WorldSummary } from "@/sim/snapshot";
+import type { PerfSummary } from "@/realtime/agent/perf";
+import type { FxCounts } from "@/realtime/present/fx/pool";
+import type { SoundStatus } from "@/realtime/present/sound";
+import type { Command } from "@/realtime/sim/command";
+import type { SimEvent } from "@/realtime/sim/events";
+import type { WorldSummary } from "@/realtime/sim/snapshot";
 
 /** What an agent (Playwright, a script, a person in the console) can read and drive. */
 export interface GameHandle {

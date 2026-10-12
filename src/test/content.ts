@@ -3,7 +3,7 @@ import { formatContentError } from "@/content/errors";
 import { KINDS, schemaRefFor } from "@/content/kinds";
 import type { Content } from "@/content/types";
 import { GAME_TEST_FILES } from "@/game/test-files";
-import { DMG_A, DMG_B, ROLE_A, ROLE_B, TAG_A, TAG_B, TAG_C } from "@/test/vocab";
+import { DMG_A, DMG_B, ROLE_A, ROLE_B, TAG_A, TAG_B, TAG_C } from "@/realtime/test/vocab";
 
 /** path → replacement file (without `$schema`, which is inserted), or null to delete the file. */
 export type FilePatch = Record<string, unknown>;

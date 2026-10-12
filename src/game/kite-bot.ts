@@ -1,10 +1,10 @@
 import { TICK_S } from "@/core/clock";
 import { clampLength, unit, type Vec } from "@/core/vec";
-import type { Actor } from "@/sim/actors/store";
-import { nearestEnemy } from "@/sim/combat/targeting";
-import type { CastCommand, Command } from "@/sim/command";
-import type { Volume } from "@/sim/volumes/store";
-import { playerOf, type World } from "@/sim/world";
+import type { Actor } from "@/realtime/sim/actors/store";
+import { nearestEnemy } from "@/realtime/sim/combat/targeting";
+import type { CastCommand, Command } from "@/realtime/sim/command";
+import type { Volume } from "@/realtime/sim/volumes/store";
+import { playerOf, type World } from "@/realtime/sim/world";
 
 const LOOP_RADIUS = 90;
 const LOOP_S = 14;

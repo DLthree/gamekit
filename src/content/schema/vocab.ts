@@ -4,7 +4,7 @@ import { DAMAGE_TYPES, ROLES, TAGS } from "@/game/vocab";
 /**
  * The closed vocabularies content refers to. Stat ids change slowly and code interprets them, so
  * they live in code; their values live in content. The clamp for each stat id is in
- * src/sim/stats/ids.ts, typed so a new id without a clamp fails typecheck. Tags, damage types and
+ * src/realtime/sim/stats/ids.ts, typed so a new id without a clamp fails typecheck. Tags, damage types and
  * roles are the game's lists (src/game/vocab.ts).
  */
 export const STAT_IDS = [

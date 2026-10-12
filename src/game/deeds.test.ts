@@ -4,7 +4,7 @@ import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { DEEDS_KEY, deedList, deedsMet, readEarned, writeEarned } from "@/game/deeds";
 import { createReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
-import { TEST_SCENARIO } from "@/test/world";
+import { TEST_SCENARIO } from "@/realtime/test/world";
 
 const compiled = loadContentDir(REPO_CONTENT_DIR, []);
 if (!compiled.ok) throw new Error("the repo's content doesn't compile");

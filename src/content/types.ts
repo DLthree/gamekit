@@ -1,6 +1,8 @@
 import type { z } from "zod";
-import type { Character } from "@/content/schema/character";
-import type { Enemy } from "@/content/schema/enemy";
+import type { LookSounds, SoundManifest } from "@/content/schema/sounds";
+import type { GAME_KINDS } from "@/game/content";
+import type { Character } from "@/realtime/content/schema/character";
+import type { Enemy } from "@/realtime/content/schema/enemy";
 import type {
   Camera,
   Controls,
@@ -9,15 +11,18 @@ import type {
   LookCharacters,
   LookCreatures,
   Palette,
-} from "@/content/schema/look";
-import type { LookFx } from "@/content/schema/look-fx";
-import type { Modifier } from "@/content/schema/modifier";
-import type { ArenaRules, FeelRules, LimitRules, MovementRules } from "@/content/schema/rules";
-import type { Skill } from "@/content/schema/skill";
-import type { LookSounds, SoundManifest } from "@/content/schema/sounds";
-import type { Sprites } from "@/content/schema/sprites";
-import type { Stage } from "@/content/schema/stage";
-import type { GAME_KINDS } from "@/game/content";
+} from "@/realtime/content/schema/look";
+import type { LookFx } from "@/realtime/content/schema/look-fx";
+import type { Modifier } from "@/realtime/content/schema/modifier";
+import type {
+  ArenaRules,
+  FeelRules,
+  LimitRules,
+  MovementRules,
+} from "@/realtime/content/schema/rules";
+import type { Skill } from "@/realtime/content/schema/skill";
+import type { Sprites } from "@/realtime/content/schema/sprites";
+import type { Stage } from "@/realtime/content/schema/stage";
 
 /** The game's collections (GAME_KINDS), keyed by id. */
 export type GameSimContent = {

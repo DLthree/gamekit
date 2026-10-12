@@ -1,5 +1,5 @@
+import type { TestNames } from "@/realtime/test/vocab";
 import type { FilePatch } from "@/test/content";
-import type { TestNames } from "@/test/vocab";
 
 /** builds/hero.json with one loadout as all three tiers (the schema requires three). */
 export function heroBuild(auto: string, cast: string): FilePatch {

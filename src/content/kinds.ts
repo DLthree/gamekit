@@ -1,6 +1,8 @@
 import type { z } from "zod";
-import { Character } from "@/content/schema/character";
-import { Enemy } from "@/content/schema/enemy";
+import { LookSounds, SoundManifest } from "@/content/schema/sounds";
+import { GAME_KINDS } from "@/game/content";
+import { Character } from "@/realtime/content/schema/character";
+import { Enemy } from "@/realtime/content/schema/enemy";
 import {
   Camera,
   Controls,
@@ -9,15 +11,13 @@ import {
   LookCharacters,
   LookCreatures,
   Palette,
-} from "@/content/schema/look";
-import { LookFx } from "@/content/schema/look-fx";
-import { Modifier } from "@/content/schema/modifier";
-import { ArenaRules, FeelRules, LimitRules, MovementRules } from "@/content/schema/rules";
-import { Skill } from "@/content/schema/skill";
-import { LookSounds, SoundManifest } from "@/content/schema/sounds";
-import { Sprites } from "@/content/schema/sprites";
-import { Stage } from "@/content/schema/stage";
-import { GAME_KINDS } from "@/game/content";
+} from "@/realtime/content/schema/look";
+import { LookFx } from "@/realtime/content/schema/look-fx";
+import { Modifier } from "@/realtime/content/schema/modifier";
+import { ArenaRules, FeelRules, LimitRules, MovementRules } from "@/realtime/content/schema/rules";
+import { Skill } from "@/realtime/content/schema/skill";
+import { Sprites } from "@/realtime/content/schema/sprites";
+import { Stage } from "@/realtime/content/schema/stage";
 
 /** One content kind: a folder of files (collection) or a single file, and its schema. */
 export interface Kind<T> {

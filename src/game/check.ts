@@ -1,8 +1,8 @@
 import { achievementProblems } from "@/content/achievements";
-import { checkMods, type Push } from "@/content/check-tree";
 import type { Content } from "@/content/types";
 import { checkBuilds, checkModifiers, checkProjectileSteps } from "@/game/check-builds";
 import { checkScenario, ScenarioError, stageScenario } from "@/game/scenario";
+import { checkMods, type Push } from "@/realtime/content/check-tree";
 
 function checkThreats(c: Content, push: Push): void {
   const smaller = Math.min(c.sim.rules.arena.halfWidth, c.sim.rules.arena.halfHeight);

@@ -12,12 +12,12 @@ seam modules listed below.
 | `src/core/` | kit | Fixed-tick clock, seeded RNG, packed ids, vectors, spatial hash. |
 | `src/content/` | kit | Content pipeline: load (browser and Node), overrides, compile, cross-file checks, errors. |
 | `src/content/kinds.ts` | kit | The kit's content kinds (folder or file → schema); spreads in `GAME_KINDS`. |
-| `src/content/stages.ts`, `schema/stage.ts` | kit | Stages: data-defined benches (`?stage=<id>&dev=1`) — schema and actor checks. |
-| `src/sim/stage.ts` | kit | A running stage: actors placed on tick 1, respawned at their places; the player's life floors at 1. |
+| `src/realtime/content/stages.ts`, `schema/stage.ts` | kit | Stages: data-defined benches (`?stage=<id>&dev=1`) — schema and actor checks. |
+| `src/realtime/sim/stage.ts` | kit | A running stage: actors placed on tick 1, respawned at their places; the player's life floors at 1. |
 | `src/content/switches.ts` | kit | Feature switches: `on=a,b` parsing (unknown ids fail) and `switchOn`, which cuts the off systems from a frozen copy. |
 | `src/content/schema/` | kit | Zod schemas for skills, modifiers, characters, enemies, rules, look, sounds, sprites, vocab. |
-| `src/sim/` | kit | Headless sim: world, 10-phase step, actors, AI, skills, volumes, combat, stats, events, snapshot. |
-| `src/present/` | kit | Sim events → what to draw and play: animation poses, fx pool and recipes, camera, telegraphs, sound plan. |
+| `src/realtime/sim/` | kit | Headless sim: world, 10-phase step, actors, AI, skills, volumes, combat, stats, events, snapshot. |
+| `src/realtime/present/` | kit | Sim events → what to draw and play: animation poses, fx pool and recipes, camera, telegraphs, sound plan. |
 | `src/render/` | kit | Phaser boot, the world scene and its views, audio output and unlock. |
 | `src/input/` | kit | Touch stick, skill button, keyboard, mouse, gamepad (`gamepad.ts`) → one `Command` per tick. |
 | `src/app/` | kit | Real-time loop, content hot reload, aim view, telemetry setup, `platform.ts` (the save port: disk in the desktop shell, localStorage on the web; Steam's problem and deed unlocks). |
@@ -90,7 +90,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/switches` | `src/content/switches.ts` | `SWITCHES` |
 | `@/game/url` | `scripts/telemetry-summary.ts` | `reproUrl` |
 | `@/game/links` | `perf`, `phone`, `shot`, `film`, `ticks`, `screens`, e2e specs | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS` |
-| `@/game/headless` | `scripts/timeline.ts` | `worldForQuery`, `tickLine` |
+| `@/game/headless` | `scripts/realtime/timeline.ts` | `worldForQuery`, `tickLine` |
 | `@/game/sweep` | `scripts/sweep*.ts` | `SweepRow`, `sweepRuns`, `playRun`, `sweepTable` |
 | `@/game/record` | `scripts/run-record-read.ts` | `recordOf`, `replayQuery` |
 | `@/game/deeds` | `scripts/steam-dashboard.ts`, `tests/desktop/` | `deedList` |
@@ -110,24 +110,24 @@ code at a seam or a kit edit.
 | Skills | Auto (by rate) or manual (cooldown, aimed); targets `nearest`, `aim`, `player`. | `skills/*.json` |
 | Delivery | A tree of primitives: `projectile` (fan, nearest, nova, scatter; pierce; damage or trigger), `burst` (circle, arc, lane; warned telegraphs), `zone` (static, pulsing), `dash`; children on end. | `skills/*.json` `deliver`, `modifiers/*.json` `attach` |
 | Damage | Sum of the game's damage types; tags select StatMods; knockback. No armour or resistances. | `DAMAGE_TYPES`, `TAGS` |
-| Spawns | Whatever the game queues: `queueEnemy(world, def, x, y)` in step phase 9, joined in phase 10. Placement helpers: `src/sim/spawn-points.ts` (`edgePoint`, `ringPoints`, `fieldPoints`). | `src/game/wave/` (`tickWave`) |
+| Spawns | Whatever the game queues: `queueEnemy(world, def, x, y)` in step phase 9, joined in phase 10. Placement helpers: `src/realtime/sim/spawn-points.ts` (`edgePoint`, `ringPoints`, `fieldPoints`). | `src/game/wave/` (`tickWave`) |
 | On death | Phase 9 sees this tick's `died` events (`world.events`), so "dies → splits" or "dies → drops" is game code in `tickWave`. | `src/game/wave/` |
 | Win and loss | Game code sets `world.outcome` and pushes `waveEnded`. | `OUTCOMES`, `src/game/wave/` |
 
 A new enemy movement: add a function to `src/game/behaviors.ts` `BEHAVIORS` (it sets
 `actor.moveX`/`moveY` each tick; keep per-actor state in the game's `WaveState`) and name it in
 the enemy file as `behavior: { kind: "game", id }`. Player inertia, a new delivery primitive or a
-spawn with a starting velocity are kit edits (`src/sim/actors/movement.ts`, `src/sim/skills/`,
-`src/sim/spawn-queue.ts` with their schemas in `src/content/schema/`); make them content-driven so
+spawn with a starting velocity are kit edits (`src/realtime/sim/actors/movement.ts`, `src/realtime/sim/skills/`,
+`src/realtime/sim/spawn-queue.ts` with their schemas in `src/content/schema/`); make them content-driven so
 they can go back to the template.
 
 ## Creature art
 
-Every creature is one still image. `src/present/anim/` moves it in code: layer 1 (`layer1.ts`,
+Every creature is one still image. `src/realtime/present/anim/` moves it in code: layer 1 (`layer1.ts`,
 `pose.ts`) is the body transform (gait bob and squash, hit spring and recoil, attack lunge or
 cast recoil, the death pop); layer 2 (`layer2.ts`) bends a grid over the image (walk lean,
 stride, idle breath); layer 3 (`layer3.ts`) poses a held prop at the bent hand. `mesh-pose.ts`
-combines them into a `MeshDraw`, and `src/render/mesh-view.ts` draws it as a Phaser Mesh2D. The
+combines them into a `MeshDraw`, and `src/realtime/render/mesh-view.ts` draws it as a Phaser Mesh2D. The
 numbers are content: `look/creatures.json` (gait, mesh, prop and scale per creature; gait kind
 `rigid` turns layers 1–2 off for objects) and
 `look/feedback.json` (springs, lunge, death).

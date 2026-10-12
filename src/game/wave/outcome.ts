@@ -1,4 +1,4 @@
-import { playerOf, type World } from "@/sim/world";
+import { playerOf, type World } from "@/realtime/sim/world";
 
 /** Phase 9 (end): the wave is lost when the player's HP is gone, won when the timer runs out. */
 export function checkOutcome(world: World): void {
