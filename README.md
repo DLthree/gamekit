@@ -80,3 +80,7 @@ file map and the seam's exports: [docs/layout.md](docs/layout.md).
 | `pnpm deck:check` | Steam Deck pad-only walk, text sizes, shots. On demand. |
 
 Each tool family has a skill in `.claude/skills/` with flags and pitfalls.
+
+## Licence
+
+MIT (code and images). Sounds are CC0, see `public/sounds/LICENSE.md`.
