@@ -1,4 +1,5 @@
 import { unit, type Vec } from "@/core/vec";
+import { Pad } from "@/input/gamepad";
 import type { AimMode } from "@/input/gesture";
 import { Keyboard } from "@/input/keyboard";
 import { Mouse } from "@/input/mouse";
@@ -44,11 +45,17 @@ export interface ControlSample {
   view: ControlState;
 }
 
-/** Stick, skill button, keys and mouse → one move intent, at most one cast, and the view state. */
+/**
+ * Touch stick and skill button, keys, mouse and gamepad → one move intent, at most one cast, and
+ * the view state. Every device maps to the same commands: move (stick, WASD/arrows, pad left
+ * stick or D-pad) and cast (skill button, Space, left click, pad A or RT, aimed by the right
+ * stick or at the nearest foe with it centred).
+ */
 export class Controls {
   readonly button: SkillButton;
   private readonly stick: TouchStick;
   private readonly keyboard = new Keyboard();
+  private readonly pad = new Pad();
   private readonly mouse: Mouse;
   private readonly playerCss: () => Vec;
 
@@ -77,10 +84,20 @@ export class Controls {
       onTrace: o.onTrace,
     });
     this.mouse = new Mouse(el.touchZone);
+    // A pad button still held from the menu press that started the wave is not a new press.
+    this.pad.poll();
   }
 
   sample(): ControlSample {
-    const move = this.stick.active ? this.stick.vector() : this.keyboard.move();
+    this.pad.poll();
+    const keys = this.keyboard.move();
+    const move = this.stick.active
+      ? this.stick.vector()
+      : keys.x !== 0 || keys.y !== 0
+        ? keys
+        : this.pad.move();
+    const padAim = this.pad.aim();
+    const padCast = this.pad.pressed("a") || this.pad.pressed("rt");
     let cast: CastCommand | null = null;
     const r = this.button.takeRelease();
     const clicked = this.mouse.takeClick();
@@ -92,9 +109,13 @@ export class Controls {
       const m = this.mouse.position;
       const p = this.playerCss();
       cast = { slot: "cast", aim: m === null ? "auto" : { x: m.x - p.x, y: m.y - p.y } };
+    } else if (padCast && !this.button.pressed) {
+      cast = { slot: "cast", aim: padAim === null ? "auto" : { x: padAim.x, y: padAim.y } };
     }
     const b = this.button;
-    const dir = b.aiming ? b.aim() : { x: 0, y: 0 };
+    // The right stick shows its aim as the skill button's drag does.
+    const padAiming = !b.aiming && padAim !== null;
+    const dir = b.aiming ? b.aim() : (padAim ?? { x: 0, y: 0 });
     const u = unit(dir.x, dir.y, { x: 0, y: 0 });
     return {
       moveX: move.x,
@@ -102,7 +123,7 @@ export class Controls {
       cast,
       view: {
         pressed: b.pressed,
-        aiming: b.aiming,
+        aiming: b.aiming || padAiming,
         cancelArmed: b.cancelArmed,
         aimX: u.x,
         aimY: u.y,

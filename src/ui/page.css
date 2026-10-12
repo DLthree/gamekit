@@ -121,3 +121,48 @@ body.no-ui #skill-button,
 body.no-ui #stick-base {
   display: none;
 }
+
+/* A pad button's hint (src/ui/pad-keys.ts): a badge on its button's left edge naming the pad
+ * button, in the pad's own letters or shapes. It shows only while the pad was the last input and
+ * takes no room, so nothing moves when it shows. */
+[data-pad] {
+  position: relative;
+}
+
+.pad-hint {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1.5em;
+  height: 1.5em;
+  translate: -50% -50%;
+  place-items: center;
+  border-radius: 999px;
+  color: #efe6d2;
+  background: #1b1712;
+  box-shadow: 0 0 0 2px #efe6d2;
+  font-style: normal;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.pad-hint::before {
+  content: attr(data-xbox);
+  font-size: 0.72em;
+}
+
+body[data-glyphs="playstation"] .pad-hint::before {
+  content: attr(data-playstation);
+}
+
+body[data-input="pad"] [data-pad] > .pad-hint {
+  display: grid;
+}
+
+/* On a pad the focused button always wears the ring (focus moved in code may not count as
+ * keyboard focus); drawn outside the box so it never moves the layout. */
+body[data-input="pad"] :focus {
+  outline: 3px solid #1b1712;
+  outline-offset: 3px;
+}

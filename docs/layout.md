@@ -19,10 +19,10 @@ seam modules listed below.
 | `src/sim/` | kit | Headless sim: world, 10-phase step, actors, AI, skills, volumes, combat, stats, events, snapshot. |
 | `src/present/` | kit | Sim events → what to draw and play: animation poses, fx pool and recipes, camera, telegraphs, sound plan. |
 | `src/render/` | kit | Phaser boot, the world scene and its views, audio output and unlock. |
-| `src/input/` | kit | Touch stick, skill button, keyboard, mouse → one `Command` per tick. |
+| `src/input/` | kit | Touch stick, skill button, keyboard, mouse, gamepad (`gamepad.ts`) → one `Command` per tick. |
 | `src/app/` | kit | Real-time loop, content hot reload, aim view, telemetry setup. |
 | `src/agent/` | kit | `window.__game` handle, URL options, perf meter, telemetry client, run record (`record.ts`). |
-| `src/ui/` | kit | Blocking error panel and base page styles (canvas, controls, `.panel`). |
+| `src/ui/` | kit | Blocking error panel, base page styles (canvas, controls, `.panel`, `.act`), the action button (`button.ts`), gamepad menu navigation (`pad-nav.ts`) and pad shortcut hints (`pad-keys.ts`, from a game's `PadKeyMap`). |
 | `src/test/` | kit | Test helpers: small synthetic content and worlds built through the game's setup. |
 | `src/game/` | game | The example game's rules, screens and wiring (below). |
 | `content/` | game | The example's JSON content (`content/stages/`: its benches); `content/schema/` is generated (`pnpm content:schema`). |
@@ -53,7 +53,7 @@ seam modules listed below.
 | `switches.ts` | The example's feature switches (`throwers`) and what each cuts when off. |
 | `vocab.ts` | Name lists: tags, damage types, enemy roles. |
 | `bots.ts`, `kite-bot.ts` | Bots `?bot=` can name. |
-| `picker.ts`, `ui/` | The 3×3 grid model and the HUD, pause, picker and result screens. |
+| `picker.ts`, `ui/` | The 3×3 grid model and the HUD, pause, picker and result screens; `ui/pad-keys.ts` is their pad shortcuts. |
 | `headless.ts` | A query's world without the renderer, and the events `pnpm ticks` lists. |
 | `sweep.ts` | The run model `pnpm sweep` plays: run ids, one run with the kite bot, the summary table. |
 | `record.ts` | The example's run record: its choices (the replay address's parameters) and `replayQuery`. |

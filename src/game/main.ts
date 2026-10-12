@@ -13,6 +13,7 @@ import { pickerModel } from "@/game/picker";
 import { recordOf } from "@/game/record";
 import { checkScenario, type Scenario, scenarioLabel, stageScenario } from "@/game/scenario";
 import { Hud, hudModel } from "@/game/ui/hud";
+import { PAD_KEYS } from "@/game/ui/pad-keys";
 import { hidePause, showPause } from "@/game/ui/pause";
 import { hidePicker, type LastCell, showPicker } from "@/game/ui/picker";
 import { hideResult, resultModel, showResult } from "@/game/ui/result";
@@ -28,6 +29,8 @@ import type { WorldScene } from "@/render/world-scene";
 import { IDLE } from "@/sim/command";
 import { summarize } from "@/sim/snapshot";
 import { hideError, showError } from "@/ui/error";
+import { markPadKeys } from "@/ui/pad-keys";
+import { startPadNav } from "@/ui/pad-nav";
 
 function el(id: string): HTMLElement {
   const e = document.getElementById(id);
@@ -89,6 +92,7 @@ function show(prev: Flow): void {
     const toGrid = () => dispatch({ e: "showPicker", character: back });
     const exit = contentOk ? { id: "grid", label: "Grid", onClick: toGrid } : null;
     showError(el("error"), flow.title, flow.lines, exit);
+    markPadKeys(PAD_KEYS, el("error"));
     return;
   }
   hideError(el("error"));
@@ -127,6 +131,7 @@ function show(prev: Flow): void {
       () => dispatch({ e: "retry", seed: runSeed() }),
       () => dispatch({ e: "showPicker", character: scenario.character }),
     );
+    markPadKeys(PAD_KEYS, el("result"));
   }
 }
 
@@ -182,6 +187,7 @@ function applyPause(paused: boolean, character: string): void {
       () => dispatch({ e: "resume" }),
       () => dispatch({ e: "showPicker", character }),
     );
+    markPadKeys(PAD_KEYS, el("pause"));
   } else if (w.loop.paused) {
     w.loop.resume();
     // The paused gap is not a frame: the perf meter restarts its frame clock too.
@@ -358,6 +364,16 @@ document.addEventListener("visibilitychange", () => {
   dispatch({ e: "pause" });
 });
 el("pause-button").addEventListener("click", () => dispatch({ e: "pause" }));
+startPadNav({
+  modals: ["error"],
+  screens: ["pause", "picker", "result"],
+  inFight: () => flow.screen === "wave" && !flow.paused,
+  start: () => {
+    if (flow.screen === "wave") dispatch({ e: flow.paused ? "resume" : "pause" });
+  },
+  // Every screen with a way back has it on B (game/ui/pad-keys.ts); the grid has none.
+  back: () => {},
+});
 window.addEventListener("error", (e) => crash(e.error));
 window.addEventListener("unhandledrejection", (e) => crash(e.reason));
 setInterval(() => telemetry.flush(false), 5000);

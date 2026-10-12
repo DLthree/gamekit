@@ -121,7 +121,9 @@ export class WaveSession {
   frame(nowS: number): void {
     this.resizeIfNeeded();
     const c = this.controls === null ? null : this.controls.sample();
-    if (c !== null && c.cast !== null) this.loop.requestCast(c.cast);
+    // Controls are sampled while paused too (a pad press that resumes is then not new), but
+    // only cast while running.
+    if (c !== null && c.cast !== null && !this.loop.paused) this.loop.requestCast(c.cast);
     const events =
       c === null ? this.loop.frame(nowS, 0, 0) : this.loop.frame(nowS, c.moveX, c.moveY);
     this.present(events);
