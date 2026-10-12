@@ -1,4 +1,5 @@
 import type { PerfSummary } from "@/agent/perf";
+import type { SwitchId } from "@/content/switches";
 import type { Vec } from "@/core/vec";
 import type { Flow } from "@/game/flow";
 import type { WaveReport } from "@/game/report";
@@ -11,6 +12,8 @@ import type { WorldSummary } from "@/sim/snapshot";
 /** What an agent (Playwright, a script, a person in the console) can read and drive. */
 export interface GameHandle {
   flow(): Flow;
+  /** The feature switches the address turned on (`on=`, src/content/switches.ts), in its order. */
+  on(): readonly SwitchId[];
   state(): WorldSummary;
   /** manual=1 only: runs n ticks (the command's cast on the first) and returns the new state. */
   step(n: number, command?: Command): WorldSummary;

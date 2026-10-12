@@ -259,6 +259,7 @@ function need(): WaveSession {
 
 installHandle({
   flow: () => flow,
+  on: () => url.options.on,
   state: () => summarize(need().world),
   step: (n, command = IDLE) => {
     if (!url.options.manual) throw new Error("step needs manual=1 in the URL");

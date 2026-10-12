@@ -84,3 +84,10 @@ test("ui=0 hides the HUD and the skill button for screenshots", async ({ page })
   await expect(page.locator("#hud")).toBeHidden();
   await expect(page.locator("#skill-button")).toBeHidden();
 });
+
+test("on= turns feature switches on, and an unknown one stops at the address", async ({ page }) => {
+  await open(page, `${CELL}&on=throwers`);
+  expect(await page.evaluate(() => window.__game?.on())).toEqual(["throwers"]);
+  await open(page, `${CELL}&on=nope`, "error");
+  await expect(page.locator("#error")).toContainText('on=nope: no switch "nope"');
+});
