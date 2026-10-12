@@ -62,8 +62,8 @@ export function applyEvents(p: Presentation, events: readonly SimEvent[], t: num
         deathInk(em, e.x, e.y, h, t);
         p.anims.died(e.id, e.def, e.x, e.y, t);
         p.sound.request(feedback.sounds.death, t);
-        // Gold leaves only gold art: fodder (the thrower included) dies in plain ink.
-        if (e.role === "elite" || e.role === "boss") {
+        // Gold leaves only gold art: other roles die in plain ink.
+        if (e.role !== "player" && feedback.bigDeathRoles.includes(e.role)) {
           goldFlakes(em, e.x, e.y, h, t, feedback.goldFlakes.count);
           startShake(p.camera, t, feedback.shake[feedback.bigDeathShake]);
           p.sound.request(feedback.sounds.bigDeath, t);

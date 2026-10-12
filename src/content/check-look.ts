@@ -2,9 +2,6 @@ import type { Push } from "@/content/check-tree";
 import { BANDS } from "@/content/schema/look";
 import type { Content } from "@/content/types";
 
-/** Sprite roles drawn with the mesh bend; fodder stays flat, so a crowd costs one image each. */
-const BENT_ROLES = new Set(["player", "elite", "boss"]);
-
 export function checkLook(c: Content, push: Push): void {
   const {
     palette,
@@ -77,11 +74,11 @@ export function checkLook(c: Content, push: Push): void {
       push("look/creatures.json", `creatures.${id}.sprite`, `no sprite ${creature.sprite}`);
     }
     const role = sprites.sprites.find((s) => s.id === creature.sprite)?.role;
-    if (creature.mesh !== null && role !== undefined && !BENT_ROLES.has(role)) {
+    if (creature.mesh !== null && role !== undefined && !creatures.meshRoles.includes(role)) {
       push(
         "look/creatures.json",
         `creatures.${id}.mesh`,
-        `${id} is drawn as ${role}; only player, elite and boss creatures bend`,
+        `${id} is drawn as ${role}; meshRoles has ${creatures.meshRoles.join(", ")}`,
       );
     }
     const prop = creature.prop;

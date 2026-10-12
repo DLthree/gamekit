@@ -54,7 +54,7 @@ function blank(slot: number): Actor {
     alive: false,
     def: "",
     team: "enemy",
-    role: "fodder",
+    role: "player",
     x: 0,
     y: 0,
     vx: 0,

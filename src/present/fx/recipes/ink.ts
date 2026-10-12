@@ -21,8 +21,8 @@ export function deathInk(em: Emitter, x: number, y: number, bodyH: number, t: nu
 }
 
 /**
- * An elite or boss death: `count` gold flakes (look/feedback.json goldFlakes) scattered over the
- * body's height, each popping upward and outward, then drifting down as their kind falls.
+ * A big death (look/feedback.json bigDeathRoles): `count` gold flakes (goldFlakes) scattered
+ * over the body's height, each popping upward and outward, then drifting down as their kind falls.
  */
 export function goldFlakes(
   em: Emitter,

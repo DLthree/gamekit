@@ -4,11 +4,14 @@ import { ROLES } from "@/game/vocab";
 
 const Pair = z.tuple([z.number(), z.number()]);
 
+/** What an image is drawn as: the player, a held prop, or an enemy role. */
+export const ArtRole = z.enum(["player", "prop", ...ROLES]);
+export type ArtRole = z.infer<typeof ArtRole>;
+
 /** One creature or prop image in the atlas (written by scripts/build_atlas.py). */
 export const SpriteDef = z.strictObject({
   id: ContentId,
-  /** Art role: the player, a held prop, or an enemy role. */
-  role: z.enum(["player", "prop", ...ROLES]),
+  role: ArtRole,
   frame: z.string().min(1),
   px: Pair,
   world: Pair,

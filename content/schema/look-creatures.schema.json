@@ -31,6 +31,20 @@
       ],
       "additionalProperties": false
     },
+    "meshRoles": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "player",
+          "prop",
+          "fodder",
+          "elite",
+          "boss"
+        ]
+      }
+    },
     "creatures": {
       "type": "object",
       "propertyNames": {
@@ -214,6 +228,7 @@
     "$schema",
     "speedJitter",
     "meshGrid",
+    "meshRoles",
     "creatures"
   ],
   "additionalProperties": false

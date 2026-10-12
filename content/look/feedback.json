@@ -16,6 +16,7 @@
     "big-death": { "durationS": 0.22, "intensity": 0.014 }
   },
   "playerHurtShake": "hurt",
+  "bigDeathRoles": ["elite", "boss"],
   "bigDeathShake": "big-death",
   "sounds": {
     "hit": "hit",

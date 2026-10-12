@@ -2,6 +2,7 @@
   "$schema": "../schema/look-creatures.schema.json",
   "speedJitter": 0.12,
   "meshGrid": { "cols": 4, "rows": 6 },
+  "meshRoles": ["player", "elite", "boss"],
   "creatures": {
     "wizard": {
       "sprite": "wizard",

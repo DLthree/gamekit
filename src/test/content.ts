@@ -140,6 +140,7 @@ const BASE: Record<string, Record<string, unknown>> = {
   "look/creatures.json": {
     speedJitter: 0.1,
     meshGrid: { cols: 2, rows: 2 },
+    meshRoles: ["player", "elite", "boss"],
     creatures: {
       hero: { sprite: "hero", gait, mesh: null, prop: null },
       dummy: { sprite: "dummy", gait, mesh: null, prop: null },
@@ -185,6 +186,7 @@ const BASE: Record<string, Record<string, unknown>> = {
       big: { durationS: 0.2, intensity: 0.01 },
     },
     playerHurtShake: "hurt",
+    bigDeathRoles: ["elite", "boss"],
     bigDeathShake: "big",
     sounds: { hit: "tick", death: "tick", playerHurt: "tick", cast: "tick", bigDeath: "chime" },
     goldFlakes: { kind: "gold-flake", count: 6, size: 4, pop: 30 },

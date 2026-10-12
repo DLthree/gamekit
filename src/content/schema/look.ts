@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { ContentId, SchemaRef } from "@/content/schema/vocab";
+import { ArtRole } from "@/content/schema/sprites";
+import { ContentId, Role, SchemaRef } from "@/content/schema/vocab";
 
 const positive = z.number().positive();
 const nonNegative = z.number().nonnegative();
@@ -76,6 +77,8 @@ export const LookCreatures = z.strictObject({
   speedJitter: unitInterval,
   /** Cells of the layer-2 grid across and down the image (4 × 6). */
   meshGrid: z.strictObject({ cols: z.number().int().min(1), rows: z.number().int().min(1) }),
+  /** Art roles drawn with the mesh bend; the rest stay flat, so a crowd costs one image each. */
+  meshRoles: z.array(ArtRole).min(1),
   creatures: z.record(ContentId, Creature),
 });
 export type LookCreatures = z.infer<typeof LookCreatures>;
@@ -101,7 +104,9 @@ export const Feedback = z.strictObject({
   /** Named shakes; intensity is a fraction of the visible world width (Phaser's convention). */
   shake: z.record(ContentId, z.strictObject({ durationS: positive, intensity: nonNegative })),
   playerHurtShake: ContentId,
-  /** The shake when an elite or boss dies. */
+  /** Enemy roles whose death is big: gold flakes, bigDeathShake and the bigDeath sound. */
+  bigDeathRoles: z.array(Role),
+  /** The shake when a bigDeathRoles enemy dies. */
   bigDeathShake: ContentId,
   /** Sound ids (look/sounds.json) for these events; volume events are in look/fx.json. */
   sounds: z.strictObject({
@@ -109,11 +114,11 @@ export const Feedback = z.strictObject({
     death: ContentId,
     playerHurt: ContentId,
     cast: ContentId,
-    /** Played on top of `death` when an elite or boss dies. */
+    /** Played on top of `death` when a bigDeathRoles enemy dies. */
     bigDeath: ContentId,
   }),
   /**
-   * Flakes of fx `kind` shed when an elite or boss dies (gold only ever leaves gold art):
+   * Flakes of fx `kind` shed when a bigDeathRoles enemy dies (gold only ever leaves gold art):
    * `count` flakes of `size` world units, popping up at up to `pop` world units a second.
    */
   goldFlakes: z.strictObject({

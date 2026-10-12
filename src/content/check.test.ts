@@ -260,7 +260,7 @@ describe("checkContent", () => {
       hip: 0.5,
     };
     expect(errs({ "look/creatures.json": creatures })).toContain(
-      "look/creatures.json › creatures.dummy.mesh: dummy is drawn as fodder; only player, elite and boss creatures bend",
+      "look/creatures.json › creatures.dummy.mesh: dummy is drawn as fodder; meshRoles has player, elite, boss",
     );
     expect(errs(eliteMeshFiles())).toEqual([]);
   });
