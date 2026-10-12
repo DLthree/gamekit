@@ -24,7 +24,8 @@
     "e2e": "node --import ./scripts/node-alias.ts scripts/e2e.ts",
     "verify": "pnpm check && pnpm e2e",
     "film": "node --import ./scripts/node-alias.ts scripts/film.ts",
-    "ticks": "node --import ./scripts/node-alias.ts scripts/ticks.ts"
+    "ticks": "node --import ./scripts/node-alias.ts scripts/ticks.ts",
+    "screens": "node --import ./scripts/node-alias.ts scripts/screens.ts"
   },
   "dependencies": {
     "phaser": "4.2.1",

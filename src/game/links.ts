@@ -15,3 +15,30 @@ export const PHONE_QUERIES = [
   "char=wizard&build=3&threat=1",
   "char=wizard&build=1&threat=3",
 ];
+
+/**
+ * pnpm screens' pages: each opens at `query` (made reproducible: seed 7, manual=1), runs `act`
+ * in the page if given, and is shot once the flow is on `screen`.
+ */
+export const SCREENS: Record<
+  string,
+  { query: string; screen: "picker" | "wave" | "result" | "error"; act?: () => void }
+> = {
+  picker: { query: "", screen: "picker" },
+  pause: {
+    query: CELL,
+    screen: "wave",
+    act: () => {
+      window.__game?.step(120);
+      window.__game?.pause();
+    },
+  },
+  result: {
+    query: `${CELL}&bot=kite`,
+    screen: "result",
+    act: () => {
+      window.__game?.step(20_000);
+    },
+  },
+  error: { query: "char=wizard&build=9&threat=1", screen: "error" },
+};
