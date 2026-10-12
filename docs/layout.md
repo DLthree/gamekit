@@ -12,6 +12,7 @@ seam modules listed below.
 | `src/core/` | kit | Fixed-tick clock, seeded RNG, packed ids, vectors, spatial hash. |
 | `src/content/` | kit | Content pipeline: load (browser and Node), overrides, compile, cross-file checks, errors. |
 | `src/content/kinds.ts` | kit | The kit's content kinds (folder or file → schema); spreads in `GAME_KINDS`. |
+| `src/content/switches.ts` | kit | Feature switches: `on=a,b` parsing (unknown ids fail) and `switchOn`, which cuts the off systems from a frozen copy. |
 | `src/content/schema/` | kit | Zod schemas for skills, modifiers, characters, enemies, rules, look, sounds, sprites, vocab. |
 | `src/sim/` | kit | Headless sim: world, 10-phase step, actors, AI, skills, volumes, combat, stats, events, snapshot. |
 | `src/present/` | kit | Sim events → what to draw and play: animation poses, fx pool and recipes, camera, telegraphs, sound plan. |
@@ -47,6 +48,7 @@ seam modules listed below.
 | `report.ts` | The wave report built from sim events. |
 | `content.ts`, `schema/` | Game content kinds (`builds/`, `threats/`) and their schemas. |
 | `check.ts`, `check-builds.ts` | Cross-file checks for builds, modifiers and threats. |
+| `switches.ts` | The example's feature switches (`throwers`) and what each cuts when off. |
 | `vocab.ts` | Name lists: tags, damage types, enemy roles. |
 | `bots.ts`, `kite-bot.ts` | Bots `?bot=` can name. |
 | `picker.ts`, `ui/` | The 3×3 grid model and the HUD, pause, picker and result screens. |
@@ -68,6 +70,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/wave/director`, `@/game/wave/tick` | world, step | `WaveState`, `tickWave` |
 | `@/game/flow` | agent handle | `Flow` |
 | `@/game/bots` | URL options | `BOTS` |
+| `@/game/switches` | `content/switches.ts` | `SWITCHES` |
 | `@/game/url` | `scripts/telemetry-summary.ts` | `reproUrl` |
 | `@/game/links` | `perf`, `phone`, `shot`, `film`, `ticks`, `screens`, e2e specs | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS` |
 | `@/game/headless` | `scripts/timeline.ts` | `worldForQuery`, `tickLine` |

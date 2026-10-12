@@ -5,6 +5,7 @@ import { PerfMeter } from "@/agent/perf";
 import { classifyChange, loadContent, onContentReload } from "@/app/hot";
 import { createTelemetry } from "@/app/telemetry-setup";
 import { formatContentError } from "@/content/errors";
+import { switchOn } from "@/content/switches";
 import type { Content } from "@/content/types";
 import { type Flow, type FlowEvent, next } from "@/game/flow";
 import { pickerModel } from "@/game/picker";
@@ -298,7 +299,7 @@ async function boot(): Promise<void> {
     });
     return;
   }
-  content = compiled.content;
+  content = switchOn(compiled.content, url.options.on);
   contentOk = true;
   const cam = content.look.camera;
   const view = computeViewport(
@@ -353,14 +354,15 @@ onContentReload((load) => {
     location.reload();
     return;
   }
-  const change = classifyChange(content, compiled.content);
+  const switched = switchOn(compiled.content, url.options.on);
+  const change = classifyChange(content, switched);
   if (change === "assets") {
     location.reload();
     return;
   }
   // Adopt the compiled content before any crash below, so a broken scenario doesn't leave the
   // Grid button (and a hot-reloaded picker) showing stale content.
-  content = compiled.content;
+  content = switched;
   contentOk = true;
   if (change === "sim" && scenario !== null) {
     // Validate against the running cell before adopting: an edit that breaks it shows the

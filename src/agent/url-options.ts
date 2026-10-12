@@ -1,3 +1,4 @@
+import { parseOn, type SwitchId } from "@/content/switches";
 import { BOTS, type BotId } from "@/game/bots";
 
 /** How a page runs, whatever it opens: who plays, what agents may read, and what it records. */
@@ -10,6 +11,8 @@ export interface UrlOptions {
   dpr: number | null;
   telemetry: boolean | null;
   hot: "restart" | "keep";
+  /** The feature switches turned on (`on=a,b`, src/content/switches.ts). */
+  on: SwitchId[];
 }
 
 /** `key` as a whole number ≥ min, or null when absent; anything else is an error. */
@@ -55,6 +58,8 @@ export function parseOptions(
   errors: string[],
 ): { seed: number | null; overrides: string[]; options: UrlOptions } {
   const seed = wholeFrom(p, "seed", 0, errors);
+  const on = parseOn(p.get("on"));
+  if ("problem" in on) errors.push(on.problem);
   const options: UrlOptions = {
     bot: oneOf(p, "bot", BOT_IDS, errors),
     manual: flag(p, "manual", errors) === true,
@@ -64,6 +69,7 @@ export function parseOptions(
     dpr: wholeFrom(p, "dpr", 1, errors),
     telemetry: flag(p, "telemetry", errors),
     hot: oneOf(p, "hot", ["keep"], errors) === "keep" ? "keep" : "restart",
+    on: "on" in on ? on.on : [],
   };
   return { seed, overrides: p.getAll("o"), options };
 }
@@ -80,5 +86,6 @@ export function optionParams(options: UrlOptions): [string, string][] {
   if (!options.ui) q.push(["ui", "0"]);
   if (options.dpr !== null) q.push(["dpr", String(options.dpr)]);
   if (options.hot === "keep") q.push(["hot", "keep"]);
+  if (options.on.length > 0) q.push(["on", options.on.join(",")]);
   return q;
 }

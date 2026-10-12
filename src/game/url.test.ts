@@ -6,7 +6,7 @@ import { TEST_SCENARIO } from "@/test/world";
 describe("parseUrl", () => {
   it("reads a cell with seed, overrides and options", () => {
     const r = parseUrl(
-      "?char=wizard&build=1&threat=1&seed=9&o=skills/fireball.stats.area=55&o=rules/feel.hitStopS=0&aim=relative&bot=kite&manual=1&ui=0&dpr=2&hot=keep",
+      "?char=wizard&build=1&threat=1&seed=9&o=skills/fireball.stats.area=55&o=rules/feel.hitStopS=0&aim=relative&bot=kite&manual=1&ui=0&dpr=2&hot=keep&on=throwers",
     );
     expect(r.errors).toEqual([]);
     expect(r.target).toEqual({
@@ -24,7 +24,14 @@ describe("parseUrl", () => {
       dpr: 2,
       telemetry: null,
       hot: "keep",
+      on: ["throwers"],
     });
+  });
+
+  it("refuses an unknown switch, naming the known ones", () => {
+    const r = parseUrl("?char=wizard&build=1&threat=1&on=throwers,nope");
+    expect(r.target).toBeNull();
+    expect(r.errors).toEqual(['on=throwers,nope: no switch "nope"; expected throwers']);
   });
 
   it("defaults options and leaves the seed unset (a random one per run)", () => {
@@ -93,7 +100,7 @@ describe("urlFor", () => {
 describe("reproUrl", () => {
   it("round-trips the scenario and the options that shape play", () => {
     const search =
-      "?char=wizard&build=2&threat=1&seed=123&o=skills/fireball.stats.area=55&aim=absolute&bot=kite&manual=1&agent=1&ui=0&dpr=2&hot=keep&telemetry=1";
+      "?char=wizard&build=2&threat=1&seed=123&o=skills/fireball.stats.area=55&aim=absolute&bot=kite&manual=1&agent=1&ui=0&dpr=2&hot=keep&on=throwers&telemetry=1";
     const r = parseUrl(search);
     if (r.target?.screen !== "cell" || r.seed === null) throw new Error("expected a seeded cell");
     const scenario = { ...r.target.cell, seed: r.seed, overrides: r.overrides };

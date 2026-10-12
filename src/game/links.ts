@@ -3,8 +3,8 @@
 /** The first cell: the wizard's first build against the first threat. */
 export const CELL = "char=wizard&build=1&threat=1";
 
-/** pnpm perf's fixed run: the heaviest cell, played by the kite bot on a fixed seed. */
-export const PERF_QUERY = "char=wizard&build=3&threat=3&seed=7&bot=kite";
+/** pnpm perf's fixed run: the heaviest cell (every switch on), played by the kite bot on a fixed seed. */
+export const PERF_QUERY = "char=wizard&build=3&threat=3&seed=7&bot=kite&on=throwers";
 
 /** pnpm phone's links: the grid, the diagonal (balanced), one cell above it and one below. */
 export const PHONE_QUERIES = [
