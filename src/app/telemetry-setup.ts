@@ -2,14 +2,24 @@ import { randomSessionId, Telemetry } from "@/agent/telemetry";
 import type { UrlOptions } from "@/agent/url-options";
 
 /**
- * The app's telemetry. Dev (pnpm dev) and the phone build (VITE_PHONE=1) log by default;
- * production only with telemetry=1; telemetry=0 always turns it off. A failed send is counted
- * and logged, never thrown: a dropped connection must not crash the playtest it observes.
+ * The app's telemetry. The release build (pnpm build) never POSTs, and no address turns that on.
+ * Otherwise dev (pnpm dev) and the phone build (VITE_PHONE=1) log by default; a plain production
+ * build only with telemetry=1; telemetry=0 always turns it off. A failed send is counted and
+ * logged, never thrown: a dropped connection must not crash the playtest it observes.
  */
 export function createTelemetry(options: UrlOptions): {
   telemetry: Telemetry;
   failures: () => number;
 } {
+  if (__RELEASE__)
+    return {
+      telemetry: new Telemetry(
+        randomSessionId(),
+        () => performance.now(),
+        () => {},
+      ),
+      failures: () => 0,
+    };
   const on = options.telemetry ?? (import.meta.env.DEV || import.meta.env.VITE_PHONE === "1");
   let failures = 0;
   const telemetry = new Telemetry(

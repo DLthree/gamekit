@@ -38,7 +38,7 @@ function el(id: string): HTMLElement {
   return e;
 }
 
-const url = parseUrl(location.search);
+const url = parseUrl(location.search, __RELEASE__ ? "release" : "dev");
 const perf = new PerfMeter(120);
 const { telemetry, failures: telemetryFailures } = createTelemetry(url.options);
 let lastPerfS = 0;
@@ -91,7 +91,7 @@ function show(prev: Flow): void {
     const back = flow.scenario?.character ?? flow.picker?.character ?? null;
     const toGrid = () => dispatch({ e: "showPicker", character: back });
     const exit = contentOk ? { id: "grid", label: "Grid", onClick: toGrid } : null;
-    showError(el("error"), flow.title, flow.lines, exit);
+    showError(el("error"), flow.title, flow.lines, exit, __RELEASE__);
     markPadKeys(PAD_KEYS, el("error"));
     return;
   }
@@ -127,7 +127,12 @@ function show(prev: Flow): void {
     });
     showResult(
       el("result"),
-      resultModel(flow.report, scenario, location.origin + reproUrl(scenario, url.options)),
+      // The replay address is for bug reports in dev; the release build leaves its row empty.
+      resultModel(
+        flow.report,
+        scenario,
+        __RELEASE__ ? "" : location.origin + reproUrl(scenario, url.options),
+      ),
       () => dispatch({ e: "retry", seed: runSeed() }),
       () => dispatch({ e: "showPicker", character: scenario.character }),
     );
@@ -263,51 +268,53 @@ function need(): WaveSession {
   return wave;
 }
 
-installHandle({
-  flow: () => flow,
-  on: () => url.options.on,
-  state: () => summarize(need().world),
-  step: (n, command = IDLE) => {
-    if (!url.options.manual) throw new Error("step needs manual=1 in the URL");
-    const w = need();
-    try {
-      w.step(n, command);
-    } catch (err) {
-      // Fail fast: the page shows the blocking panel, and the agent's call still throws.
-      crash(err);
-      throw err;
-    }
-    return summarize(w.world);
-  },
-  events: (since = 0) => {
-    if (!url.options.agent) throw new Error("events needs agent=1 in the URL");
-    return need().log.filter((e) => e.tick >= since);
-  },
-  report: () => need().world.report,
-  fx: () => need().pres.em.pool.counts(),
-  telegraphs: () => need().telegraphCount,
-  stopFx: () => {
-    need().pres.em.pool.stopped = true;
-  },
-  perf: () => perf.summary(),
-  retry: () => dispatch({ e: "retry", seed: runSeed() }),
-  pause: () => {
-    need();
-    dispatch({ e: "pause" });
-  },
-  resume: () => {
-    need();
-    dispatch({ e: "resume" });
-  },
-  telemetryFailures,
-  playerCss: () => need().playerCss(),
-  sound: soundStatus,
-  suspendAudio: () => {
-    if (!url.options.manual) throw new Error("suspendAudio needs manual=1 in the URL");
-    if (audio === null) throw new Error("no audio before boot");
-    return audio.suspend();
-  },
-});
+// The agent handle is a dev tool: the release build has none.
+if (!__RELEASE__)
+  installHandle({
+    flow: () => flow,
+    on: () => url.options.on,
+    state: () => summarize(need().world),
+    step: (n, command = IDLE) => {
+      if (!url.options.manual) throw new Error("step needs manual=1 in the URL");
+      const w = need();
+      try {
+        w.step(n, command);
+      } catch (err) {
+        // Fail fast: the page shows the blocking panel, and the agent's call still throws.
+        crash(err);
+        throw err;
+      }
+      return summarize(w.world);
+    },
+    events: (since = 0) => {
+      if (!url.options.agent) throw new Error("events needs agent=1 in the URL");
+      return need().log.filter((e) => e.tick >= since);
+    },
+    report: () => need().world.report,
+    fx: () => need().pres.em.pool.counts(),
+    telegraphs: () => need().telegraphCount,
+    stopFx: () => {
+      need().pres.em.pool.stopped = true;
+    },
+    perf: () => perf.summary(),
+    retry: () => dispatch({ e: "retry", seed: runSeed() }),
+    pause: () => {
+      need();
+      dispatch({ e: "pause" });
+    },
+    resume: () => {
+      need();
+      dispatch({ e: "resume" });
+    },
+    telemetryFailures,
+    playerCss: () => need().playerCss(),
+    sound: soundStatus,
+    suspendAudio: () => {
+      if (!url.options.manual) throw new Error("suspendAudio needs manual=1 in the URL");
+      if (audio === null) throw new Error("no audio before boot");
+      return audio.suspend();
+    },
+  });
 
 async function boot(): Promise<void> {
   installIosGuards();

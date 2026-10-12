@@ -123,6 +123,31 @@ describe("stage addresses", () => {
   });
 });
 
+describe("the release build's addresses", () => {
+  it("refuse every dev parameter, by name", () => {
+    const r = parseUrl(
+      "?char=wizard&build=1&threat=1&dev=1&bot=kite&manual=1&agent=1&telemetry=1&o=x&on=throwers&hot=keep&ui=0&dpr=2",
+      "release",
+    );
+    expect(r.target).toBeNull();
+    expect(r.errors).toEqual(
+      ["dev", "bot", "manual", "agent", "telemetry", "o", "on", "hot", "ui", "dpr"].map(
+        (k) => `${k}: not in this build`,
+      ),
+    );
+  });
+
+  it("refuse a stage", () => {
+    expect(parseUrl("?stage=dragon", "release").errors).toEqual(["stage: not in this build"]);
+  });
+
+  it("still open a cell with a seed", () => {
+    const r = parseUrl("?char=wizard&build=2&threat=1&seed=4", "release");
+    expect(r.errors).toEqual([]);
+    expect(r.seed).toBe(4);
+  });
+});
+
 describe("reproUrl", () => {
   it("round-trips the scenario and the options that shape play", () => {
     const search =

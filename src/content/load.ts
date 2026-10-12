@@ -1,10 +1,17 @@
 import { buildContent, type CompileResult } from "@/content/compile";
 
-const RAW = import.meta.glob<string>("@content/**/*.json", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-});
+/** The release build (the shipped game) leaves out the stages, the developer benches. */
+const RAW = __RELEASE__
+  ? import.meta.glob<string>(["@content/**/*.json", "!@content/stages/**"], {
+      query: "?raw",
+      import: "default",
+      eager: true,
+    })
+  : import.meta.glob<string>("@content/**/*.json", {
+      query: "?raw",
+      import: "default",
+      eager: true,
+    });
 const MARK = "/content/";
 
 /** Every content file as text, keyed by path relative to content/ (generated JSON Schemas excluded). */

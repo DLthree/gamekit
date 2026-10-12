@@ -25,9 +25,13 @@ function required(p: URLSearchParams, key: string, errors: string[]): number | n
 
 /**
  * The URL is the flow's address: every screen and scenario an agent can reach is a link. No
- * build or threat opens the grid; `target` is null only when `errors` explains why.
+ * build or threat opens the grid; `target` is null only when `errors` explains why. A `release`
+ * build (main passes `__RELEASE__`) refuses the dev parameters (RELEASE_REFUSED).
  */
-export function parseUrl(search: string): {
+export function parseUrl(
+  search: string,
+  build: "dev" | "release" = "dev",
+): {
   target: UrlTarget | null;
   seed: number | null;
   overrides: string[];
@@ -41,11 +45,11 @@ export function parseUrl(search: string): {
   if (cell && character === null) errors.push("char is missing");
   const buildTier = cell ? required(p, "build", errors) : null;
   const threatTier = cell ? required(p, "threat", errors) : null;
-  const { seed, overrides, options } = parseOptions(p, errors);
+  const { seed, overrides, options } = parseOptions(p, errors, build);
   const stage = p.get("stage");
   if (stage !== null && (cell || character !== null))
     errors.push(`stage=${stage} opens a bench: drop char, build and threat`);
-  if (stage !== null && !options.dev)
+  if (stage !== null && !options.dev && build === "dev")
     errors.push(`stage=${stage} needs dev=1: stages are developer benches`);
   let target: UrlTarget | null = null;
   if (stage !== null) target = { screen: "stage", stage };

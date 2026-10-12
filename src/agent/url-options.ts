@@ -54,11 +54,33 @@ function flag(p: URLSearchParams, key: string, errors: string[]): boolean | null
 
 const BOT_IDS = Object.keys(BOTS) as BotId[];
 
+/**
+ * The parameters the release build (`pnpm build`, the shipped game) refuses: the agent and dev
+ * tools, content overrides and switches, and telemetry (release telemetry is the build's choice,
+ * src/app/telemetry-setup.ts). No address turns a dev tool on in a player's game.
+ */
+export const RELEASE_REFUSED = [
+  "dev",
+  "stage",
+  "bot",
+  "manual",
+  "agent",
+  "telemetry",
+  "o",
+  "on",
+  "hot",
+  "ui",
+  "dpr",
+] as const;
+
 /** The parameters every address shares: the seed, content overrides (`o=`) and options. */
 export function parseOptions(
   p: URLSearchParams,
   errors: string[],
+  build: "dev" | "release" = "dev",
 ): { seed: number | null; overrides: string[]; options: UrlOptions } {
+  if (build === "release")
+    for (const key of RELEASE_REFUSED) if (p.has(key)) errors.push(`${key}: not in this build`);
   const seed = wholeFrom(p, "seed", 0, errors);
   const on = parseOn(p.get("on"));
   if ("problem" in on) errors.push(on.problem);

@@ -68,19 +68,32 @@ function telemetry(dir: string): Plugin {
   };
 }
 
-export default defineConfig({
-  define: { __COMMIT__: JSON.stringify(commit) },
-  resolve: {
-    alias: [
-      { find: "@content", replacement: contentDir },
-      { find: "@scripts", replacement: scripts },
-      { find: "@", replacement: src },
-    ],
-  },
-  server: { host: "0.0.0.0", port: 5280, strictPort: true },
-  // The app with Phaser is one ~1.7 MB chunk (~430 kB gzipped) and the game can't start without
-  // Phaser, so splitting it buys nothing; the limit sits just above it to catch real growth.
-  build: { chunkSizeWarningLimit: 1800 },
-  plugins: [telemetry(resolve(root, process.env.GAMEKIT_TELEMETRY_DIR ?? "telemetry"))],
-  test: { include: ["src/**/*.test.ts", "scripts/**/*.test.ts"] },
+/**
+ * `vite build --mode release` (pnpm build) is the shipped game: no dev surface (the URL refuses
+ * the dev parameters, telemetry never POSTs, no stages, no window.__game, the error panel's raw
+ * lines sit behind Details) and a relative base, so dist/ runs from any path or the desktop
+ * shell's app:// protocol. Every other mode (pnpm dev, the phone build, vitest) keeps the tools.
+ */
+export default defineConfig(({ mode }) => {
+  const release = mode === "release";
+  return {
+    base: release ? "./" : "/",
+    define: { __COMMIT__: JSON.stringify(commit), __RELEASE__: JSON.stringify(release) },
+    resolve: {
+      alias: [
+        { find: "@content", replacement: contentDir },
+        { find: "@scripts", replacement: scripts },
+        { find: "@", replacement: src },
+      ],
+    },
+    server: { host: "0.0.0.0", port: 5280, strictPort: true },
+    preview: { host: "0.0.0.0", port: 5289, strictPort: true },
+    // The app with Phaser is one ~1.7 MB chunk (~430 kB gzipped) and the game can't start without
+    // Phaser, so splitting it buys nothing; the limit sits just above it to catch real growth.
+    build: { chunkSizeWarningLimit: 1800 },
+    plugins: release
+      ? []
+      : [telemetry(resolve(root, process.env.GAMEKIT_TELEMETRY_DIR ?? "telemetry"))],
+    test: { include: ["src/**/*.test.ts", "scripts/**/*.test.ts"] },
+  };
 });
