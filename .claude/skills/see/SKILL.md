@@ -28,7 +28,9 @@ Use those ticks for `shot --tick` and `film --at` (seconds = tick / 60).
 | Pages | `pnpm screens [--screen picker\|pause\|result\|error\|all] [--device desktop\|deck\|phone\|phone-landscape\|all]` | `shots/screens/<screen>-<device>.png` |
 
 All take `--o PATCH` (a content override, see the `tune` skill) to look at a value before
-committing it. A/B a tuning: same query, `--compare` with `--o` on one side.
+committing it. A/B a tuning: put the patch in one query,
+`pnpm film "<q>" --compare "<q>&o=<patch>"`; `--o` patches both rows (each row is captioned with
+its patches; identical rows are refused).
 
 ## Reading output
 

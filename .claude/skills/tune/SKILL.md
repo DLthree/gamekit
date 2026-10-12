@@ -12,7 +12,7 @@ Try values at runtime first; write them into `content/` once picked.
 `o=<folder>/<file>.<field.path>=<JSON value>`, repeatable, in any URL or tool (`--o`):
 
 ```sh
-pnpm film "<query>" --o rules/feel.hitStopS=0.12 --compare "<query>"
+pnpm film "<query>" --compare "<query>&o=rules/feel.hitStopS=0.12"
 http://<lan-ip>:<dev port>/?<CELL>&o=rules/feel.hitStopS=0.12
 ```
 

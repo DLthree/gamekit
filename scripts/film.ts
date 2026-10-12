@@ -3,7 +3,10 @@
  *
  * A strip of frames of the game: N PNGs from second S, one every MS, plus strip.png tiling them in
  * a row (with --compare, a second row from the other query, frame for frame under the first: a
- * before/after or variant A/B). Through the browser lock, on the shot tools' own server
+ * before/after or variant A/B). --o patches every row; for an A/B of a tuning put `o=<patch>` in
+ * one row's query (`--compare "<query>&o=<patch>"`; --o comes after it, so the last patch of a
+ * path wins). Each row is captioned with its query and its --o patches; two rows that would film
+ * the same thing are refused. Through the browser lock, on the shot tools' own server
  * (scripts/game-page.ts), with the query made reproducible the same way (`pnpm shot`).
  *
  * A wave is stepped (manual=1): S and MS are sim time, so the same command films the same
@@ -73,6 +76,13 @@ const clip =
       };
 const out = values.out ?? join("shots/film", queryName(query));
 const rows = values.compare === undefined ? [query] : [query, values.compare];
+const [first, second] = rows.map((q) => toolQuery(q, values.o));
+if (second !== undefined && first === second)
+  fail(
+    '--compare films the same query as the first row (--o patches both rows): for an A/B put o=<patch> in one query, e.g. --compare "<query>&o=<patch>"',
+  );
+/** Each row's caption: its query and the --o patches every row gets. */
+const captions = rows.map((q) => [q, ...values.o.map((o) => `o=${o}`)].join("&"));
 
 /** Films one query into `<out>/<prefix>NN.png`; returns the frame paths. */
 async function film(browser: Browser, base: string, q: string, prefix: string): Promise<string[]> {
@@ -122,7 +132,7 @@ async function strip(browser: Browser, rowsOfPaths: string[][]): Promise<string>
       const imgs = paths
         .map((p) => `<img src="data:image/png;base64,${readFileSync(p).toString("base64")}">`)
         .join("");
-      return `<p>${escapeHtml(rows[r] ?? "")}</p><div>${imgs}</div>`;
+      return `<p>${escapeHtml(captions[r] ?? "")}</p><div>${imgs}</div>`;
     })
     .join("");
   await page.setContent(
