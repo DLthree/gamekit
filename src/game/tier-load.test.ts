@@ -3,10 +3,10 @@ import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { tickSeconds } from "@/core/clock";
 import { kite } from "@/game/kite-bot";
+import { worldFor } from "@/game/setup";
 import { applyEvents } from "@/present/feedback";
 import { createPresentation } from "@/present/presentation";
 import { step } from "@/sim/step";
-import { createWorld } from "@/sim/world";
 
 function load(overrides: string[]) {
   const loaded = loadContentDir(REPO_CONTENT_DIR, overrides);
@@ -32,7 +32,7 @@ describe("shipped wizard tiers at full load", () => {
     const seed = 7;
     const overrides = threatTier === 1 ? [] : [UNKILLABLE];
     const content = load(overrides);
-    const w = createWorld(
+    const w = worldFor(
       { character: "wizard", buildTier, threatTier, seed, overrides },
       content.sim,
     );

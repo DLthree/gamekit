@@ -18,7 +18,7 @@ export type SimEvent =
       x: number;
       y: number;
     }
-  /** A field spawn's point: enemy `def` appears at (x, y) on `spawnTick` (if maxAlive allows). */
+  /** A field spawn's point: enemy `def` appears at (x, y) on `spawnTick` (if maxEnemies allows). */
   | { t: "spawnWarned"; tick: number; def: string; x: number; y: number; spawnTick: number }
   | {
       t: "died";

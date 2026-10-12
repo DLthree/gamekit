@@ -26,10 +26,9 @@ export function queueVolume(world: World, init: VolumeInit): void {
   world.spawns.volumes.push(init);
 }
 
-/** Phase 10: spawns what's queued, applying the store capacities and the threat's maxAlive. */
+/** Phase 10: spawns what's queued, applying the store capacities and the world's maxEnemies. */
 export function drainSpawns(world: World): void {
   const { actors, volumes, events, report, tick } = world;
-  const threat = world.content.threats[`tier-${world.scenario.threatTier}`];
   for (const s of world.spawns.enemies) {
     if (!Object.hasOwn(world.templates, s.def)) {
       throw new Error(`tick ${tick}: no enemy template "${s.def}" (content/enemies/${s.def}.json)`);
@@ -37,7 +36,7 @@ export function drainSpawns(world: World): void {
     const t = world.templates[s.def];
     const enemiesAlive = actors.alive - 1;
     const a =
-      enemiesAlive >= threat.maxAlive
+      enemiesAlive >= world.maxEnemies
         ? null
         : spawnActor(actors, {
             def: s.def,

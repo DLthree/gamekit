@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { ScenarioError } from "@/game/scenario";
-import { createWorld, playerOf } from "@/sim/world";
+import { worldFor } from "@/game/setup";
+import { playerOf } from "@/sim/world";
 import { testContent } from "@/test/content";
 import { place, run, TEST_SCENARIO, testWorld } from "@/test/world";
 
-describe("createWorld", () => {
+describe("worldFor", () => {
   it("places the player at the arena centre with the build's skills in slot order", () => {
     const w = testWorld();
     const p = playerOf(w);
@@ -105,8 +106,8 @@ describe("createWorld", () => {
       ...sim,
       skills: { ...sim.skills, zap: { ...zap, stats: { ...zap.stats, projectileSpeed: 3000 } } },
     };
-    expect(() => createWorld(TEST_SCENARIO, fast)).toThrow(ScenarioError);
-    expect(() => createWorld(TEST_SCENARIO, fast)).toThrow(
+    expect(() => worldFor(TEST_SCENARIO, fast)).toThrow(ScenarioError);
+    expect(() => worldFor(TEST_SCENARIO, fast)).toThrow(
       "builds/hero.json tier 1: zap projectiles move 50.0 a tick, more than 28",
     );
   });

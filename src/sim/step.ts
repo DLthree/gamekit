@@ -1,6 +1,5 @@
 import { recordEvents } from "@/game/report";
-import { tickDirector } from "@/game/wave/director";
-import { checkOutcome } from "@/game/wave/outcome";
+import { tickWave } from "@/game/wave/tick";
 import { applyCommand, indexActors, moveActors } from "@/sim/actors/movement";
 import { releaseActor } from "@/sim/actors/store";
 import { thinkEnemies } from "@/sim/ai/think";
@@ -55,9 +54,7 @@ export function step(world: World, command: Command): void {
   endVolumes(world);
   // 8. triggers: reserved; nothing reacts to this tick's events inside the sim
   // 9. wave
-  tickDirector(world);
-  world.wave.elapsed += 1;
-  checkOutcome(world);
+  tickWave(world);
   // 10. cleanup + spawn
   cleanup(world);
   drainSpawns(world);

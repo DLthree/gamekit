@@ -1,10 +1,11 @@
 import type { Scenario } from "@/game/scenario";
+import { worldFor } from "@/game/setup";
 import type { Actor } from "@/sim/actors/store";
 import { type Command, IDLE } from "@/sim/command";
 import type { SimEvent } from "@/sim/events";
 import { drainSpawns, queueEnemy } from "@/sim/spawn-queue";
 import { step } from "@/sim/step";
-import { createWorld, type World } from "@/sim/world";
+import type { World } from "@/sim/world";
 import { type FilePatch, testContent } from "@/test/content";
 
 export const TEST_SCENARIO: Scenario = {
@@ -17,7 +18,7 @@ export const TEST_SCENARIO: Scenario = {
 
 /** A world on the small test content, optionally patched. */
 export function testWorld(patch: FilePatch = {}, scenario: Partial<Scenario> = {}): World {
-  return createWorld({ ...TEST_SCENARIO, ...scenario }, testContent(patch).sim);
+  return worldFor({ ...TEST_SCENARIO, ...scenario }, testContent(patch).sim);
 }
 
 /** Runs n steps with one command; returns every event they emitted, in order. */

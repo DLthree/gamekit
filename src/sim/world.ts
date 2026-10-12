@@ -1,22 +1,21 @@
 import type { DeliveryNode } from "@/content/schema/skill";
-import type { ActorStats, Role, SourcedMod } from "@/content/schema/vocab";
+import type { ActorStats, Role } from "@/content/schema/vocab";
 import type { SimContent } from "@/content/types";
 import { ticks } from "@/core/clock";
 import { type Id, idIndex } from "@/core/ids";
 import { createRng, type Rng } from "@/core/rng";
 import { SpatialHash } from "@/core/spatial-hash";
-import { checkTunnelling, enemyTemplates, playerSkills } from "@/game/loadout";
-import { createReport, type WaveReport } from "@/game/report";
-import { checkScenario, type Scenario } from "@/game/scenario";
+import type { WaveReport } from "@/game/report";
+import type { Scenario } from "@/game/scenario";
+import type { WaveState } from "@/game/wave/director";
 import { type Actor, type ActorStore, createActorStore, spawnActor } from "@/sim/actors/store";
 import type { CastCommand } from "@/sim/command";
 import { EventBuffer, type Outcome, type Team } from "@/sim/events";
-import type { ResolvedSkill } from "@/sim/skills/instance";
+import type { ResolvedSkill, SkillInstance } from "@/sim/skills/instance";
 import { createSpawnQueue, type SpawnQueue } from "@/sim/spawn-queue";
-import { resolveActorStats } from "@/sim/stats/resolve";
 import { createVolumeStore, type VolumeStore } from "@/sim/volumes/store";
 
-/** An enemy kind with the threat tier's mods already applied. */
+/** An enemy kind with its stats and skills resolved (the game applies its mods first). */
 export interface EnemyTemplate {
   role: Role;
   stats: ActorStats;
@@ -46,24 +45,6 @@ export interface HitBuffer {
   count: number;
 }
 
-/** A warned field spawn waiting for its wave tick. */
-export interface PendingSpawn {
-  def: string;
-  x: number;
-  y: number;
-  /** The wave tick (`WaveState.elapsed`) it joins the spawn queue on. */
-  due: number;
-}
-
-export interface WaveState {
-  /** Wave ticks played. */
-  elapsed: number;
-  /** Per spawn entry: fractional spawns carried to the next tick. */
-  carry: number[];
-  /** Warned field spawns waiting for their wave tick. */
-  pending: PendingSpawn[];
-}
-
 export type WavePhase = "countdown" | "playing" | "ended";
 
 export interface World {
@@ -73,6 +54,7 @@ export interface World {
   freezeTicks: number;
   countdownTicks: number;
   durationTicks: number;
+  maxEnemies: number;
   phase: WavePhase;
   outcome: Outcome | null;
   rng: Rng;
@@ -95,36 +77,27 @@ export interface World {
   report: WaveReport;
 }
 
-export function createWorld(scenario: Scenario, content: SimContent): World {
-  checkScenario(scenario, content);
+/** What the game hands the kit to start a world: the player, the enemy kinds, and its rules' state. */
+export interface WorldInit {
+  scenario: Scenario;
+  seed: number;
+  player: { def: string; stats: ActorStats; skills: SkillInstance[] };
+  templates: Record<string, EnemyTemplate>;
+  /** Spawns past this many living enemies are dropped (counted in the report). */
+  maxEnemies: number;
+  durationTicks: number;
+  wave: WaveState;
+  report: WaveReport;
+}
+
+export function createWorld(content: SimContent, init: WorldInit): World {
   const { limits, feel } = content.rules;
-  const character = content.characters[scenario.character];
-  const tier = content.builds[scenario.character].tiers[scenario.buildTier - 1];
-  const threatId = `tier-${scenario.threatTier}`;
-  const threat = content.threats[threatId];
-  const buildSource = `builds/${scenario.character}.json tier ${scenario.buildTier}`;
-  const buildMods: SourcedMod[] = tier.stats.map((mod) => ({ mod, source: buildSource }));
-  const enemyMods: SourcedMod[] = threat.enemyMods.map((mod) => ({
-    mod,
-    source: `threats/${threatId}.json`,
-  }));
-
-  const templates = enemyTemplates(content, enemyMods);
-  let maxRadius = 0;
-  for (const t of Object.values(templates)) maxRadius = Math.max(maxRadius, t.stats.radius);
-
-  const stats = resolveActorStats(character.stats, buildMods);
-  const skills = playerSkills(
-    content,
-    scenario.character,
-    scenario.buildTier,
-    buildMods,
-    buildSource,
-  );
-  checkTunnelling(skills, templates, buildSource);
+  const { stats, skills } = init.player;
+  let maxRadius = stats.radius;
+  for (const t of Object.values(init.templates)) maxRadius = Math.max(maxRadius, t.stats.radius);
   const actors = createActorStore(limits.actors);
   const player = spawnActor(actors, {
-    def: scenario.character,
+    def: init.player.def,
     team: "player",
     role: "player",
     x: 0,
@@ -140,20 +113,21 @@ export function createWorld(scenario: Scenario, content: SimContent): World {
   const countdownTicks = ticks(feel.countdownS);
   return {
     content,
-    scenario,
+    scenario: init.scenario,
     tick: 0,
     freezeTicks: 0,
     countdownTicks,
-    durationTicks: ticks(threat.durationS),
+    durationTicks: init.durationTicks,
+    maxEnemies: init.maxEnemies,
     phase: countdownTicks > 0 ? "countdown" : "playing",
     outcome: null,
-    rng: createRng(scenario.seed),
+    rng: createRng(init.seed),
     actors,
     volumes: createVolumeStore(limits.volumes),
     hash: new SpatialHash(limits.hashCellSize, limits.actors),
     scratch: new Int32Array(limits.actors),
     playerId: player.id,
-    maxRadius: Math.max(maxRadius, stats.radius),
+    maxRadius,
     events: new EventBuffer(limits.events),
     spawns: createSpawnQueue(),
     hits: {
@@ -163,9 +137,9 @@ export function createWorld(scenario: Scenario, content: SimContent): World {
     },
     deliveries: [],
     cast: null,
-    templates,
-    wave: { elapsed: 0, carry: threat.spawns.map(() => 0), pending: [] },
-    report: createReport(stats.life),
+    templates: init.templates,
+    wave: init.wave,
+    report: init.report,
   };
 }
 

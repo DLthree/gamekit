@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
+import { worldFor } from "@/game/setup";
 import type { SimEvent } from "@/sim/events";
-import { createWorld, playerOf, type World } from "@/sim/world";
+import { playerOf, type World } from "@/sim/world";
 import { enemies, place, run, runUntilEvent } from "@/test/world";
 
 /**
@@ -13,7 +14,7 @@ import { enemies, place, run, runUntilEvent } from "@/test/world";
 function worldWithShippedContent(): World {
   const r = loadContentDir(REPO_CONTENT_DIR, ["skills/fire-bolt.stats.range=1"]);
   if (!r.ok) throw new Error(r.errors.map(formatContentError).join("\n"));
-  return createWorld(
+  return worldFor(
     { character: "wizard", buildTier: 1, threatTier: 1, seed: 1, overrides: [] },
     r.content.sim,
   );

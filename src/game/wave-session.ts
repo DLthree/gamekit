@@ -6,6 +6,7 @@ import type { Vec } from "@/core/vec";
 import { kite } from "@/game/kite-bot";
 import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
+import { worldFor } from "@/game/setup";
 import type { UrlOptions } from "@/game/url";
 import { type ControlElements, type ControlState, Controls } from "@/input/controls";
 import type { SkillTrace } from "@/input/skill-button";
@@ -31,7 +32,7 @@ import type { AudioOut } from "@/render/audio";
 import type { WorldScene } from "@/render/world-scene";
 import type { Command } from "@/sim/command";
 import type { SimEvent } from "@/sim/events";
-import { createWorld, playerOf, type World } from "@/sim/world";
+import { playerOf, type World } from "@/sim/world";
 
 export interface WaveSetup {
   content: Content;
@@ -65,7 +66,7 @@ export class WaveSession {
   constructor(s: WaveSetup) {
     this.setup = s;
     this.content = s.content;
-    this.world = createWorld(s.scenario, s.content.sim);
+    this.world = worldFor(s.scenario, s.content.sim);
     this.pres = createPresentation(s.content, s.scenario.seed);
     this.loop = new GameLoop({
       world: this.world,

@@ -2,7 +2,25 @@ import { TICK_S, ticks } from "@/core/clock";
 import type { TimedSpawn } from "@/game/schema/threat";
 import { edgePoint, fieldPoints, ringPoints } from "@/sim/spawn-points";
 import { queueEnemy } from "@/sim/spawn-queue";
-import { type PendingSpawn, playerOf, type World } from "@/sim/world";
+import { playerOf, type World } from "@/sim/world";
+
+/** A warned field spawn waiting for its wave tick. */
+export interface PendingSpawn {
+  def: string;
+  x: number;
+  y: number;
+  /** The wave tick (`WaveState.elapsed`) it joins the spawn queue on. */
+  due: number;
+}
+
+export interface WaveState {
+  /** Wave ticks played. */
+  elapsed: number;
+  /** Per spawn entry: fractional spawns carried to the next tick. */
+  carry: number[];
+  /** Warned field spawns waiting for their wave tick. */
+  pending: PendingSpawn[];
+}
 
 function spawnAtEdge(world: World, def: string): void {
   const p = playerOf(world);
