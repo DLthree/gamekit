@@ -29,7 +29,7 @@ seam modules listed below.
 | `assets/` | game | Source art (creatures, fx) that `pnpm atlas` packs. |
 | `public/atlas/`, `public/sounds/` | game | Packed atlas and sounds the game loads. |
 | `index.html` | game | The page: canvas, controls, and one element per screen. |
-| `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `perf`, `phone`, `telemetry`, `content-check`, `e2e` + browser guard, atlas, sounds, image prompts. |
+| `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `perf`, `phone`, `telemetry`, `content-check`, `e2e` + browser guard, atlas, sounds, image prompts. |
 | `scripts/game-page.ts` | kit | The WebKit tools' shared setup: browser lock, own server on 5283, device pages, `toolQuery`. |
 | `tests/e2e/fixtures.ts` | kit | Playwright fixtures: error capture, `open`, touch helpers, content edits. |
 | `tests/e2e/*.spec.ts` | game | Browser tests of the example game. |
@@ -55,6 +55,7 @@ seam modules listed below.
 | `bots.ts`, `kite-bot.ts` | Bots `?bot=` can name. |
 | `picker.ts`, `ui/` | The 3×3 grid model and the HUD, pause, picker and result screens. |
 | `headless.ts` | A query's world without the renderer, and the events `pnpm ticks` lists. |
+| `sweep.ts` | The run model `pnpm sweep` plays: run ids, one run with the kite bot, the summary table. |
 | `links.ts` | Addresses the tools open: `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`. |
 | `test-files.ts` | The game's files in the kit's test content (`heroBuild`). |
 
@@ -76,6 +77,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/url` | `scripts/telemetry-summary.ts` | `reproUrl` |
 | `@/game/links` | `perf`, `phone`, `shot`, `film`, `ticks`, `screens`, e2e specs | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS` |
 | `@/game/headless` | `scripts/timeline.ts` | `worldForQuery`, `tickLine` |
+| `@/game/sweep` | `scripts/sweep*.ts` | `SweepRow`, `sweepRuns`, `playRun`, `sweepTable` |
 | `@/game/setup`, `@/game/test-files` | `src/test/`, sim tests | `worldFor`, `heroBuild` |
 
 Role-specific looks live in content: `look/feedback.json` `bigDeathRoles` and
