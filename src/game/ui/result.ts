@@ -1,6 +1,7 @@
 import { TICK_HZ } from "@/core/clock";
 import type { WaveReport } from "@/game/report";
 import { type Scenario, scenarioLabel } from "@/game/scenario";
+import { actionButton } from "@/ui/button";
 
 export interface ResultModel {
   title: string;
@@ -50,16 +51,14 @@ export function showResult(
   const repro = document.createElement("p");
   repro.className = "repro";
   repro.textContent = m.repro;
-  const retry = document.createElement("button");
-  retry.id = "retry";
-  retry.textContent = "Retry";
-  retry.addEventListener("click", onRetry);
-  const grid = document.createElement("button");
-  grid.id = "grid";
-  grid.textContent = "Grid";
-  grid.addEventListener("click", onGrid);
   const box = document.createElement("div");
-  box.append(h, list, repro, retry, grid);
+  box.append(
+    h,
+    list,
+    repro,
+    actionButton("retry", "Retry", onRetry),
+    actionButton("grid", "Grid", onGrid),
+  );
   root.replaceChildren(box);
   root.hidden = false;
 }

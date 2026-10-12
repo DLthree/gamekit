@@ -1,3 +1,5 @@
+import { actionButton } from "@/ui/button";
+
 /** A button on the error panel that leads somewhere playable. */
 export interface ErrorExit {
   id: string;
@@ -22,11 +24,7 @@ export function showError(
   const box = document.createElement("div");
   box.append(h, pre);
   if (exit !== null) {
-    const button = document.createElement("button");
-    button.id = exit.id;
-    button.textContent = exit.label;
-    button.addEventListener("click", exit.onClick);
-    box.append(button);
+    box.append(actionButton(exit.id, exit.label, exit.onClick));
   }
   root.replaceChildren(box);
   root.hidden = false;

@@ -103,8 +103,10 @@ body.stick-active #stick-base {
     monospace;
 }
 
-#error button {
+/* A screen's action button (src/ui/button.ts). */
+.act {
   font: inherit;
+  color: inherit;
   font-size: 22px;
   padding: 12px 36px;
   border: 3px solid #1b1712;

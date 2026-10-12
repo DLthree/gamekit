@@ -69,18 +69,6 @@ body:not([data-screen="wave"]) #skill-button {
     monospace;
 }
 
-#resume,
-#retry,
-#grid {
-  font: inherit;
-  font-size: 22px;
-  padding: 12px 36px;
-  border: 3px solid #1b1712;
-  border-radius: 12px;
-  background: #efe6d2;
-  margin: 6px;
-}
-
 #picker .grid {
   /* Desktop reads a roomy grid; clamp() shrinks it to still fit an iPhone 14 (390 CSS px). */
   --cell: clamp(64px, 9vw, 120px);
