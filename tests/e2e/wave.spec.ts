@@ -1,4 +1,4 @@
-import { expect, open, test } from "@e2e/fixtures";
+import { expect, mouseClick, open, test } from "@e2e/fixtures";
 import { BOT, CAST_SKILL, CELL } from "@/game/links";
 
 test("a manual wave steps, casts and draws effects", async ({ page }) => {
@@ -62,7 +62,7 @@ test("a hidden page leaves the wave paused behind the overlay; Resume continues 
     screen: "wave",
     paused: true,
   });
-  await page.locator("#resume").click();
+  await mouseClick(page, "#resume");
   await expect(page.locator("#pause")).toBeHidden();
   // Wait until the tick has moved past the threshold that proves play resumed, then check the
   // upper bound right away: a condition wait can express "ticks are advancing again" but not
@@ -80,13 +80,13 @@ test("the HUD pause button and the agent handle pause; Grid leaves for the picke
   page,
 }) => {
   await open(page, CELL, "wave");
-  await page.locator("#pause-button").click();
+  await mouseClick(page, "#pause-button");
   await expect(page.locator("#pause")).toBeVisible();
   await page.evaluate(() => window.__game?.resume());
   await expect(page.locator("#pause")).toBeHidden();
   await page.evaluate(() => window.__game?.pause());
   expect(await page.evaluate(() => window.__game?.flow())).toMatchObject({ paused: true });
-  await page.locator("#pause #grid").click();
+  await mouseClick(page, "#pause #grid");
   await page.waitForFunction(() => window.__game?.flow().screen === "picker");
   await expect(page.locator("#pause")).toBeHidden();
 });

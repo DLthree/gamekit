@@ -1,4 +1,4 @@
-import { expect, open, test } from "@e2e/fixtures";
+import { expect, mouseClick, open, test } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
 import { HERO } from "@/game/links";
 
@@ -26,7 +26,7 @@ test("a won wave earns First Light, shown on the grid and kept across a reload",
   await open(page, WIN, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
-  await page.locator("#grid").click();
+  await mouseClick(page, "#grid");
   await page.waitForFunction(() => window.__game?.flow().screen === "picker");
   await expect(page.locator('#picker .deeds li[data-deed="first-light"]')).toHaveClass(/earned/);
   // Earning a deed fills its mark; no row moves.

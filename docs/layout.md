@@ -69,7 +69,7 @@ Tools by layer:
 | `scripts/realtime/` | realtime | `ticks` + `timeline.ts` (headless: the frame of each telling moment), `perf` / `perf:check` (timings of `PERF_QUERY`). |
 | `scripts/build-sounds.sh` | core + game | The loudness and loop functions are kit; the fetch and `oneshot` lines are the example's sounds, replaced per game. |
 | `scripts/game-page.ts` | core | The WebKit tools' shared setup: browser lock, own server on the tools port, device pages, `toolQuery`, `reach` (actions, then frames). |
-| `tests/e2e/fixtures.ts` | core | Playwright fixtures: error capture, `open`, touch helpers, content edits. |
+| `tests/e2e/fixtures.ts` | core | Playwright fixtures: error capture, `open`, `mouseClick` / `fingerTap` (reach an element by wheel or swipe as a player does, fail if it is covered or out of reach, then press it for real), raw touch pointer events, content edits. |
 | `tests/fixtures/turn/`, `tests/e2e/turn-clock.spec.ts` | core | A turn-based page in miniature (an action, then a 30-frame slide) proving the tools' time model without a game. |
 | `tests/desktop/` | core | The desktop smoke test (`pnpm desktop:smoke`): saves across a relaunch, a corrupt save, the Steam build without Steam. |
 | `tests/deck/pad.ts`, `setup.ts`, `teardown.ts` | core | The Deck check's scripted pad, focus walker, text measure and report. |

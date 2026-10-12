@@ -1,4 +1,4 @@
-import { expect, open, test } from "@e2e/fixtures";
+import { expect, fingerTap, mouseClick, open, test } from "@e2e/fixtures";
 import type { Page } from "@playwright/test";
 import { BOT, CAST_SKILL, CELL, HERO } from "@/game/links";
 
@@ -21,7 +21,7 @@ test("a tapped cell starts and writes its address; a reload lands on it again", 
   page,
 }) => {
   await open(page, "manual=1", "picker");
-  await page.locator('#picker button[data-build="2"][data-threat="1"]').click();
+  await mouseClick(page, '#picker button[data-build="2"][data-threat="1"]');
   await screen(page, "wave");
   expect(new URL(page.url()).search).toBe(
     `?char=${HERO}&build=2&threat=1&manual=1&telemetry=0&seed=7`,
@@ -41,7 +41,7 @@ test(`the result's Grid button returns to the ${HERO}'s grid, and a reload stays
   await open(page, `${CELL}&manual=1&bot=${BOT}`, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await screen(page, "result");
-  await page.locator("#grid").click();
+  await mouseClick(page, "#grid");
   await screen(page, "picker");
   expect(new URL(page.url()).search).toBe(`?char=${HERO}&manual=1&bot=${BOT}&telemetry=0&seed=7`);
   await page.reload();
@@ -58,18 +58,18 @@ test("an unknown character in the URL shows the error panel", async ({ page }) =
 
 test("the error panel's Grid button leads to a playable cell", async ({ page }) => {
   await open(page, `char=${HERO}&build=9&threat=1`, "error");
-  await page.locator("#grid").click();
+  await mouseClick(page, "#grid");
   await screen(page, "picker");
-  await page.locator('#picker button[data-build="1"][data-threat="1"]').click();
+  await mouseClick(page, '#picker button[data-build="1"][data-threat="1"]');
   await screen(page, "wave");
 });
 
 test("a malformed address's error panel still offers the Grid", async ({ page }) => {
   await open(page, `char=${HERO}&build=2`, "error");
   await expect(page.locator("#error h1")).toHaveText("Address");
-  await page.locator("#grid").click();
+  await mouseClick(page, "#grid");
   await screen(page, "picker");
-  await page.locator('#picker button[data-build="1"][data-threat="1"]').click();
+  await mouseClick(page, '#picker button[data-build="1"][data-threat="1"]');
   await screen(page, "wave");
 });
 
@@ -78,13 +78,11 @@ test("a content error has no Grid button", async ({ page }) => {
   await expect(page.locator("#grid")).toHaveCount(0);
 });
 
-// Unrun this session: the machine is overloaded, no browser/e2e runs allowed (see report,
-// "Fix round 1"). The coordinator will run this after the restart.
 test("the last-played cell is highlighted on return to the grid", async ({ page }) => {
   await open(page, `${CELL}&manual=1&bot=${BOT}`, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await screen(page, "result");
-  await page.locator("#grid").click();
+  await mouseClick(page, "#grid");
   await screen(page, "picker");
   await expect(page.locator('#picker button[data-build="1"][data-threat="1"]')).toHaveClass(
     /\blast\b/,
@@ -92,4 +90,19 @@ test("the last-played cell is highlighted on return to the grid", async ({ page 
   await expect(page.locator('#picker button[data-build="2"][data-threat="1"]')).not.toHaveClass(
     /\blast\b/,
   );
+});
+
+test("in a short window the wheel reaches the grid's last row, and a click starts it", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 420 });
+  await open(page, "manual=1", "picker");
+  await mouseClick(page, '#picker button[data-build="3"][data-threat="3"]');
+  await screen(page, "wave");
+});
+
+test("@touch a finger taps a cell and its wave starts", async ({ page }) => {
+  await open(page, "manual=1", "picker");
+  await fingerTap(page, '#picker button[data-build="3"][data-threat="3"]');
+  await screen(page, "wave");
 });
