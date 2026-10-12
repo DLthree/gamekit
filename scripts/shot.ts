@@ -1,18 +1,23 @@
 /**
- * pnpm shot "<query>" [--tick N] [--name NAME] [--phone [--landscape]]
+ * pnpm shot "<query>" [--tick N] [--name NAME] [--deck | --phone [--landscape]]
  * A PNG of the game at tick N plus a JSON sidecar, in shots/. WebKit at desktop size (Desktop
- * Safari, the release target) by default; --phone is an iPhone 14, portrait unless --landscape.
+ * Safari, the release target) by default; --deck is a Steam Deck's 1280x800, --phone an iPhone
+ * 14, portrait unless --landscape. The query is made reproducible (scripts/game-page.ts).
  */
 import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import { devices, webkit } from "@playwright/test";
-import { acquireBrowserLock } from "@scripts/browser-guard";
-import { createServer } from "vite";
+import {
+  type Device,
+  openPage,
+  queryName,
+  settleFrame,
+  toolQuery,
+  withGameBrowser,
+} from "@scripts/game-page";
 import { PERF_QUERY } from "@/game/links";
 
-const PORT = 5283;
-const USAGE = `usage: pnpm shot "<query>" [--tick 600] [--name NAME] [--phone [--landscape]]
+const USAGE = `usage: pnpm shot "<query>" [--tick 600] [--name NAME] [--deck | --phone [--landscape]]
   e.g. pnpm shot "${PERF_QUERY}"`;
 
 const { values, positionals } = parseArgs({
@@ -20,95 +25,73 @@ const { values, positionals } = parseArgs({
   options: {
     tick: { type: "string", default: "600" },
     name: { type: "string" },
+    deck: { type: "boolean", default: false },
     phone: { type: "boolean", default: false },
     landscape: { type: "boolean", default: false },
   },
 });
-const query = positionals[0];
-if (query === undefined) {
-  console.error(USAGE);
+const fail = (why: string): never => {
+  console.error(`${why}\n${USAGE}`);
   process.exit(1);
-}
-if (values.landscape && !values.phone) {
-  console.error(`--landscape only applies with --phone (desktop is already landscape)\n${USAGE}`);
-  process.exit(1);
-}
-const device = values.phone ? (values.landscape ? "phone-landscape" : "phone") : "desktop";
+};
+const query = positionals[0] ?? fail("shot needs a query");
+if (values.landscape && !values.phone)
+  fail("--landscape only applies with --phone (desktop is already landscape)");
+if (values.deck && values.phone) fail("--deck and --phone are two devices: pick one");
+const device: Device = values.phone
+  ? values.landscape
+    ? "phone-landscape"
+    : "phone"
+  : values.deck
+    ? "deck"
+    : "desktop";
 const tick = Number(values.tick);
-if (!Number.isInteger(tick) || tick < 0) {
-  console.error(`--tick ${values.tick}: expected a whole number\n${USAGE}`);
-  process.exit(1);
-}
-// Dev boots with telemetry on by default (src/game/main.ts); a shot is a script run, not a
-// playtest, so it turns telemetry off unless the query already says one way or the other.
-// A run with no seed is random; a shot is reproducible, so it pins one unless the query does.
-const params = new URLSearchParams(query);
-if (!params.has("telemetry")) params.set("telemetry", "0");
-if (!params.has("seed")) params.set("seed", "7");
-const gotoQuery = params.toString();
+if (!Number.isInteger(tick) || tick < 0) fail(`--tick ${values.tick}: expected a whole number`);
 
-acquireBrowserLock(`pnpm shot ${query}`);
-const server = await createServer({ server: { host: "127.0.0.1", port: PORT, strictPort: true } });
-await server.listen();
-let browser: Awaited<ReturnType<typeof webkit.launch>> | null = null;
-try {
-  browser = await webkit.launch();
-  const preset = devices[values.phone ? "iPhone 14" : "Desktop Safari"];
-  const viewport = values.landscape
-    ? { width: preset.viewport.height, height: preset.viewport.width }
-    : preset.viewport;
-  const page = await (await browser.newContext({ ...preset, viewport })).newPage();
-  const errors: string[] = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto(`http://127.0.0.1:${PORT}/?${gotoQuery}&manual=1&agent=1`);
+await withGameBrowser(`pnpm shot ${query}`, async (browser, base) => {
+  const { page, errors } = await openPage(browser, device);
+  await page.goto(`${base}/?${toolQuery(query)}`);
   await page.waitForFunction(() => ["wave", "error"].includes(window.__game?.flow().screen ?? ""));
   const screen = await page.evaluate(() => window.__game?.flow().screen);
   if (screen === "error") {
     console.error(await page.locator("#error").innerText());
     process.exitCode = 1;
-  } else {
-    await page.evaluate((target) => {
-      const g = window.__game;
-      if (g === undefined) throw new Error("no window.__game");
-      while (g.state().tick < target && g.state().phase !== "ended")
-        g.step(Math.min(60, target - g.state().tick));
-    }, tick);
-    await page.evaluate(
-      () =>
-        new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(() => done(null)))),
-    );
-    if (errors.length > 0) {
-      // A page error mid-run leaves no reliable frame to trust; report it and stop, same as
-      // the error-panel path.
-      console.error(errors.join("\n"));
-      process.exitCode = 1;
-    } else {
-      const name =
-        values.name ??
-        `${query.replace(/[^a-z0-9=]+/gi, "_")}-t${tick}${device === "desktop" ? "" : `-${device}`}`;
-      mkdirSync("shots", { recursive: true });
-      await page.screenshot({ path: `shots/${name}.png` });
-      const read = await page.evaluate(() => ({
-        state: window.__game?.state(),
-        fx: window.__game?.fx(),
-      }));
-      const commit = execFileSync("git", ["rev-parse", "--short", "HEAD"], {
-        encoding: "utf8",
-      }).trim();
-      const sidecar = {
-        query,
-        tick,
-        device,
-        commit,
-        takenAt: new Date().toISOString(),
-        errors,
-        ...read,
-      };
-      writeFileSync(`shots/${name}.json`, `${JSON.stringify(sidecar, null, 2)}\n`);
-      console.log(`shots/${name}.png`);
-    }
+    return;
   }
-} finally {
-  await browser?.close();
-  await server.close();
-}
+  await page.evaluate((target) => {
+    const g = window.__game;
+    if (g === undefined) throw new Error("no window.__game");
+    while (g.state().tick < target && g.state().phase !== "ended")
+      g.step(Math.min(60, target - g.state().tick));
+  }, tick);
+  await settleFrame(page);
+  if (errors.length > 0) {
+    // A page error mid-run leaves no reliable frame to trust; report it and stop, same as
+    // the error-panel path.
+    console.error(errors.join("\n"));
+    process.exitCode = 1;
+    return;
+  }
+  const name =
+    values.name ?? `${queryName(query)}-t${tick}${device === "desktop" ? "" : `-${device}`}`;
+  mkdirSync("shots", { recursive: true });
+  await page.screenshot({ path: `shots/${name}.png` });
+  const read = await page.evaluate(() => ({
+    state: window.__game?.state(),
+    fx: window.__game?.fx(),
+  }));
+  const commit = execFileSync("git", ["rev-parse", "--short", "HEAD"], {
+    encoding: "utf8",
+  }).trim();
+  const sidecar = {
+    query,
+    tick,
+    device,
+    commit,
+    takenAt: new Date().toISOString(),
+    errors,
+    ...read,
+  };
+  writeFileSync(`shots/${name}.json`, `${JSON.stringify(sidecar, null, 2)}\n`);
+  console.log(`shots/${name}.png`);
+});

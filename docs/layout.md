@@ -27,6 +27,7 @@ seam modules listed below.
 | `public/atlas/`, `public/sounds/` | game | Packed atlas and sounds the game loads. |
 | `index.html` | game | The page: canvas, controls, and one element per screen. |
 | `scripts/` | kit | `shot`, `perf`, `phone`, `telemetry`, `content-check`, `e2e` + browser guard, atlas, sounds, image prompts. |
+| `scripts/game-page.ts` | kit | The WebKit tools' shared setup: browser lock, own server on 5283, device pages, `toolQuery`. |
 | `tests/e2e/fixtures.ts` | kit | Playwright fixtures: error capture, `open`, touch helpers, content edits. |
 | `tests/e2e/*.spec.ts` | game | Browser tests of the example game. |
 | configs (`package.json`, `vite.config.ts`, `playwright.config.ts`, `tsconfig.json`, `biome.json`, `.claude/`) | kit | Build, dev server, test runner, lint, agent hooks. |
