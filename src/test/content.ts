@@ -2,6 +2,7 @@ import { compileContent } from "@/content/compile";
 import { formatContentError } from "@/content/errors";
 import { KINDS, schemaRefFor } from "@/content/kinds";
 import type { Content } from "@/content/types";
+import { GAME_TEST_FILES } from "@/game/test-files";
 
 /** path → replacement file (without `$schema`, which is inserted), or null to delete the file. */
 export type FilePatch = Record<string, unknown>;
@@ -56,8 +57,6 @@ const telegraphVfx = {
   resolve: { kind: "ring", scale: 1, shake: "blast", sound: "tick" },
   sound: "tick",
 };
-
-const tier = { loadout: { auto: { skill: "zap" }, cast: { skill: "boom" } } };
 
 const BASE: Record<string, Record<string, unknown>> = {
   "characters/hero.json": {
@@ -119,11 +118,6 @@ const BASE: Record<string, Record<string, unknown>> = {
     skills: ["nibble"],
     look: "dummy",
   },
-  "builds/hero.json": {
-    character: "hero",
-    tiers: [tier, tier, tier],
-  },
-  "threats/tier-1.json": { durationS: 10, maxAlive: 100, spawns: [] },
   "rules/arena.json": { halfWidth: 1000, halfHeight: 1000, spawnRadius: 600 },
   "rules/movement.json": {
     separationRadius: 20,
@@ -329,7 +323,7 @@ function schemaNameFor(file: string): string {
 /** The base test files with `patch` applied; `$schema` is inserted where missing. */
 export function testFiles(patch: FilePatch = {}): Record<string, unknown> {
   const files: Record<string, unknown> = {};
-  const merged: Record<string, unknown> = { ...BASE, ...patch };
+  const merged: Record<string, unknown> = { ...BASE, ...GAME_TEST_FILES, ...patch };
   for (const [file, body] of Object.entries(merged)) {
     if (body === null) continue;
     if (typeof body !== "object") throw new Error(`testFiles: ${file} must be an object or null`);
@@ -370,12 +364,6 @@ export const quietZap: FilePatch = {
     deliver: { do: "projectile", multishot: "fan", impact: "damage", radius: 4, vfx: "zap" },
   },
 };
-
-/** builds/hero.json with one loadout as all three tiers (the schema requires three). */
-export function heroBuild(auto: string, cast: string): FilePatch {
-  const tier = { loadout: { auto: { skill: auto }, cast: { skill: cast } } };
-  return { "builds/hero.json": { character: "hero", tiers: [tier, tier, tier] } };
-}
 
 /** A patch whose hero is bent (layer 2) and holds a "staff" prop (layer 3). */
 export function meshFiles(): FilePatch {

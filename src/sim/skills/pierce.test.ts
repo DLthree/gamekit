@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/sim/events";
-import { heroBuild, quietZap } from "@/test/content";
+import { quietZap } from "@/test/content";
 import { castAt, place, run, testWorld } from "@/test/world";
 
 /** A manual bolt (2 units a tick by default) that pierces `pierce` bodies. */

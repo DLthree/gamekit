@@ -1,3 +1,4 @@
+import type { z } from "zod";
 import type { Character } from "@/content/schema/character";
 import type { Enemy } from "@/content/schema/enemy";
 import type {
@@ -15,17 +16,19 @@ import type { ArenaRules, FeelRules, LimitRules, MovementRules } from "@/content
 import type { Skill } from "@/content/schema/skill";
 import type { LookSounds, SoundManifest } from "@/content/schema/sounds";
 import type { Sprites } from "@/content/schema/sprites";
-import type { Build } from "@/game/schema/build";
-import type { Threat } from "@/game/schema/threat";
+import type { GAME_KINDS } from "@/game/content";
+
+/** The game's collections (GAME_KINDS), keyed by id. */
+export type GameSimContent = {
+  [K in keyof typeof GAME_KINDS]: Record<string, z.infer<(typeof GAME_KINDS)[K]["schema"]>>;
+};
 
 /** What the sim reads. Collections are keyed by id (the file name). */
-export interface SimContent {
+export interface SimContent extends GameSimContent {
   characters: Record<string, Character>;
   skills: Record<string, Skill>;
   modifiers: Record<string, Modifier>;
   enemies: Record<string, Enemy>;
-  builds: Record<string, Build>;
-  threats: Record<string, Threat>;
   rules: { arena: ArenaRules; movement: MovementRules; feel: FeelRules; limits: LimitRules };
 }
 

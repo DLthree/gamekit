@@ -6,8 +6,8 @@ import type {
   StatMod,
   Tag,
 } from "@/content/schema/vocab";
-import { DAMAGE_TYPES } from "@/content/schema/vocab";
 import { modApplies } from "@/content/skill-stats";
+import { DAMAGE_TYPES } from "@/game/vocab";
 import { clampStat } from "@/sim/stats/ids";
 
 export interface StatLine {

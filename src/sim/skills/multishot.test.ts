@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { Multishot } from "@/content/schema/skill";
+import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/sim/events";
-import { heroBuild, quietZap } from "@/test/content";
+import { quietZap } from "@/test/content";
 import { castAt, place, run, testWorld } from "@/test/world";
 
 /** A manual multishot bolt; dummies that never move or bite back at these distances. */

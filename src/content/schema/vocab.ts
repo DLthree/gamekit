@@ -1,9 +1,11 @@
 import { z } from "zod";
+import { DAMAGE_TYPES, ROLES, TAGS } from "@/game/vocab";
 
 /**
- * The closed vocabularies content refers to. Stat and tag ids change slowly and code interprets
- * them, so they live in code; their values live in content. The clamp for each stat id is in
- * src/sim/stats/ids.ts, typed so a new id without a clamp fails typecheck.
+ * The closed vocabularies content refers to. Stat ids change slowly and code interprets them, so
+ * they live in code; their values live in content. The clamp for each stat id is in
+ * src/sim/stats/ids.ts, typed so a new id without a clamp fails typecheck. Tags, damage types and
+ * roles are the game's lists (src/game/vocab.ts).
  */
 export const STAT_IDS = [
   "life",
@@ -29,21 +31,9 @@ export type StatId = z.infer<typeof StatId>;
 export const ACTOR_STAT_IDS = ["life", "moveSpeed", "radius", "knockbackResist"] as const;
 export type ActorStatId = (typeof ACTOR_STAT_IDS)[number];
 
-export const TAGS = [
-  "attack",
-  "spell",
-  "melee",
-  "projectile",
-  "area",
-  "duration",
-  "fire",
-  "physical",
-] as const;
 export const Tag = z.enum(TAGS);
 export type Tag = z.infer<typeof Tag>;
 
-/** Each damage type is also a tag, carried implicitly by that portion of a skill's damage. */
-export const DAMAGE_TYPES = ["physical", "fire"] as const;
 export const DamageType = z.enum(DAMAGE_TYPES);
 export type DamageType = z.infer<typeof DamageType>;
 
@@ -53,7 +43,7 @@ export type SlotId = z.infer<typeof SlotId>;
 export const Activation = z.enum(["auto", "manual"]);
 export type Activation = z.infer<typeof Activation>;
 
-export const Role = z.enum(["fodder", "elite", "boss"]);
+export const Role = z.enum(ROLES);
 export type Role = z.infer<typeof Role>;
 
 /** The `$schema` every content file starts with (checked against its path by the compiler). */

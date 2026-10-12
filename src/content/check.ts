@@ -1,9 +1,9 @@
 import { checkLook } from "@/content/check-look";
-import { checkMods, type Push, treeProblems } from "@/content/check-tree";
+import { type Push, treeProblems } from "@/content/check-tree";
 import type { ContentError } from "@/content/errors";
 import { hasSkillStat, type SkillStatId } from "@/content/skill-stats";
 import type { Content } from "@/content/types";
-import { checkBuilds, checkModifiers, checkProjectileSteps } from "@/game/check-builds";
+import { checkGame, checkGameResolved } from "@/game/check";
 
 function checkSkills(c: Content, push: Push): void {
   for (const [id, skill] of Object.entries(c.sim.skills)) {
@@ -75,45 +75,6 @@ function checkEnemies(c: Content, push: Push): void {
   }
 }
 
-function checkThreats(c: Content, push: Push): void {
-  const smaller = Math.min(c.sim.rules.arena.halfWidth, c.sim.rules.arena.halfHeight);
-  const onScreen = c.look.camera.shortSideSpan / 2;
-  for (const [id, threat] of Object.entries(c.sim.threats)) {
-    const file = `threats/${id}.json`;
-    if (!/^tier-[1-9]$/.test(id)) push(file, "", "threat files are named tier-1, tier-2, …");
-    checkMods(threat.enemyMods, file, "enemyMods", push);
-    const end = `after the wave ends at ${threat.durationS} s`;
-    for (const [i, s] of threat.spawns.entries()) {
-      if (!Object.hasOwn(c.sim.enemies, s.enemy))
-        push(file, `spawns.${i}.enemy`, `no enemy ${s.enemy}`);
-      if ("at" in s) {
-        if (s.at >= threat.durationS) push(file, `spawns.${i}.at`, end);
-      } else {
-        if (s.to > threat.durationS) push(file, `spawns.${i}.to`, end);
-        if (s.from >= s.to) push(file, `spawns.${i}.from`, "must be before to");
-      }
-      if (s.pattern === "ring" && s.radius > smaller) {
-        push(file, `spawns.${i}.radius`, `at most ${smaller} (the arena's smaller half extent)`);
-      }
-      if (s.pattern === "field") {
-        const at = `spawns.${i}`;
-        if (s.minDistance >= s.maxDistance)
-          push(file, `${at}.minDistance`, "must be less than maxDistance");
-        if (s.maxDistance > onScreen) {
-          push(
-            file,
-            `${at}.maxDistance`,
-            `at most ${onScreen} (half of look/camera.json shortSideSpan, so spawns stay on screen)`,
-          );
-        }
-        if (s.maxDistance > smaller)
-          push(file, `${at}.maxDistance`, `at most ${smaller} (the arena's smaller half extent)`);
-        if (s.at + s.warnS >= threat.durationS) push(file, `${at}.warnS`, end);
-      }
-    }
-  }
-}
-
 function checkArena(c: Content, push: Push): void {
   const { arena } = c.sim.rules;
   const cam = c.look.camera;
@@ -133,20 +94,18 @@ function checkArena(c: Content, push: Push): void {
   }
 }
 
-/** Rules that span files. Every error is collected, not just the first. */
+/** Rules that span files, the kit's and then the game's. Every error is collected, not just the first. */
 export function checkContent(c: Content): ContentError[] {
   const errors: ContentError[] = [];
   const push: Push = (file, path, message) => {
     errors.push({ file, path, message });
   };
   checkSkills(c, push);
-  checkBuilds(c, push);
-  checkModifiers(c, push);
   checkEnemies(c, push);
-  checkThreats(c, push);
   checkArena(c, push);
   checkLook(c, push);
+  checkGame(c, push);
   // Resolves the sim's numbers, so only once the rest holds.
-  if (errors.length === 0) checkProjectileSteps(c, push);
+  if (errors.length === 0) checkGameResolved(c, push);
   return errors;
 }

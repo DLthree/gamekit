@@ -1,13 +1,14 @@
 import { z } from "zod";
 import { ContentId, SchemaRef } from "@/content/schema/vocab";
+import { ROLES } from "@/game/vocab";
 
 const Pair = z.tuple([z.number(), z.number()]);
 
 /** One creature or prop image in the atlas (written by scripts/build_atlas.py). */
 export const SpriteDef = z.strictObject({
   id: ContentId,
-  /** Art role: gold leaf appears only on "elite" and "boss" images. */
-  role: z.enum(["player", "prop", "fodder", "elite", "boss"]),
+  /** Art role: the player, a held prop, or an enemy role. */
+  role: z.enum(["player", "prop", ...ROLES]),
   frame: z.string().min(1),
   px: Pair,
   world: Pair,

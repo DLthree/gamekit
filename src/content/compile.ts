@@ -2,7 +2,8 @@ import { checkContent } from "@/content/check";
 import type { ContentError } from "@/content/errors";
 import { KINDS, type Kind, schemaRefFor } from "@/content/kinds";
 import { applyOverrides, isOverride, type Override, parseOverride } from "@/content/overrides";
-import type { Content } from "@/content/types";
+import type { Content, GameSimContent } from "@/content/types";
+import { GAME_KINDS } from "@/game/content";
 
 export type CompileResult = { ok: true; content: Content } | { ok: false; errors: ContentError[] };
 
@@ -124,8 +125,6 @@ export function compileContent(files: Readonly<Record<string, unknown>>): Compil
   const skills = collection(files, KINDS.skills, claimed, errors);
   const modifiers = collection(files, KINDS.modifiers, claimed, errors);
   const enemies = collection(files, KINDS.enemies, claimed, errors);
-  const builds = collection(files, KINDS.builds, claimed, errors);
-  const threats = collection(files, KINDS.threats, claimed, errors);
   const arena = single(files, KINDS.arena, claimed, errors);
   const movement = single(files, KINDS.movement, claimed, errors);
   const feel = single(files, KINDS.feel, claimed, errors);
@@ -141,6 +140,12 @@ export function compileContent(files: Readonly<Record<string, unknown>>): Compil
   const sprites = single(files, KINDS.sprites, claimed, errors);
   const sounds = single(files, KINDS.sounds, claimed, errors);
   const soundManifest = single(files, KINDS.soundManifest, claimed, errors);
+  const game = Object.fromEntries(
+    Object.entries(GAME_KINDS).map(([key, kind]) => [
+      key,
+      collection<unknown>(files, kind, claimed, errors),
+    ]),
+  ) as GameSimContent;
   for (const file of Object.keys(files).sort()) {
     if (!claimed.has(file)) errors.push({ file, path: "", message: "not a known content file" });
   }
@@ -170,8 +175,7 @@ export function compileContent(files: Readonly<Record<string, unknown>>): Compil
       skills,
       modifiers,
       enemies,
-      builds,
-      threats,
+      ...game,
       rules: { arena, movement, feel, limits },
     },
     look: {

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/sim/events";
-import { heroBuild, quietZap } from "@/test/content";
+import { quietZap } from "@/test/content";
 import { castAt, place, run, testWorld } from "@/test/world";
 
 /** A manual skill that drops a zone at the caster: 4 fire per pulse, 4 pulses, radius 30. */

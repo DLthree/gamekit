@@ -1,8 +1,9 @@
 import type { BurstNode, DeliveryNode } from "@/content/schema/skill";
-import { ACTOR_STAT_IDS, DAMAGE_TYPES, type StatMod } from "@/content/schema/vocab";
+import { ACTOR_STAT_IDS, type StatMod } from "@/content/schema/vocab";
 import type { SkillStatId } from "@/content/skill-stats";
 import type { Content } from "@/content/types";
 import { ticks } from "@/core/clock";
+import { DAMAGE_TYPES } from "@/game/vocab";
 
 export type Push = (file: string, path: string, message: string) => void;
 

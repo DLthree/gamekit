@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/sim/events";
 import { playerOf } from "@/sim/world";
-import { heroBuild, quietZap } from "@/test/content";
+import { quietZap } from "@/test/content";
 import { castAt, place, run, testWorld } from "@/test/world";
 
 function boom(patch: { hitStop?: boolean } = {}) {

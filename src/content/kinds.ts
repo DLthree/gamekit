@@ -16,8 +16,7 @@ import { ArenaRules, FeelRules, LimitRules, MovementRules } from "@/content/sche
 import { Skill } from "@/content/schema/skill";
 import { LookSounds, SoundManifest } from "@/content/schema/sounds";
 import { Sprites } from "@/content/schema/sprites";
-import { Build } from "@/game/schema/build";
-import { Threat } from "@/game/schema/threat";
+import { GAME_KINDS } from "@/game/content";
 
 /** One content kind: a folder of files (collection) or a single file, and its schema. */
 export interface Kind<T> {
@@ -36,13 +35,12 @@ function kind<T>(
   return { path, schemaName, schema, collection };
 }
 
+/** The kit's content kinds. The game adds its own (`GAME_KINDS`) to the end. */
 export const KINDS = {
   characters: kind("characters", "character", Character, true),
   skills: kind("skills", "skill", Skill, true),
   modifiers: kind("modifiers", "modifier", Modifier, true),
   enemies: kind("enemies", "enemy", Enemy, true),
-  builds: kind("builds", "build", Build, true),
-  threats: kind("threats", "threat", Threat, true),
   arena: kind("rules/arena", "rules-arena", ArenaRules, false),
   movement: kind("rules/movement", "rules-movement", MovementRules, false),
   feel: kind("rules/feel", "rules-feel", FeelRules, false),
@@ -58,6 +56,7 @@ export const KINDS = {
   sprites: kind("look/generated/sprites", "look-generated-sprites", Sprites, false),
   sounds: kind("look/sounds", "look-sounds", LookSounds, false),
   soundManifest: kind("look/generated/sounds", "look-generated-sounds", SoundManifest, false),
+  ...GAME_KINDS,
 };
 
 /** The `$schema` a file must carry: relative from the file's folder to content/schema/. */
