@@ -11,7 +11,7 @@ docs name it only as an illustration. Copy the repo, then replace the example: [
 |----------|-------|--------------|
 | Observable | The agent can see any moment, change over time, and what happened when. | `pnpm shot`, `pnpm film`, `pnpm ticks`, `pnpm screens`, telemetry |
 | Drivable | A typed handle and scenario URLs; bots, tests and tools take the path a player does. | `window.__game`, `?bot=`, `?stage=`, `pnpm e2e` |
-| Deterministic | One seeded RNG, integer ticks; any run replays exactly from its seed and record. | `src/core/`, `pnpm run-record` |
+| Deterministic | One seeded RNG and a stepped frame clock; any run replays exactly from its seed and record. | `src/core/`, `pnpm run-record` |
 | Headless | The sim runs without the renderer, fast and in parallel. | `pnpm sweep`, `pnpm test` |
 | Data-driven | Content is validated JSON, tunable at runtime; bad content stops the game with a panel naming file and field. | `content/`, `?o=`, `?on=`, `pnpm content:check` |
 
@@ -59,7 +59,7 @@ map and seam: [docs/layout.md](docs/layout.md).
 | `pnpm film "<q>" [--actions JSON] --frames N --count 8 --every 6` | A frame strip from that moment; `--compare` for A/B. |
 | `pnpm ticks "<q>"` | *Realtime.* Headless: the frames of a run's telling moments, to aim shot/film. |
 | `pnpm screens` | Every page the game lists (`SCREENS`) at every device size. |
-| `pnpm sweep [--runs] [--seeds N]` | Parallel headless bot runs, summary table. |
+| `pnpm sweep [--runs ID,…] [--seeds N]` | Parallel headless bot runs, summary table. |
 | `pnpm perf` / `perf:check` | *Realtime.* Frame, sim and render timings of the heaviest scenario; `:check` fails on a floor. |
 | `pnpm telemetry [file]` | Summarise the newest telemetry log. |
 | `pnpm run-record <jsonl\|rr1;…>` | Run records → replay links. |

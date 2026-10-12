@@ -11,7 +11,7 @@ const GESTURES = ["touchend", "pointerup", "keydown"] as const;
  * Keeps audio running on iOS Safari: the context starts suspended until a gesture and goes
  * "interrupted" after a call or Siri, so every gesture while it isn't running tries resume()
  * again. A rejected resume is counted and logged, never left unhandled (that would crash the
- * wave through the page's unhandledrejection handler).
+ * run through the page's unhandledrejection handler).
  */
 export class AudioUnlock {
   failures = 0;

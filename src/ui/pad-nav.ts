@@ -56,7 +56,7 @@ function shown(e: Element): boolean {
 export interface PadNavOptions {
   /** Screen root ids that take the pad alone while shown, as a dialog would (an error panel). */
   modals: readonly string[];
-  /** The run's controls have the pad (a wave, not paused): the menus leave it alone. */
+  /** The run's controls have the pad (a run playing, not paused): the menus leave it alone. */
   inFight(): boolean;
   /** Start (or Escape): pauses a fight, resumes a paused one. */
   start(): void;
