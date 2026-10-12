@@ -55,14 +55,12 @@ export function showResult(
   const repro = document.createElement("p");
   repro.className = "repro";
   repro.textContent = m.repro;
+  const actions = document.createElement("div");
+  actions.className = "actions";
+  actions.append(actionButton("retry", "Retry", onRetry), actionButton("grid", "Grid", onGrid));
   const box = document.createElement("div");
-  box.append(
-    h,
-    list,
-    repro,
-    actionButton("retry", "Retry", onRetry),
-    actionButton("grid", "Grid", onGrid),
-  );
+  box.className = "sheet";
+  box.append(h, list, repro, actions);
   root.replaceChildren(box);
   root.hidden = false;
 }

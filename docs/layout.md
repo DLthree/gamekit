@@ -32,7 +32,7 @@ seam modules listed below.
 | `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `run-record` + `run-record-read.ts` (records → replay links), `perf` / `perf:check` (timings of `PERF_QUERY`), `phone`, `telemetry`, `content-check`, `e2e` + browser guard (one machine-wide lock, `~/.cache/browser-guard/lock`), atlas, sounds, image prompts. |
 | `scripts/game-page.ts` | kit | The WebKit tools' shared setup: browser lock, own server on 5283, device pages, `toolQuery`. |
 | `tests/e2e/fixtures.ts` | kit | Playwright fixtures: error capture, `open`, touch helpers, content edits. |
-| `tests/e2e/*.spec.ts` | game | Browser tests of the example game. |
+| `tests/e2e/*.spec.ts` | game | Browser tests of the example game; `layout.spec.ts` holds each screen's element boxes equal across its states (stable layout), `gamepad.spec.ts` plays it with a scripted pad. |
 | configs (`package.json`, `vite.config.ts`, `playwright.config.ts`, `tsconfig.json`, `biome.json`, `.claude/`) | kit | Build, dev server, test runner, lint, agent hooks. |
 
 ## src/game
