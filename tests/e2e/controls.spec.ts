@@ -15,7 +15,7 @@ async function playerPast(page: Page, x: number): Promise<number> {
   return (await page.evaluate(() => window.__game?.state().player.x)) ?? 0;
 }
 
-test("absolute aim casts from the player toward the finger", async ({ page, errors }) => {
+test("@touch absolute aim casts from the player toward the finger", async ({ page, errors }) => {
   await open(page, `${REAL}&aim=absolute`, "wave");
   await playing(page);
   const b = await buttonCenter(page);
@@ -31,7 +31,9 @@ test("absolute aim casts from the player toward the finger", async ({ page, erro
   expect(errors).toEqual([]);
 });
 
-test("the skill button and knobs take their sizes from look/controls.json", async ({ page }) => {
+test("@touch the skill button and knobs take their sizes from look/controls.json", async ({
+  page,
+}) => {
   await open(
     page,
     `${REAL}&aim=relative&o=look/controls.buttonRadius=60&o=look/controls.knobRadius=25`,
@@ -42,7 +44,7 @@ test("the skill button and knobs take their sizes from look/controls.json", asyn
   expect((await page.locator("#skill-knob").boundingBox())?.width).toBe(50);
 });
 
-test("relative aim casts along the drag from the button's centre", async ({ page }) => {
+test("@touch relative aim casts along the drag from the button's centre", async ({ page }) => {
   await open(page, REAL, "wave");
   await playing(page);
   const b = await buttonCenter(page);
@@ -54,7 +56,7 @@ test("relative aim casts along the drag from the button's centre", async ({ page
   expect(aim.ax).toBeLessThan(-0.95);
 });
 
-test("a tap quick-casts with finite positions", async ({ page }) => {
+test("@touch a tap quick-casts with finite positions", async ({ page }) => {
   await open(page, REAL, "wave");
   await playing(page);
   const b = await buttonCenter(page);
@@ -67,7 +69,7 @@ test("a tap quick-casts with finite positions", async ({ page }) => {
   for (const v of volumes) expect(Number.isFinite(v.x) && Number.isFinite(v.y)).toBe(true);
 });
 
-test("dragging back onto the button cancels", async ({ page }) => {
+test("@touch dragging back onto the button cancels", async ({ page }) => {
   await open(page, REAL, "wave");
   await playing(page);
   const b = await buttonCenter(page);
@@ -89,7 +91,7 @@ test("dragging back onto the button cancels", async ({ page }) => {
   expect(casts).toBe(0);
 });
 
-test("two thumbs: the stick moves the player while the other thumb aims and casts", async ({
+test("@touch two thumbs: the stick moves the player while the other thumb aims and casts", async ({
   page,
 }) => {
   await open(page, `${REAL}&aim=absolute`, "wave");
@@ -112,7 +114,7 @@ test("two thumbs: the stick moves the player while the other thumb aims and cast
   await touch(page, 1, "pointerup", 160, b.y - 40);
 });
 
-test("rotating mid-wave resizes the canvas and absolute aim still follows the finger", async ({
+test("@touch rotating mid-wave resizes the canvas and absolute aim still follows the finger", async ({
   page,
 }) => {
   await open(page, `${REAL}&aim=absolute`, "wave");

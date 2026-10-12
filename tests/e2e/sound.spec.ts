@@ -15,7 +15,7 @@ async function castFireball(page: Page): Promise<void> {
   await page.evaluate(() => window.__game?.act({ frames: 30, cast: [1, 0] }));
 }
 
-test("audio waits for the first touch, drops what it couldn't play, then plays", async ({
+test("@touch audio waits for the first touch, drops what it couldn't play, then plays", async ({
   page,
 }) => {
   await open(page, `${CELL}&manual=1`, "wave");

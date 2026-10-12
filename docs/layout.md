@@ -20,7 +20,8 @@ The kit has two layers; dependencies point down only: game → realtime → core
 - **game**: `src/game/`, `content/`, `assets/`, the e2e specs. The example uses core + realtime.
 
 `scripts/layers.test.ts` fails if core imports realtime, or core or realtime import a game module
-outside the seam below.
+outside the seam below; `scripts/package-scripts.test.ts` fails if a package.json script names a
+file or script that doesn't exist.
 
 Tools by layer:
 
@@ -74,7 +75,7 @@ Tools by layer:
 | `tests/deck/pad.ts`, `setup.ts`, `teardown.ts` | core | The Deck check's scripted pad, focus walker, text measure and report. |
 | `tests/deck/walk.spec.ts` | game | The example's pad-only walk. |
 | `tests/e2e/wave.ts` | game | The example's wave helpers for its specs (`playing`, `waitForCast`, `buttonCenter`). |
-| `tests/e2e/*.spec.ts` | game | Browser tests of the example game; `layout.spec.ts` holds each screen's element boxes equal across its states (stable layout), `gamepad.spec.ts` plays it with a scripted pad. |
+| `tests/e2e/*.spec.ts` | game | Browser tests of the example game; `layout.spec.ts` holds each screen's element boxes equal across its states (stable layout), `gamepad.spec.ts` plays it with a scripted pad. A test with `@touch` in its title runs on the phone project only; the rest run on desktop. |
 | `README.md`, `CLAUDE.md`, `docs/`, `.claude/skills/` | core | What the kit is, the agent's project instructions, this map, the new-game steps, one skill per tool family. |
 | `scripts/ports.ts` | core | Every server port, from one base; configs and scripts read it. |
 | configs (`package.json`, `vite.config.ts`, `playwright.config.ts`, `playwright.desktop.config.ts`, `playwright.deck.config.ts`, `tsconfig.json`, `biome.json`, `.claude/`) | core | Build, dev server, test runner, lint, agent hooks. |
