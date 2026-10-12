@@ -16,6 +16,7 @@ import { ArenaRules, FeelRules, LimitRules, MovementRules } from "@/content/sche
 import { Skill } from "@/content/schema/skill";
 import { LookSounds, SoundManifest } from "@/content/schema/sounds";
 import { Sprites } from "@/content/schema/sprites";
+import { Stage } from "@/content/schema/stage";
 import { GAME_KINDS } from "@/game/content";
 
 /** One content kind: a folder of files (collection) or a single file, and its schema. */
@@ -41,6 +42,7 @@ export const KINDS = {
   skills: kind("skills", "skill", Skill, true),
   modifiers: kind("modifiers", "modifier", Modifier, true),
   enemies: kind("enemies", "enemy", Enemy, true),
+  stages: kind("stages", "stage", Stage, true),
   arena: kind("rules/arena", "rules-arena", ArenaRules, false),
   movement: kind("rules/movement", "rules-movement", MovementRules, false),
   feel: kind("rules/feel", "rules-feel", FeelRules, false),

@@ -16,6 +16,7 @@ import type { ArenaRules, FeelRules, LimitRules, MovementRules } from "@/content
 import type { Skill } from "@/content/schema/skill";
 import type { LookSounds, SoundManifest } from "@/content/schema/sounds";
 import type { Sprites } from "@/content/schema/sprites";
+import type { Stage } from "@/content/schema/stage";
 import type { GAME_KINDS } from "@/game/content";
 
 /** The game's collections (GAME_KINDS), keyed by id. */
@@ -29,6 +30,8 @@ export interface SimContent extends GameSimContent {
   skills: Record<string, Skill>;
   modifiers: Record<string, Modifier>;
   enemies: Record<string, Enemy>;
+  /** Benches (`?stage=<id>&dev=1`). */
+  stages: Record<string, Stage>;
   rules: { arena: ArenaRules; movement: MovementRules; feel: FeelRules; limits: LimitRules };
 }
 

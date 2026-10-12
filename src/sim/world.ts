@@ -13,6 +13,7 @@ import type { CastCommand } from "@/sim/command";
 import { EventBuffer, type Outcome, type Team } from "@/sim/events";
 import type { ResolvedSkill, SkillInstance } from "@/sim/skills/instance";
 import { createSpawnQueue, type SpawnQueue } from "@/sim/spawn-queue";
+import type { StageState } from "@/sim/stage";
 import { createVolumeStore, type VolumeStore } from "@/sim/volumes/store";
 
 /** An enemy kind with its stats and skills resolved (the game applies its mods first). */
@@ -75,6 +76,8 @@ export interface World {
   templates: Record<string, EnemyTemplate>;
   wave: WaveState;
   report: WaveReport;
+  /** A bench (content/stages) in place of the game's wave; null in a normal run. */
+  stage: StageState | null;
 }
 
 /** What the game hands the kit to start a world: the player, the enemy kinds, and its rules' state. */
@@ -88,6 +91,8 @@ export interface WorldInit {
   durationTicks: number;
   wave: WaveState;
   report: WaveReport;
+  /** A stage run: no countdown, and with `hold` its enemies never walk. */
+  stage?: { state: StageState; hold: boolean };
 }
 
 export function createWorld(content: SimContent, init: WorldInit): World {
@@ -110,7 +115,16 @@ export function createWorld(content: SimContent, init: WorldInit): World {
   });
   if (player === null) throw new Error("rules/limits.json › actors: no room for the player");
 
-  const countdownTicks = ticks(feel.countdownS);
+  const countdownTicks = init.stage === undefined ? ticks(feel.countdownS) : 0;
+  const templates =
+    init.stage?.hold === true
+      ? Object.fromEntries(
+          Object.entries(init.templates).map(([id, t]) => [
+            id,
+            { ...t, stats: { ...t.stats, moveSpeed: 0 } },
+          ]),
+        )
+      : init.templates;
   return {
     content,
     scenario: init.scenario,
@@ -137,9 +151,10 @@ export function createWorld(content: SimContent, init: WorldInit): World {
     },
     deliveries: [],
     cast: null,
-    templates: init.templates,
+    templates,
     wave: init.wave,
     report: init.report,
+    stage: init.stage?.state ?? null,
   };
 }
 

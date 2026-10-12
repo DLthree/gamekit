@@ -205,10 +205,12 @@ export class WaveSession {
     );
     const shake = shakeOffset(pres.camera, this.view, t, pres.shakeRng);
     this.actors.collect(content, pres.anims, world, t);
+    // An unarmed stage player (content/stages) carries no skills: no aim, no cooldown.
     const cast = player.skills.find((s) => s.slot === "cast");
-    if (cast === undefined) throw new Error(`${player.def} has no skill in slot cast`);
-    const aim = buildAim(player, cast, world.tick, controls);
-    if (this.controls !== null) {
+    if (cast === undefined && world.stage === null)
+      throw new Error(`${player.def} has no skill in slot cast`);
+    const aim = cast === undefined ? null : buildAim(player, cast, world.tick, controls);
+    if (this.controls !== null && cast !== undefined) {
       const left = Math.max(0, cast.readyTick - world.tick);
       this.controls.button.setCooldown(left / cast.skill.intervalTicks, left / TICK_HZ);
     }

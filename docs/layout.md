@@ -12,6 +12,8 @@ seam modules listed below.
 | `src/core/` | kit | Fixed-tick clock, seeded RNG, packed ids, vectors, spatial hash. |
 | `src/content/` | kit | Content pipeline: load (browser and Node), overrides, compile, cross-file checks, errors. |
 | `src/content/kinds.ts` | kit | The kit's content kinds (folder or file → schema); spreads in `GAME_KINDS`. |
+| `src/content/stages.ts`, `schema/stage.ts` | kit | Stages: data-defined benches (`?stage=<id>&dev=1`) — schema, lookup, actor checks. |
+| `src/sim/stage.ts` | kit | A running stage: actors placed on tick 1, respawned at their places; the player's life floors at 1. |
 | `src/content/switches.ts` | kit | Feature switches: `on=a,b` parsing (unknown ids fail) and `switchOn`, which cuts the off systems from a frozen copy. |
 | `src/content/schema/` | kit | Zod schemas for skills, modifiers, characters, enemies, rules, look, sounds, sprites, vocab. |
 | `src/sim/` | kit | Headless sim: world, 10-phase step, actors, AI, skills, volumes, combat, stats, events, snapshot. |
@@ -23,7 +25,7 @@ seam modules listed below.
 | `src/ui/` | kit | Blocking error panel and base page styles (canvas, controls, `.panel`). |
 | `src/test/` | kit | Test helpers: small synthetic content and worlds built through the game's setup. |
 | `src/game/` | game | The example game's rules, screens and wiring (below). |
-| `content/` | game | The example's JSON content; `content/schema/` is generated (`pnpm content:schema`). |
+| `content/` | game | The example's JSON content (`content/stages/`: its benches); `content/schema/` is generated (`pnpm content:schema`). |
 | `assets/` | game | Source art (creatures, fx) that `pnpm atlas` packs. |
 | `public/atlas/`, `public/sounds/` | game | Packed atlas and sounds the game loads. |
 | `index.html` | game | The page: canvas, controls, and one element per screen. |
@@ -41,7 +43,7 @@ seam modules listed below.
 | `wave-session.ts` | One running wave: world, loop, presentation, controls, per-frame draw. |
 | `flow.ts` | Screen state machine (boot, picker, wave, result, error). |
 | `url.ts` | The cell address (`char`, `build`, `threat`), `urlFor`, `reproUrl`. |
-| `scenario.ts` | A run's setup (character × build tier × threat tier × seed) and its checks. |
+| `scenario.ts` | A run's setup (character × build tier × threat tier × seed, or a stage) and its checks. |
 | `setup.ts` | `worldFor`: resolves the build and threat, then calls the kit's `createWorld`. |
 | `loadout.ts` | Player skills from a build tier; enemy templates with threat mods; tunnelling check. |
 | `wave/` | Threat timeline director, win/lose outcome, `tickWave` (step phase 9). |

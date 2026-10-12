@@ -350,3 +350,35 @@ describe("loadout modifiers", () => {
     expect(e.filter((m) => m.includes("with its modifiers"))).toEqual([]);
   });
 });
+
+describe("stages", () => {
+  const stage = (from: string, enemy = "dummy") => ({
+    "stages/bench.json": {
+      name: "Bench",
+      from,
+      durationS: 5,
+      armed: false,
+      hold: false,
+      actors: [{ enemy, x: 0, y: 50 }],
+    },
+  });
+
+  it("accept a stage whose from is a cell the content has", () => {
+    expect(errs(stage("char=hero&build=1&threat=1"))).toEqual([]);
+  });
+
+  it("reject a from that is no cell, or a cell the content lacks", () => {
+    expect(errs(stage("char=hero"))).toEqual([
+      "stages/bench.json › from: stages/bench.json from: char=hero is not a cell (char, build and threat)",
+    ]);
+    expect(errs(stage("char=hero&build=1&threat=7"))).toEqual([
+      "stages/bench.json › from: threats/tier-7.json does not exist",
+    ]);
+  });
+
+  it("reject an actor that is no enemy", () => {
+    expect(errs(stage("char=hero&build=1&threat=1", "ghost"))).toEqual([
+      "stages/bench.json › actors.0.enemy: no enemy ghost",
+    ]);
+  });
+});

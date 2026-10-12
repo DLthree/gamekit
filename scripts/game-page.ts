@@ -36,8 +36,8 @@ export async function withGameBrowser<T>(
 }
 
 /**
- * A scenario query made reproducible for a tool: telemetry off and seed 7 unless the query says
- * otherwise (dev boots with telemetry on and a random seed), each of a tool's `--o` content
+ * A scenario query made reproducible for a tool: telemetry off, seed 7 and dev=1 (stages open)
+ * unless the query says otherwise (dev boots with telemetry on and a random seed), each of a tool's `--o` content
  * overrides added as an `o=` (src/content/overrides.ts), then manual=1&agent=1 so the tool steps
  * the sim itself and reads its events.
  */
@@ -45,6 +45,7 @@ export function toolQuery(query: string, overrides: readonly string[] = []): str
   const params = new URLSearchParams(query);
   if (!params.has("telemetry")) params.set("telemetry", "0");
   if (!params.has("seed")) params.set("seed", "7");
+  if (!params.has("dev")) params.set("dev", "1");
   for (const o of overrides) params.append("o", o);
   params.set("manual", "1");
   params.set("agent", "1");

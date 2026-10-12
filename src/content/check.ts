@@ -2,6 +2,7 @@ import { checkLook } from "@/content/check-look";
 import { type Push, treeProblems } from "@/content/check-tree";
 import type { ContentError } from "@/content/errors";
 import { hasSkillStat, type SkillStatId } from "@/content/skill-stats";
+import { checkStages } from "@/content/stages";
 import type { Content } from "@/content/types";
 import { checkGame, checkGameResolved } from "@/game/check";
 
@@ -103,6 +104,7 @@ export function checkContent(c: Content): ContentError[] {
   checkSkills(c, push);
   checkEnemies(c, push);
   checkArena(c, push);
+  checkStages(c, push);
   checkLook(c, push);
   checkGame(c, push);
   // Resolves the sim's numbers, so only once the rest holds.

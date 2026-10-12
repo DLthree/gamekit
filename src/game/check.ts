@@ -1,6 +1,7 @@
 import { checkMods, type Push } from "@/content/check-tree";
 import type { Content } from "@/content/types";
 import { checkBuilds, checkModifiers, checkProjectileSteps } from "@/game/check-builds";
+import { checkScenario, ScenarioError, stageScenario } from "@/game/scenario";
 
 function checkThreats(c: Content, push: Push): void {
   const smaller = Math.min(c.sim.rules.arena.halfWidth, c.sim.rules.arena.halfHeight);
@@ -41,11 +42,24 @@ function checkThreats(c: Content, push: Push): void {
   }
 }
 
-/** The game's cross-file rules: builds, the modifiers they use, and threats. */
+/** Each stage's `from` is a cell this content has. */
+function checkStageCells(c: Content, push: Push): void {
+  for (const id of Object.keys(c.sim.stages)) {
+    try {
+      checkScenario(stageScenario(c.sim, id, 0, []), c.sim);
+    } catch (err) {
+      if (!(err instanceof ScenarioError)) throw err;
+      push(`stages/${id}.json`, "from", err.message);
+    }
+  }
+}
+
+/** The game's cross-file rules: builds, the modifiers they use, threats, and stages' cells. */
 export function checkGame(c: Content, push: Push): void {
   checkBuilds(c, push);
   checkModifiers(c, push);
   checkThreats(c, push);
+  checkStageCells(c, push);
 }
 
 /** Checks that resolve the sim's numbers; they run only on content every other check accepted. */

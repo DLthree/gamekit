@@ -2,6 +2,7 @@ import { TICK_S, ticks } from "@/core/clock";
 import type { TimedSpawn } from "@/game/schema/threat";
 import { edgePoint, fieldPoints, ringPoints } from "@/sim/spawn-points";
 import { queueEnemy } from "@/sim/spawn-queue";
+import { tickStage } from "@/sim/stage";
 import { playerOf, type World } from "@/sim/world";
 
 /** A warned field spawn waiting for its wave tick. */
@@ -80,8 +81,12 @@ function releasePending(world: World): void {
   wave.pending = waiting;
 }
 
-/** Phase 9: the threat tier's timeline queues this wave tick's spawns. */
+/** Phase 9: the threat tier's timeline queues this wave tick's spawns (a stage's places instead). */
 export function tickDirector(world: World): void {
+  if (world.stage !== null) {
+    tickStage(world);
+    return;
+  }
   const threat = world.content.threats[`tier-${world.scenario.threatTier}`];
   const index = world.wave.elapsed;
   const nowS = index * TICK_S;

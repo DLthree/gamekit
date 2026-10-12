@@ -1,0 +1,9 @@
+{
+  "$schema": "../schema/stage.schema.json",
+  "name": "The dragon up close",
+  "from": "char=wizard&build=1&threat=3",
+  "durationS": 120,
+  "armed": false,
+  "hold": false,
+  "actors": [{ "enemy": "boss-dragon", "x": 220, "y": 0, "respawnS": 3 }]
+}

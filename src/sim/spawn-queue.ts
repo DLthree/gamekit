@@ -6,6 +6,8 @@ export interface EnemySpawn {
   def: string;
   x: number;
   y: number;
+  /** A stage place (src/sim/stage.ts) this enemy fills; it learns the actor's id. */
+  stageSlot?: number;
 }
 
 /** Everything that joins the world waits here until the last phase of the tick. */
@@ -53,6 +55,11 @@ export function drainSpawns(world: World): void {
     if (a === null) {
       report.droppedSpawns += 1;
       continue;
+    }
+    if (s.stageSlot !== undefined) {
+      const slot = world.stage?.slots[s.stageSlot];
+      if (slot === undefined) throw new Error(`tick ${tick}: no stage place ${s.stageSlot}`);
+      slot.id = a.id;
     }
     events.push({
       t: "spawned",

@@ -140,7 +140,10 @@ export function applyHits(world: World): void {
       },
       a,
     );
-    a.hp = Math.max(0, a.hp - r.damage);
+    // On a stage the player's life never drops below 1: a bench runs its whole duration.
+    const floor = a.team === "player" && world.stage !== null ? 1 : 0;
+    a.hp = Math.max(floor, a.hp - r.damage);
+    const killed = r.killed && a.hp <= 0;
     a.vx += r.kx;
     a.vy += r.ky;
     events.push({
@@ -160,7 +163,7 @@ export function applyHits(world: World): void {
     if (a.team === "player") {
       events.push({ t: "playerHurt", tick, amount: r.damage, hp: a.hp, by: v.ownerDef });
     }
-    if (r.killed) {
+    if (killed) {
       events.push({
         t: "died",
         tick,

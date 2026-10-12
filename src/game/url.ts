@@ -9,10 +9,11 @@ export interface CellRequest {
   threatTier: number;
 }
 
-/** What an address opens: a grid (every character, or one) or a cell. */
+/** What an address opens: a grid (every character, or one), a cell, or a stage (a dev bench). */
 export type UrlTarget =
   | { screen: "picker"; character: string | null }
-  | { screen: "cell"; cell: CellRequest };
+  | { screen: "cell"; cell: CellRequest }
+  | { screen: "stage"; stage: string };
 
 function required(p: URLSearchParams, key: string, errors: string[]): number | null {
   if (!p.has(key)) {
@@ -41,8 +42,14 @@ export function parseUrl(search: string): {
   const buildTier = cell ? required(p, "build", errors) : null;
   const threatTier = cell ? required(p, "threat", errors) : null;
   const { seed, overrides, options } = parseOptions(p, errors);
+  const stage = p.get("stage");
+  if (stage !== null && (cell || character !== null))
+    errors.push(`stage=${stage} opens a bench: drop char, build and threat`);
+  if (stage !== null && !options.dev)
+    errors.push(`stage=${stage} needs dev=1: stages are developer benches`);
   let target: UrlTarget | null = null;
-  if (!cell) target = { screen: "picker", character };
+  if (stage !== null) target = { screen: "stage", stage };
+  else if (!cell) target = { screen: "picker", character };
   else if (character !== null && buildTier !== null && threatTier !== null)
     target = { screen: "cell", cell: { character, buildTier, threatTier } };
   return {
@@ -54,13 +61,16 @@ export function parseUrl(search: string): {
   };
 }
 
-const CELL_KEYS = ["char", "build", "threat"];
+const CELL_KEYS = ["char", "build", "threat", "stage"];
 
-const cellHead = (s: Scenario): [string, string][] => [
-  ["char", s.character],
-  ["build", String(s.buildTier)],
-  ["threat", String(s.threatTier)],
-];
+const cellHead = (s: Scenario): [string, string][] =>
+  s.stage !== undefined
+    ? [["stage", s.stage]]
+    : [
+        ["char", s.character],
+        ["build", String(s.buildTier)],
+        ["threat", String(s.threatTier)],
+      ];
 const pickerHead = (character: string | null): [string, string][] =>
   character === null ? [] : [["char", character]];
 

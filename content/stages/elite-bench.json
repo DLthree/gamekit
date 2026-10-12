@@ -1,0 +1,14 @@
+{
+  "$schema": "../schema/stage.schema.json",
+  "name": "Build 3 on standing lions",
+  "from": "char=wizard&build=3&threat=1",
+  "durationS": 120,
+  "armed": true,
+  "hold": true,
+  "actors": [
+    { "enemy": "elite-lion", "x": 180, "y": -120, "respawnS": 2 },
+    { "enemy": "elite-lion", "x": 200, "y": 120, "respawnS": 2 },
+    { "enemy": "snail", "x": -160, "y": 0, "respawnS": 1 },
+    { "enemy": "snail", "x": -160, "y": 60, "respawnS": 1 }
+  ]
+}

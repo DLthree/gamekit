@@ -9,12 +9,12 @@ import { switchOn } from "@/content/switches";
 import type { Content } from "@/content/types";
 import { type Flow, type FlowEvent, next } from "@/game/flow";
 import { pickerModel } from "@/game/picker";
-import { checkScenario, type Scenario, scenarioLabel } from "@/game/scenario";
+import { checkScenario, type Scenario, scenarioLabel, stageScenario } from "@/game/scenario";
 import { Hud, hudModel } from "@/game/ui/hud";
 import { hidePause, showPause } from "@/game/ui/pause";
 import { hidePicker, type LastCell, showPicker } from "@/game/ui/picker";
 import { hideResult, resultModel, showResult } from "@/game/ui/result";
-import { type CellRequest, parseUrl, reproUrl, urlFor } from "@/game/url";
+import { type CellRequest, parseUrl, reproUrl, type UrlTarget, urlFor } from "@/game/url";
 import { WaveSession } from "@/game/wave-session";
 import type { ControlElements } from "@/input/controls";
 import { installIosGuards } from "@/input/ios-guards";
@@ -135,6 +135,15 @@ function runSeed(): number {
 function scenarioFor(cell: CellRequest): Scenario {
   if (content === null) throw new Error("a cell before content loaded");
   const scenario: Scenario = { ...cell, seed: runSeed(), overrides: url.overrides };
+  checkScenario(scenario, content.sim);
+  return scenario;
+}
+
+/** The checked scenario a cell or stage address opens. */
+function scenarioForTarget(target: Extract<UrlTarget, { screen: "cell" | "stage" }>): Scenario {
+  if (target.screen === "cell") return scenarioFor(target.cell);
+  if (content === null) throw new Error("a stage before content loaded");
+  const scenario = stageScenario(content.sim, target.stage, runSeed(), url.overrides);
   checkScenario(scenario, content.sim);
   return scenario;
 }
@@ -317,7 +326,8 @@ async function boot(): Promise<void> {
   const target = url.target;
   if (target === null)
     dispatch({ e: "failed", title: "Address", lines: url.errors, scenario: null });
-  else if (target.screen === "cell") dispatch({ e: "loaded", scenario: scenarioFor(target.cell) });
+  else if (target.screen !== "picker")
+    dispatch({ e: "loaded", scenario: scenarioForTarget(target) });
   else {
     pickerModel(content.sim, target.character);
     dispatch({ e: "showPicker", character: target.character });
@@ -381,11 +391,11 @@ onContentReload((load) => {
     } else if (target === null) {
       // The address is still malformed: boot again to its Address panel (with its Grid button).
       location.reload();
-    } else if (target.screen === "cell") {
+    } else if (target.screen !== "picker") {
       // A cell that failed at boot (no scenario, no picker to fall back to): content may have
       // fixed it, so rebuild and revalidate the scenario and retry the cell directly.
       try {
-        dispatch({ e: "pickCell", scenario: scenarioFor(target.cell) });
+        dispatch({ e: "pickCell", scenario: scenarioForTarget(target) });
       } catch (err) {
         crash(err);
       }

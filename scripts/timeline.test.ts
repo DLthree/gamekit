@@ -20,7 +20,7 @@ describe("timeline", () => {
   });
 
   it("refuses a query that opens no cell", () => {
-    expect(() => timeline("char=wizard", 5)).toThrow(/not a cell/);
+    expect(() => timeline("char=wizard", 5)).toThrow(/not a cell or stage/);
   });
 });
 

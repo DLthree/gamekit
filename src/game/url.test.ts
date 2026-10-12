@@ -24,6 +24,7 @@ describe("parseUrl", () => {
       dpr: 2,
       telemetry: null,
       hot: "keep",
+      dev: false,
       on: ["throwers"],
     });
   });
@@ -97,10 +98,35 @@ describe("urlFor", () => {
   });
 });
 
+describe("stage addresses", () => {
+  it("open a stage with dev=1", () => {
+    const r = parseUrl("?stage=dragon&dev=1&seed=3");
+    expect(r.errors).toEqual([]);
+    expect(r.target).toEqual({ screen: "stage", stage: "dragon" });
+  });
+
+  it("need dev=1, and no cell beside them", () => {
+    expect(parseUrl("?stage=dragon").errors).toEqual([
+      "stage=dragon needs dev=1: stages are developer benches",
+    ]);
+    expect(parseUrl("?stage=dragon&dev=1&char=wizard&build=1&threat=1").errors).toEqual([
+      "stage=dragon opens a bench: drop char, build and threat",
+    ]);
+  });
+
+  it("replay as the stage, not its cell", () => {
+    const r = parseUrl("?stage=dragon&dev=1");
+    const scenario = { ...TEST_SCENARIO, stage: "dragon", seed: 5 };
+    expect(reproUrl(scenario, r.options)).toBe("/?stage=dragon&seed=5&aim=relative&dev=1");
+    const wave: Flow = { screen: "wave", scenario, run: 1, paused: false };
+    expect(urlFor(wave, "?stage=dragon&dev=1&seed=5")).toBe("/?stage=dragon&dev=1&seed=5");
+  });
+});
+
 describe("reproUrl", () => {
   it("round-trips the scenario and the options that shape play", () => {
     const search =
-      "?char=wizard&build=2&threat=1&seed=123&o=skills/fireball.stats.area=55&aim=absolute&bot=kite&manual=1&agent=1&ui=0&dpr=2&hot=keep&on=throwers&telemetry=1";
+      "?char=wizard&build=2&threat=1&seed=123&o=skills/fireball.stats.area=55&aim=absolute&bot=kite&manual=1&agent=1&ui=0&dpr=2&hot=keep&dev=1&on=throwers&telemetry=1";
     const r = parseUrl(search);
     if (r.target?.screen !== "cell" || r.seed === null) throw new Error("expected a seeded cell");
     const scenario = { ...r.target.cell, seed: r.seed, overrides: r.overrides };

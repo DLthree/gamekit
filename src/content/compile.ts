@@ -125,6 +125,7 @@ export function compileContent(files: Readonly<Record<string, unknown>>): Compil
   const skills = collection(files, KINDS.skills, claimed, errors);
   const modifiers = collection(files, KINDS.modifiers, claimed, errors);
   const enemies = collection(files, KINDS.enemies, claimed, errors);
+  const stages = collection(files, KINDS.stages, claimed, errors);
   const arena = single(files, KINDS.arena, claimed, errors);
   const movement = single(files, KINDS.movement, claimed, errors);
   const feel = single(files, KINDS.feel, claimed, errors);
@@ -175,6 +176,7 @@ export function compileContent(files: Readonly<Record<string, unknown>>): Compil
       skills,
       modifiers,
       enemies,
+      stages,
       ...game,
       rules: { arena, movement, feel, limits },
     },

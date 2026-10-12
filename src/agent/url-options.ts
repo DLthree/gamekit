@@ -11,6 +11,8 @@ export interface UrlOptions {
   dpr: number | null;
   telemetry: boolean | null;
   hot: "restart" | "keep";
+  /** Developer pages (stages) may open: `dev=1`. */
+  dev: boolean;
   /** The feature switches turned on (`on=a,b`, src/content/switches.ts). */
   on: SwitchId[];
 }
@@ -69,6 +71,7 @@ export function parseOptions(
     dpr: wholeFrom(p, "dpr", 1, errors),
     telemetry: flag(p, "telemetry", errors),
     hot: oneOf(p, "hot", ["keep"], errors) === "keep" ? "keep" : "restart",
+    dev: flag(p, "dev", errors) === true,
     on: "on" in on ? on.on : [],
   };
   return { seed, overrides: p.getAll("o"), options };
@@ -86,6 +89,7 @@ export function optionParams(options: UrlOptions): [string, string][] {
   if (!options.ui) q.push(["ui", "0"]);
   if (options.dpr !== null) q.push(["dpr", String(options.dpr)]);
   if (options.hot === "keep") q.push(["hot", "keep"]);
+  if (options.dev) q.push(["dev", "1"]);
   if (options.on.length > 0) q.push(["on", options.on.join(",")]);
   return q;
 }
