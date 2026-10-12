@@ -43,7 +43,8 @@
     "screens": "node --import ./scripts/node-alias.ts scripts/screens.ts",
     "sweep": "node --import ./scripts/node-alias.ts scripts/sweep.ts",
     "run-record": "node --import ./scripts/node-alias.ts scripts/run-record.ts",
-    "perf:check": "node --import ./scripts/node-alias.ts scripts/perf.ts --check"
+    "perf:check": "node --import ./scripts/node-alias.ts scripts/perf.ts --check",
+    "store-media": "node --import ./scripts/node-alias.ts scripts/store-media.ts"
   },
   "dependencies": {
     "phaser": "4.2.1",

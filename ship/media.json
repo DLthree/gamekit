@@ -1,0 +1,22 @@
+{
+  "title": "Gamekit Example",
+  "screenshots": [
+    { "name": "01-dragon", "query": "char=wizard&build=3&threat=3&bot=kite&seed=8", "tick": 3950 }
+  ],
+  "capsules": [{ "name": "steam-header", "size": [920, 430], "shot": "01-dragon" }],
+  "trailer": {
+    "fps": 30,
+    "fade": 0.3,
+    "beats": [
+      {
+        "name": "dragon",
+        "kind": "wave",
+        "query": "char=wizard&build=3&threat=3&bot=kite&seed=8",
+        "from": 3850,
+        "seconds": 3
+      },
+      { "name": "end", "kind": "card", "seconds": 1.5, "lines": ["Gamekit Example"] }
+    ]
+  },
+  "gifs": [{ "name": "dragon", "beat": "dragon", "from": 0, "seconds": 2 }]
+}
