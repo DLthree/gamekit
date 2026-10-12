@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { createRng } from "@/core/rng";
 import { ActorAnims } from "@/present/anim/creatures";
-import { drawMeshActor, newMeshDraw } from "@/present/anim/mesh-pose";
-import { meshFiles, testContent } from "@/test/content";
+import { drawMeshActor, drawMeshGhost, newMeshDraw } from "@/present/anim/mesh-pose";
+import { staffFiles, testContent } from "@/test/content";
 
-const meshContent = () => testContent(meshFiles());
+const meshContent = () => testContent(staffFiles());
 const hero = {
   id: 1,
   def: "hero",
@@ -54,8 +54,30 @@ describe("drawMeshActor", () => {
     expect(Math.abs(after - rest)).toBeLessThan(0.15);
   });
 
-  it("refuses a creature without a mesh", () => {
-    const c = testContent();
-    expect(() => newMeshDraw(c, "hero")).toThrow("hero is not a mesh creature");
+  it("bends the grid as it walks, and holds it at rest when idle", () => {
+    const c = meshContent();
+    const anims = new ActorAnims(createRng(1), 0);
+    const idle = [...drawMeshActor(c, anims, hero, 1.1, newMeshDraw(c, "hero")).grid.vertices];
+    const idle2 = [...drawMeshActor(c, anims, hero, 1.3, newMeshDraw(c, "hero")).grid.vertices];
+    const walk = drawMeshActor(c, anims, { ...hero, moveX: 1 }, 1.3, newMeshDraw(c, "hero"));
+    const moved = (a: number[], b: number[]) => Math.max(...a.map((v, i) => Math.abs(v - b[i])));
+    expect(moved(idle, idle2)).toBeLessThan(0.5);
+    expect(moved(idle2, walk.grid.vertices)).toBeGreaterThan(0.5);
+  });
+
+  it("pops a ghost: swells, flashes and fades with its prop, then vanishes", () => {
+    const c = meshContent();
+    const g = { id: 1, def: "hero", x: 100, y: 50, facing: 1 as const, at: 2 };
+    const durationS = c.look.feedback.death.durationS;
+    const early = drawMeshGhost(c, g, 2.01, newMeshDraw(c, "hero"));
+    expect(early.body.flash).toBe(true);
+    expect(early.body.scaleY).toBeGreaterThan(1);
+    const late = drawMeshGhost(c, g, 2 + durationS * 0.9, newMeshDraw(c, "hero"));
+    expect(late.body.scaleY).toBeLessThan(0.5);
+    expect(late.body.alpha).toBeLessThan(0.5);
+    expect(Math.abs(late.prop?.scaleY ?? 1)).toBeLessThan(Math.abs(early.prop?.scaleY ?? 0));
+    expect(drawMeshGhost(c, g, 2 + durationS * 1.01, newMeshDraw(c, "hero")).body.visible).toBe(
+      false,
+    );
   });
 });

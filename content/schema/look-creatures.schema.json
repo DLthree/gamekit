@@ -31,20 +31,6 @@
       ],
       "additionalProperties": false
     },
-    "meshRoles": {
-      "minItems": 1,
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "player",
-          "prop",
-          "fodder",
-          "elite",
-          "boss"
-        ]
-      }
-    },
     "creatures": {
       "type": "object",
       "propertyNames": {
@@ -116,49 +102,42 @@
             "additionalProperties": false
           },
           "mesh": {
-            "anyOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "lean": {
-                    "type": "number"
-                  },
-                  "sway": {
-                    "type": "number",
-                    "minimum": 0
-                  },
-                  "stride": {
-                    "type": "number",
-                    "minimum": 0
-                  },
-                  "spread": {
-                    "type": "number",
-                    "minimum": 0
-                  },
-                  "breath": {
-                    "type": "number",
-                    "minimum": 0
-                  },
-                  "hip": {
-                    "type": "number",
-                    "exclusiveMinimum": 0.1,
-                    "exclusiveMaximum": 1
-                  }
-                },
-                "required": [
-                  "lean",
-                  "sway",
-                  "stride",
-                  "spread",
-                  "breath",
-                  "hip"
-                ],
-                "additionalProperties": false
+            "type": "object",
+            "properties": {
+              "lean": {
+                "type": "number"
               },
-              {
-                "type": "null"
+              "sway": {
+                "type": "number",
+                "minimum": 0
+              },
+              "stride": {
+                "type": "number",
+                "minimum": 0
+              },
+              "spread": {
+                "type": "number",
+                "minimum": 0
+              },
+              "breath": {
+                "type": "number",
+                "minimum": 0
+              },
+              "hip": {
+                "type": "number",
+                "exclusiveMinimum": 0.1,
+                "exclusiveMaximum": 1
               }
-            ]
+            },
+            "required": [
+              "lean",
+              "sway",
+              "stride",
+              "spread",
+              "breath",
+              "hip"
+            ],
+            "additionalProperties": false
           },
           "prop": {
             "anyOf": [
@@ -228,7 +207,6 @@
     "$schema",
     "speedJitter",
     "meshGrid",
-    "meshRoles",
     "creatures"
   ],
   "additionalProperties": false

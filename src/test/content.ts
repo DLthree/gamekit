@@ -7,6 +7,8 @@ import { GAME_TEST_FILES } from "@/game/test-files";
 /** path → replacement file (without `$schema`, which is inserted), or null to delete the file. */
 export type FilePatch = Record<string, unknown>;
 
+const bend = { lean: 0.05, sway: 0.03, stride: 0.05, spread: 0.1, breath: 0.035, hip: 0.55 };
+
 const gait = {
   kind: "waddle",
   hz: 2,
@@ -140,10 +142,9 @@ const BASE: Record<string, Record<string, unknown>> = {
   "look/creatures.json": {
     speedJitter: 0.1,
     meshGrid: { cols: 2, rows: 2 },
-    meshRoles: ["player", "elite", "boss"],
     creatures: {
-      hero: { sprite: "hero", gait, mesh: null, prop: null },
-      dummy: { sprite: "dummy", gait, mesh: null, prop: null },
+      hero: { sprite: "hero", gait, mesh: bend, prop: null },
+      dummy: { sprite: "dummy", gait, mesh: bend, prop: null },
     },
   },
   "look/fx.json": {
@@ -367,18 +368,10 @@ export const quietZap: FilePatch = {
   },
 };
 
-/** A patch whose hero is bent (layer 2) and holds a "staff" prop (layer 3). */
-export function meshFiles(): FilePatch {
+/** A patch whose hero holds a "staff" prop (layer 3) at its bent hand. */
+export function staffFiles(): FilePatch {
   const creatures = structuredClone(testFiles()["look/creatures.json"]) as {
     creatures: Record<string, Record<string, unknown>>;
-  };
-  creatures.creatures.hero.mesh = {
-    lean: 0.05,
-    sway: 0.03,
-    stride: 0.05,
-    spread: 0.1,
-    breath: 0.035,
-    hip: 0.55,
   };
   creatures.creatures.hero.prop = {
     sprite: "staff",
@@ -404,16 +397,15 @@ export function meshFiles(): FilePatch {
   return { "look/creatures.json": creatures, "look/generated/sprites.json": sprites };
 }
 
-/** meshFiles plus a bent elite enemy, "lion", drawn with an elite sprite. */
-export function eliteMeshFiles(): FilePatch {
-  const files = meshFiles();
+/** staffFiles plus an elite enemy, "lion", drawn with an elite sprite. */
+export function eliteFiles(): FilePatch {
+  const files = staffFiles();
   const creatures = files["look/creatures.json"] as {
     creatures: Record<string, Record<string, unknown>>;
   };
   creatures.creatures.lion = {
     ...creatures.creatures.dummy,
     sprite: "lion",
-    mesh: creatures.creatures.hero.mesh,
   };
   const sprites = files["look/generated/sprites.json"] as { sprites: Record<string, unknown>[] };
   sprites.sprites.push({

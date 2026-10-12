@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 import type { Content } from "@/content/types";
 import type { MeshDraw } from "@/present/anim/mesh-pose";
-import type { ActorDraw } from "@/present/anim/pose";
 import type { Viewport } from "@/present/camera";
 import { hex } from "@/present/fx/emit";
 import type { FxPool } from "@/present/fx/pool";
@@ -9,7 +8,6 @@ import type { HeadDraw } from "@/present/fx/recipes/projectile";
 import { depthFor } from "@/present/layers";
 import type { WarningDraw } from "@/present/spawn-warnings";
 import type { TelegraphDraw } from "@/present/telegraphs";
-import { ActorView } from "@/render/actor-view";
 import { type AimDraw, AimView } from "@/render/aim-view";
 import { drawFloor } from "@/render/floor";
 import { FxView } from "@/render/fx-view";
@@ -22,10 +20,8 @@ export interface RenderFrame {
   camX: number;
   camY: number;
   t: number;
-  actors: readonly ActorDraw[];
+  actors: readonly MeshDraw[];
   actorCount: number;
-  meshes: readonly MeshDraw[];
-  meshCount: number;
   heads: readonly HeadDraw[];
   headCount: number;
   pool: FxPool;
@@ -48,8 +44,7 @@ export class WorldScene extends Phaser.Scene {
   private readonly ready: (scene: WorldScene) => void;
   private readonly fail: (err: Error) => void;
   private content: Content;
-  private actors: ActorView[] = [];
-  private meshViews: MeshView[] = [];
+  private actors: MeshView[] = [];
   private fx: FxView | null = null;
   private aimView: AimView | null = null;
   private warningView: SpawnWarningView | null = null;
@@ -163,21 +158,16 @@ export class WorldScene extends Phaser.Scene {
     const { content } = this;
     const flash = hex(content.look.palette.colors[content.look.feedback.hitFlash.color]);
     this.cameras.main.centerOn(f.camX, f.camY);
-    while (this.actors.length < f.actorCount) this.actors.push(new ActorView(this));
-    for (let i = 0; i < this.actors.length; i++) {
-      if (i < f.actorCount) this.actors[i].apply(f.actors[i], content.look.layers, flash);
-      else this.actors[i].hide();
-    }
-    for (let i = 0; i < f.meshCount; i++) {
-      const d = f.meshes[i];
-      if (i === this.meshViews.length) this.meshViews.push(new MeshView(this, d));
-      else if (!this.meshViews[i].shows(d)) {
-        this.meshViews[i].destroy();
-        this.meshViews[i] = new MeshView(this, d);
+    for (let i = 0; i < f.actorCount; i++) {
+      const d = f.actors[i];
+      if (i === this.actors.length) this.actors.push(new MeshView(this, d));
+      else if (!this.actors[i].shows(d)) {
+        this.actors[i].destroy();
+        this.actors[i] = new MeshView(this, d);
       }
-      this.meshViews[i].apply(d, content.look.layers, flash);
+      this.actors[i].apply(d, content.look.layers, flash);
     }
-    for (let i = f.meshCount; i < this.meshViews.length; i++) this.meshViews[i].hide();
+    for (let i = f.actorCount; i < this.actors.length; i++) this.actors[i].hide();
     this.clearing.setPosition(f.playerX, f.playerY);
     this.fx.draw(f.pool, f.t, f.heads, f.headCount);
     this.aimView.draw(content, f.aim);
@@ -188,8 +178,6 @@ export class WorldScene extends Phaser.Scene {
   clearWave(): void {
     for (const a of this.actors) a.destroy();
     this.actors = [];
-    for (const m of this.meshViews) m.destroy();
-    this.meshViews = [];
     this.children.removeAll(true);
     this.fx = null;
     this.aimView = null;

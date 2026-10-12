@@ -73,14 +73,6 @@ export function checkLook(c: Content, push: Push): void {
     if (!spriteIds.has(creature.sprite)) {
       push("look/creatures.json", `creatures.${id}.sprite`, `no sprite ${creature.sprite}`);
     }
-    const role = sprites.sprites.find((s) => s.id === creature.sprite)?.role;
-    if (creature.mesh !== null && role !== undefined && !creatures.meshRoles.includes(role)) {
-      push(
-        "look/creatures.json",
-        `creatures.${id}.mesh`,
-        `${id} is drawn as ${role}; meshRoles has ${creatures.meshRoles.join(", ")}`,
-      );
-    }
     const prop = creature.prop;
     if (prop !== null) {
       const at = `creatures.${id}.prop`;
@@ -88,12 +80,6 @@ export function checkLook(c: Content, push: Push): void {
       if (s === undefined) push("look/creatures.json", `${at}.sprite`, `no sprite ${prop.sprite}`);
       else if (s.role !== "prop")
         push("look/creatures.json", `${at}.sprite`, `${s.id} is not drawn as a prop`);
-      if (creature.mesh === null)
-        push(
-          "look/creatures.json",
-          at,
-          "a prop is held at the mesh's hand; give the creature a mesh",
-        );
     }
   }
   /** A tint is "build" or a palette colour; untintable textures (ink, gold) take only white. */

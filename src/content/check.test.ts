@@ -5,7 +5,7 @@ import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import type { DeliveryNode } from "@/content/schema/skill";
 import { drainSpawns, queueEnemy } from "@/sim/spawn-queue";
-import { eliteMeshFiles, type FilePatch, testContent, testFiles } from "@/test/content";
+import { eliteFiles, type FilePatch, testContent, testFiles } from "@/test/content";
 import { testWorld } from "@/test/world";
 
 function errs(patch: FilePatch): string[] {
@@ -247,22 +247,8 @@ describe("checkContent", () => {
     );
   });
 
-  it("bends player, elite and boss creatures but never fodder", () => {
-    const creatures = structuredClone(testFiles()["look/creatures.json"]) as {
-      creatures: Record<string, Record<string, unknown>>;
-    };
-    creatures.creatures.dummy.mesh = {
-      lean: 0,
-      sway: 0,
-      stride: 0,
-      spread: 0,
-      breath: 0,
-      hip: 0.5,
-    };
-    expect(errs({ "look/creatures.json": creatures })).toContain(
-      "look/creatures.json › creatures.dummy.mesh: dummy is drawn as fodder; meshRoles has player, elite, boss",
-    );
-    expect(errs(eliteMeshFiles())).toEqual([]);
+  it("accepts a bent elite holding nothing beside a hero holding a prop", () => {
+    expect(errs(eliteFiles())).toEqual([]);
   });
 
   it("rejects pierce on a trigger projectile", () => {
@@ -313,7 +299,7 @@ describe("checkContent", () => {
     });
   });
 
-  it("holds props only on mesh creatures, with a prop sprite", () => {
+  it("holds props drawn with a prop sprite", () => {
     const creatures = structuredClone(testFiles()["look/creatures.json"]) as {
       creatures: Record<string, Record<string, unknown>>;
     };
@@ -324,13 +310,9 @@ describe("checkContent", () => {
       scale: 1,
       thrustS: 0.4,
     };
-    const e = errs({ "look/creatures.json": creatures });
-    expect(e).toContain(
+    expect(errs({ "look/creatures.json": creatures })).toEqual([
       "look/creatures.json › creatures.hero.prop.sprite: dummy is not drawn as a prop",
-    );
-    expect(e).toContain(
-      "look/creatures.json › creatures.hero.prop: a prop is held at the mesh's hand; give the creature a mesh",
-    );
+    ]);
   });
 
   it("rejects a dash node whose skill has no duration", () => {

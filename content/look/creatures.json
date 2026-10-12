@@ -1,8 +1,10 @@
 {
   "$schema": "../schema/look-creatures.schema.json",
   "speedJitter": 0.12,
-  "meshGrid": { "cols": 4, "rows": 6 },
-  "meshRoles": ["player", "elite", "boss"],
+  "meshGrid": {
+    "cols": 4,
+    "rows": 6
+  },
   "creatures": {
     "wizard": {
       "sprite": "wizard",
@@ -46,7 +48,14 @@
         "breathHz": 0.7,
         "hover": 0
       },
-      "mesh": null,
+      "mesh": {
+        "lean": 0.02,
+        "sway": 0.04,
+        "stride": 0.03,
+        "spread": 0.0,
+        "breath": 0.05,
+        "hip": 0.7
+      },
       "prop": null
     },
     "rabbit": {
@@ -62,7 +71,14 @@
         "breathHz": 1.6,
         "hover": 0
       },
-      "mesh": null,
+      "mesh": {
+        "lean": 0.06,
+        "sway": 0.03,
+        "stride": 0.05,
+        "spread": 0.08,
+        "breath": 0.03,
+        "hip": 0.6
+      },
       "prop": null
     },
     "bat": {
@@ -78,7 +94,14 @@
         "breathHz": 1,
         "hover": 16
       },
-      "mesh": null,
+      "mesh": {
+        "lean": 0.03,
+        "sway": 0.05,
+        "stride": 0.0,
+        "spread": 0.12,
+        "breath": 0.04,
+        "hip": 0.45
+      },
       "prop": null
     },
     "elite": {
@@ -140,7 +163,14 @@
         "breathHz": 1.6,
         "hover": 0
       },
-      "mesh": null,
+      "mesh": {
+        "lean": 0.05,
+        "sway": 0.03,
+        "stride": 0.05,
+        "spread": 0.08,
+        "breath": 0.03,
+        "hip": 0.6
+      },
       "prop": null
     }
   }

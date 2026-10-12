@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { ArtRole } from "@/content/schema/sprites";
 import { ContentId, Role, SchemaRef } from "@/content/schema/vocab";
 
 const positive = z.number().positive();
@@ -65,8 +64,8 @@ export type Prop = z.infer<typeof Prop>;
 export const Creature = z.strictObject({
   sprite: ContentId,
   gait: Gait,
-  /** Layer-2 bend, drawn as a Mesh2D; null draws a flat image. Player creatures only. */
-  mesh: MeshBend.nullable(),
+  /** Layer-2 bend: every creature is one image drawn as a Mesh2D and bent by these. */
+  mesh: MeshBend,
   prop: Prop.nullable(),
 });
 export type Creature = z.infer<typeof Creature>;
@@ -77,8 +76,6 @@ export const LookCreatures = z.strictObject({
   speedJitter: unitInterval,
   /** Cells of the layer-2 grid across and down the image (4 × 6). */
   meshGrid: z.strictObject({ cols: z.number().int().min(1), rows: z.number().int().min(1) }),
-  /** Art roles drawn with the mesh bend; the rest stay flat, so a crowd costs one image each. */
-  meshRoles: z.array(ArtRole).min(1),
   creatures: z.record(ContentId, Creature),
 });
 export type LookCreatures = z.infer<typeof LookCreatures>;

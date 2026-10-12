@@ -82,5 +82,14 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/record` | `scripts/run-record-read.ts` | `recordOf`, `replayQuery` |
 | `@/game/setup`, `@/game/test-files` | `src/test/`, sim tests | `worldFor`, `heroBuild` |
 
-Role-specific looks live in content: `look/feedback.json` `bigDeathRoles` and
-`look/creatures.json` `meshRoles`.
+Role-specific looks live in content: `look/feedback.json` `bigDeathRoles`.
+
+## Creature art
+
+Every creature is one still image. `src/present/anim/` moves it in code: layer 1 (`layer1.ts`,
+`pose.ts`) is the body transform (gait bob and squash, hit spring and recoil, attack lunge or
+cast recoil, the death pop); layer 2 (`layer2.ts`) bends a grid over the image (walk lean,
+stride, idle breath); layer 3 (`layer3.ts`) poses a held prop at the bent hand. `mesh-pose.ts`
+combines them into a `MeshDraw`, and `src/render/mesh-view.ts` draws it as a Phaser Mesh2D. The
+numbers are content: `look/creatures.json` (gait, mesh, prop per creature) and
+`look/feedback.json` (springs, lunge, death).
