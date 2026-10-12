@@ -1,12 +1,16 @@
 import { TICK_HZ } from "@/core/clock";
 import type { WaveReport } from "@/game/report";
-import { type Scenario, scenarioLabel } from "@/game/scenario";
+import type { Scenario } from "@/game/scenario";
 import { actionButton } from "@/ui/button";
+import { idWords } from "@/ui/vocabulary";
 
 export interface ResultModel {
   title: string;
   lines: string[];
-  /** The address that replays this run (cell, seed, overrides, options), shown as selectable text. */
+  /**
+   * The address that replays this run (cell, seed, overrides, options), shown as small
+   * selectable text for bug reports: the one line on the page not in the player's words.
+   */
   repro: string;
 }
 
@@ -18,19 +22,19 @@ export function resultModel(report: WaveReport, scenario: Scenario, repro: strin
   if (report.outcome === null) throw new Error("result screen for a wave with no outcome");
   const damage = Object.entries(report.damageBySkill)
     .sort((a, b) => b[1] - a[1])
-    .map(([skill, dmg]) => `${skill} ${Math.round(dmg)} damage`);
+    .map(([skill, dmg]) => `${idWords(skill)} ${Math.round(dmg)} damage`);
   const lines = [
-    scenarioLabel(scenario),
+    `${idWords(scenario.character)} · build ${scenario.buildTier} · threat ${scenario.threatTier}`,
     `Time ${(report.ticks / TICK_HZ).toFixed(1)} s`,
     `Kills ${report.kills}`,
     ...damage,
   ];
   const { dodged, taken } = report.telegraphs;
-  if (dodged + taken > 0) lines.push(`Telegraphs dodged ${dodged} of ${dodged + taken}`);
+  if (dodged + taken > 0) lines.push(`Warned attacks dodged ${dodged} of ${dodged + taken}`);
   const bosses = count(report.spawnedByRole, "boss");
   if (bosses > 0)
     lines.push(count(report.killsByRole, "boss") >= bosses ? "Boss defeated" : "Boss survived");
-  if (report.causeOfDeath !== null) lines.push(`Killed by ${report.causeOfDeath}`);
+  if (report.causeOfDeath !== null) lines.push(`Killed by ${idWords(report.causeOfDeath)}`);
   return { title: report.outcome === "survived" ? "Survived" : "Defeated", lines, repro };
 }
 

@@ -6,7 +6,7 @@ test("a finished wave shows the result, and retry starts run 2 at tick 0", async
   await page.evaluate(() => window.__game?.step(20_000));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   await expect(page.locator("#result h1")).toHaveText(/Survived|Defeated/);
-  await expect(page.locator("#result")).toContainText("wizard build 1 × threat 1");
+  await expect(page.locator("#result")).toContainText("Wizard · build 1 · threat 1");
   await page.locator("#retry").click();
   await page.waitForFunction(() => window.__game?.flow().screen === "wave");
   const flow = await page.evaluate(() => window.__game?.flow());
@@ -29,7 +29,7 @@ test("without seed= every run gets a fresh seed, shown with a repro URL that rep
   const first = await seedOf();
   await page.evaluate(() => window.__game?.step(20_000));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
-  await expect(page.locator("#result")).toContainText(`seed ${first}`);
+  await expect(page.locator("#result .repro")).toContainText(`seed=${first}`);
   const repro = await page.locator("#result .repro").innerText();
   expect(repro).toContain(`&seed=${first}&aim=relative&bot=kite&manual=1`);
   await page.locator("#retry").click();

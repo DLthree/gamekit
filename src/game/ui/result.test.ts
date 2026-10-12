@@ -10,11 +10,11 @@ describe("resultModel", () => {
     expect(resultModel(r, TEST_SCENARIO, "/?repro")).toEqual({
       title: "Survived",
       lines: [
-        "hero build 1 × threat 1, seed 1",
+        "Hero · build 1 · threat 1",
         "Time 10.0 s",
         "Kills 12",
-        "boom 120 damage",
-        "zap 40 damage",
+        "Boom 120 damage",
+        "Zap 40 damage",
       ],
       repro: "/?repro",
     });
@@ -23,10 +23,10 @@ describe("resultModel", () => {
   it("names what killed the player", () => {
     const r = { ...createReport(100), outcome: "died" as const, ticks: 300, causeOfDeath: "dummy" };
     expect(resultModel(r, TEST_SCENARIO, "/?repro").lines).toEqual([
-      "hero build 1 × threat 1, seed 1",
+      "Hero · build 1 · threat 1",
       "Time 5.0 s",
       "Kills 0",
-      "Killed by dummy",
+      "Killed by Dummy",
     ]);
     expect(resultModel(r, TEST_SCENARIO, "/?repro").title).toBe("Defeated");
   });
@@ -35,11 +35,13 @@ describe("resultModel", () => {
     expect(() => resultModel(createReport(100), TEST_SCENARIO, "/?repro")).toThrow("no outcome");
   });
 
-  it("counts dodged telegraphs out of those that landed, hidden when none landed", () => {
+  it("counts dodged warned attacks out of those that landed, hidden when none landed", () => {
     const r = { ...createReport(100), outcome: "survived" as const, ticks: 600 };
-    expect(resultModel(r, TEST_SCENARIO, "/?repro").lines.join("|")).not.toContain("Telegraphs");
+    expect(resultModel(r, TEST_SCENARIO, "/?repro").lines.join("|")).not.toContain("Warned");
     r.telegraphs = { started: 9, dodged: 5, taken: 2, cancelled: 1 };
-    expect(resultModel(r, TEST_SCENARIO, "/?repro").lines).toContain("Telegraphs dodged 5 of 7");
+    expect(resultModel(r, TEST_SCENARIO, "/?repro").lines).toContain(
+      "Warned attacks dodged 5 of 7",
+    );
   });
 
   it("says whether the boss fell, only when one spawned", () => {
