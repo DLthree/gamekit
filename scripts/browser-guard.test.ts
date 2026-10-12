@@ -1,5 +1,30 @@
-import { checkE2eArgs, parseFreePercent, parseTopMemGb } from "@scripts/browser-guard";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { homedir, tmpdir } from "node:os";
+import { join } from "node:path";
+import {
+  BROWSER_LOCK,
+  checkE2eArgs,
+  parseFreePercent,
+  parseTopMemGb,
+  tryLock,
+} from "@scripts/browser-guard";
 import { describe, expect, it } from "vitest";
+
+describe("the browser lock", () => {
+  it("is one per machine, under the user's home, not in the repo", () => {
+    expect(BROWSER_LOCK).toBe(join(homedir(), ".cache/browser-guard/lock"));
+  });
+
+  it("is taken once, names its live holder, and clears a dead holder's", () => {
+    const path = join(mkdtempSync(join(tmpdir(), "guard-")), "sub/lock");
+    expect(tryLock(path, "first")).toBeNull();
+    expect(readFileSync(path, "utf8")).toBe(`${process.pid} first\n`);
+    expect(tryLock(path, "second")).toBe(`pid ${process.pid}: first`);
+    writeFileSync(path, "999999999 gone\n");
+    expect(tryLock(path, "third")).toBeNull();
+    expect(readFileSync(path, "utf8")).toBe(`${process.pid} third\n`);
+  });
+});
 
 describe("checkE2eArgs", () => {
   it("allows plain runs, up to three workers and small repeats", () => {
