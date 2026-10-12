@@ -14,7 +14,9 @@ import { IDLE } from "@/realtime/sim/command";
 import { step } from "@/realtime/sim/step";
 
 /**
- * `<tick> <line>` for each telling moment of the query's run, made reproducible as the shot tools
+ * `<frame> <line>` for each telling moment of the query's run: the step it happened on, which is
+ * the kit-clock frame a stepped page shows it at (hit-stop steps count, though the world's tick
+ * doesn't advance on them), made reproducible as the shot tools
  * make it (seed 7 unless given, `overrides` as `o=`), on the content its `on=` switches leave, so the ticks match theirs. The query's bot plays, else the player
  * stands idle, as on the page. Stops at the wave's end or after `maxS` sim seconds.
  */
@@ -28,11 +30,11 @@ export function timeline(query: string, maxS: number, overrides: readonly string
   const world = worldForQuery(search, switchOn(loaded.content, options.on).sim);
   const bot = options.bot === null ? null : BOTS[options.bot];
   const out: string[] = [];
-  for (let i = 0; i < ticks(maxS) && world.phase !== "ended"; i++) {
+  for (let frame = 1; frame <= ticks(maxS) && world.phase !== "ended"; frame++) {
     step(world, bot === null ? IDLE : bot(world));
     for (const e of world.events.items) {
       const line = tickLine(e);
-      if (line !== null) out.push(`${world.tick} ${line}`);
+      if (line !== null) out.push(`${frame} ${line}`);
     }
   }
   return out;

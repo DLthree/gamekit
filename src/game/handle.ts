@@ -4,19 +4,17 @@ import type { WaveReport } from "@/game/report";
 import type { PerfSummary } from "@/realtime/agent/perf";
 import type { FxCounts } from "@/realtime/present/fx/pool";
 import type { SoundStatus } from "@/realtime/present/sound";
-import type { Command } from "@/realtime/sim/command";
 import type { SimEvent } from "@/realtime/sim/events";
 import type { WorldSummary } from "@/realtime/sim/snapshot";
 
 /**
  * The example's part of the agent handle (`window.__game`, src/agent/handle.ts adds the kit's):
- * its screens, the running wave, and what tests and tools drive it with.
+ * its screens, the running wave, and what tests and tools drive it with. Its scripted action
+ * (`act`) is src/game/actions.ts.
  */
 export interface GameHandle {
   flow(): Flow;
   state(): WorldSummary;
-  /** manual=1 only: runs n ticks (the command's cast on the first) and returns the new state. */
-  step(n: number, command?: Command): WorldSummary;
   /** agent=1 only: this wave's events with tick ≥ since. */
   events(since?: number): SimEvent[];
   report(): WaveReport;

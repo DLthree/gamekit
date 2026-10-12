@@ -11,7 +11,7 @@ test("the threat 3 boss telegraphs its slam, then the slam resolves", async ({ p
   const slamTick = await page.waitForFunction(() => {
     const g = window.__game;
     if (g === undefined) return false;
-    g.step(20);
+    g.frames(20);
     const slam = g.events(0).find((e) => e.t === "volumeStarted" && e.vfx === "slam");
     return slam === undefined ? false : slam.tick;
   });
@@ -25,7 +25,7 @@ test("the threat 3 boss telegraphs its slam, then the slam resolves", async ({ p
   await page.waitForFunction((since) => {
     const g = window.__game;
     if (g === undefined) return false;
-    g.step(10);
+    g.frames(10);
     return g.events(since).some((e) => e.t === "telegraphResolved" && e.vfx === "slam");
   }, since);
   await expect(page.locator("#error")).toBeHidden();

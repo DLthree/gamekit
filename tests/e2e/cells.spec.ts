@@ -6,7 +6,7 @@ for (const build of [1, 2, 3]) {
     page,
   }) => {
     await open(page, `char=${HERO}&build=${build}&threat=1&manual=1&bot=${BOT}&agent=1`);
-    await page.evaluate(() => window.__game?.step(20_000));
+    await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
     const report = await page.evaluate(() => window.__game?.report());
     expect(report?.outcome).not.toBeNull();
     expect(report?.kills).toBeGreaterThan(0);

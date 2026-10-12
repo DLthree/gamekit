@@ -1,30 +1,38 @@
 /**
- * pnpm shot "<query>" [--tick N] [--o PATCH ...] [--name NAME] [--deck | --phone [--landscape]]
- * A PNG of the game at tick N plus a JSON sidecar, in shots/. WebKit at desktop size (Desktop
+ * pnpm shot "<query>" [--actions JSON] [--frames N] [--o PATCH ...] [--name NAME] [--deck | --phone [--landscape]]
+ * A PNG of the game after its scripted actions (the game's shape, replayed through
+ * `window.__game.act`) and then N frames of the kit clock, plus a JSON sidecar, in shots/. WebKit at desktop size (Desktop
  * Safari, the release target) by default; --deck is a Steam Deck's 1280x800, --phone an iPhone
  * 14, portrait unless --landscape. The query is made reproducible (scripts/game-page.ts).
  */
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import {
+  ACTIONS_OPTION,
   type Device,
   OVERRIDE_OPTION,
+  openGame,
   openPage,
+  parseActions,
   queryName,
+  reach,
   settleFrame,
   toolQuery,
+  wholeArg,
   withGameBrowser,
 } from "@scripts/game-page";
 import { PERF_QUERY } from "@/game/links";
 
-const USAGE = `usage: pnpm shot "<query>" [--tick 600] [--o PATCH ...] [--name NAME] [--deck | --phone [--landscape]]
+const USAGE = `usage: pnpm shot "<query>" [--actions '[…]'] [--frames 600] [--o PATCH ...] [--name NAME] [--deck | --phone [--landscape]]
   e.g. pnpm shot "${PERF_QUERY}"`;
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
   options: {
-    tick: { type: "string", default: "600" },
+    actions: ACTIONS_OPTION,
+    frames: { type: "string", default: "600" },
     o: OVERRIDE_OPTION,
     name: { type: "string" },
     deck: { type: "boolean", default: false },
@@ -47,25 +55,30 @@ const device: Device = values.phone
   : values.deck
     ? "deck"
     : "desktop";
-const tick = Number(values.tick);
-if (!Number.isInteger(tick) || tick < 0) fail(`--tick ${values.tick}: expected a whole number`);
+let actions: unknown[] = [];
+let frames = 0;
+try {
+  actions = parseActions(values.actions);
+  frames = wholeArg("frames", values.frames, 0);
+} catch (err) {
+  fail(err instanceof Error ? err.message : String(err));
+}
+/** Shots of the same query with different actions get different names. */
+const actionsTag =
+  actions.length === 0
+    ? ""
+    : `-a${createHash("sha1").update(JSON.stringify(actions)).digest("hex").slice(0, 6)}`;
 
 await withGameBrowser(`pnpm shot ${query}`, async (browser, base) => {
   const { page, errors } = await openPage(browser, device);
-  await page.goto(`${base}/?${toolQuery(query, values.o)}`);
-  await page.waitForFunction(() => ["wave", "error"].includes(window.__game?.flow().screen ?? ""));
-  const screen = await page.evaluate(() => window.__game?.flow().screen);
-  if (screen === "error") {
-    console.error(await page.locator("#error").innerText());
+  try {
+    await openGame(page, base, toolQuery(query, values.o));
+  } catch (err) {
+    console.error(err instanceof Error ? err.message : err);
     process.exitCode = 1;
     return;
   }
-  await page.evaluate((target) => {
-    const g = window.__game;
-    if (g === undefined) throw new Error("no window.__game");
-    while (g.state().tick < target && g.state().phase !== "ended")
-      g.step(Math.min(60, target - g.state().tick));
-  }, tick);
+  const frame = await reach(page, actions, frames);
   await settleFrame(page);
   if (errors.length > 0) {
     // A page error mid-run leaves no reliable frame to trust; report it and stop, same as
@@ -75,7 +88,8 @@ await withGameBrowser(`pnpm shot ${query}`, async (browser, base) => {
     return;
   }
   const name =
-    values.name ?? `${queryName(query)}-t${tick}${device === "desktop" ? "" : `-${device}`}`;
+    values.name ??
+    `${queryName(query)}${actionsTag}-f${frames}${device === "desktop" ? "" : `-${device}`}`;
   mkdirSync("shots", { recursive: true });
   await page.screenshot({ path: `shots/${name}.png` });
   const read = await page.evaluate(() => ({ state: window.__game?.state() }));
@@ -85,7 +99,9 @@ await withGameBrowser(`pnpm shot ${query}`, async (browser, base) => {
   const sidecar = {
     query,
     overrides: values.o,
-    tick,
+    actions,
+    frames,
+    frame,
     device,
     commit,
     takenAt: new Date().toISOString(),

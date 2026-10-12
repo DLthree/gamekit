@@ -20,10 +20,10 @@ describe("the store media manifest", () => {
     );
   });
 
-  it("wants a frame rate that steps whole ticks", () => {
+  it("wants a frame rate that steps whole frames", () => {
     const m = example();
     m.trailer.fps = 25;
-    expect(() => parseManifest(JSON.stringify(m))).toThrow("must divide the sim's 60 ticks");
+    expect(() => parseManifest(JSON.stringify(m))).toThrow("must divide the kit clock's 60 frames");
   });
 });
 

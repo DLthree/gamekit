@@ -24,7 +24,7 @@ test("a won wave earns First Light, shown on the grid and kept across a reload",
   const before = await rowBoxes(page);
 
   await open(page, WIN);
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   await page.locator("#grid").click();
   await page.waitForFunction(() => window.__game?.flow().screen === "picker");

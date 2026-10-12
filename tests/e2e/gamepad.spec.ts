@@ -115,11 +115,11 @@ test("on the result a pad's A retries and B goes to the grid, with hints shown",
 }) => {
   await plugPad(page);
   await open(page, `${CELL}&manual=1`);
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   await press(page, "a");
   expect(await flow(page)).toMatchObject({ screen: "wave", run: 2 });
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   await expect(page.locator('#result [data-pad="b"] > .pad-hint')).toBeVisible();
   await press(page, "b");

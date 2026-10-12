@@ -4,12 +4,10 @@ import { BOT, CAST_SKILL, CELL } from "@/game/links";
 test("a manual wave steps, casts and draws effects", async ({ page }) => {
   await open(page, `${CELL}&manual=1&agent=1`);
   await expect(page.locator("#game canvas")).toBeVisible();
-  const s = await page.evaluate(() => window.__game?.step(240));
-  expect(s?.tick).toBe(240);
-  await page.evaluate(() =>
-    window.__game?.step(1, { moveX: 0, moveY: 0, cast: { slot: "cast", aim: { x: 1, y: 0 } } }),
-  );
-  await page.evaluate(() => window.__game?.step(120));
+  await page.evaluate(() => window.__game?.frames(240));
+  expect(await page.evaluate(() => window.__game?.state().tick)).toBe(240);
+  await page.evaluate(() => window.__game?.act({ frames: 1, cast: [1, 0] }));
+  await page.evaluate(() => window.__game?.frames(120));
   const casts = await page.evaluate(
     (skill) => window.__game?.events(0).filter((e) => e.t === "cast" && e.skill === skill).length,
     CAST_SKILL,
@@ -20,7 +18,7 @@ test("a manual wave steps, casts and draws effects", async ({ page }) => {
 
 test(`the ${BOT} bot finishes the wave with kills`, async ({ page }) => {
   await open(page, `${CELL}&manual=1&bot=${BOT}`);
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   const report = await page.evaluate(() => window.__game?.report());
   expect(report?.outcome).not.toBeNull();
   expect(report?.kills).toBeGreaterThan(0);
@@ -28,9 +26,9 @@ test(`the ${BOT} bot finishes the wave with kills`, async ({ page }) => {
 
 test("effects drain to zero once spawning stops", async ({ page }) => {
   await open(page, `${CELL}&manual=1&bot=${BOT}`);
-  await page.evaluate(() => window.__game?.step(600));
+  await page.evaluate(() => window.__game?.frames(600));
   await page.evaluate(() => window.__game?.stopFx());
-  await page.evaluate(() => window.__game?.step(600));
+  await page.evaluate(() => window.__game?.frames(600));
   expect((await page.evaluate(() => window.__game?.fx()))?.total).toBe(0);
 });
 

@@ -6,14 +6,13 @@ import type { World } from "@/realtime/sim/world";
 
 export interface LoopOptions {
   world: World;
-  /** Manual mode: only stepManual advances the sim (tests, screenshots). */
-  manual: boolean;
   /** When set, the bot plays instead of the controls. */
   bot: ((w: World) => Command) | null;
 }
 
 /**
- * Real time in, ticks out; a latched cast survives frames that run no tick.
+ * The kit clock's frames in (src/core/frames.ts), ticks out; a latched cast survives frames
+ * that run no tick. Stepped (tool mode), each frame is one tick.
  *
  * The latch is not cleared after every step: hit-stop freezes and countdown ticks run no
  * skills, so clearing it there would drop a tap. The latch is only cleared for a tick that was actually playing and
@@ -23,15 +22,12 @@ export interface LoopOptions {
 export class GameLoop {
   readonly world: World;
   private readonly clock = new FixedClock(MAX_TICKS_PER_FRAME);
-  private readonly manual: boolean;
   private readonly bot: ((w: World) => Command) | null;
-  private last: number | null = null;
   private latched: CastCommand | null = null;
   paused = false;
 
   constructor(o: LoopOptions) {
     this.world = o.world;
-    this.manual = o.manual;
     this.bot = o.bot;
   }
 
@@ -43,12 +39,10 @@ export class GameLoop {
     this.latched = c;
   }
 
-  /** Runs the ticks this frame's elapsed time earns; returns their events in order. */
-  frame(nowS: number, moveX: number, moveY: number): SimEvent[] {
-    const last = this.last;
-    this.last = nowS;
-    if (last === null || this.paused || this.manual) return [];
-    const n = this.clock.advance(nowS - last);
+  /** Runs the ticks a frame of `dtS` seconds earns; returns their events in order. */
+  frame(dtS: number, moveX: number, moveY: number): SimEvent[] {
+    if (this.paused) return [];
+    const n = this.clock.advance(dtS);
     const out: SimEvent[] = [];
     for (let i = 0; i < n && !this.ended; i++) {
       const command: Command =
@@ -61,26 +55,14 @@ export class GameLoop {
     return out;
   }
 
-  /** Manual mode: exactly n steps with this command (its cast only on the first). */
-  stepManual(n: number, command: Command): SimEvent[] {
-    const out: SimEvent[] = [];
-    for (let i = 0; i < n && !this.ended; i++) {
-      const c = i === 0 ? command : { ...command, cast: null };
-      step(this.world, this.bot === null ? c : this.bot(this.world));
-      out.push(...this.world.events.items);
-    }
-    return out;
-  }
-
-  /** The page is hidden: no ticks until resume. */
+  /** The page is hidden or paused: frames run no ticks until resume. */
   pause(): void {
     this.paused = true;
   }
 
-  /** Back: the hidden time is dropped; the next frame only sets the time base. */
+  /** Back: the paused time was never fed to the clock; a partial tick is dropped too. */
   resume(): void {
     this.paused = false;
-    this.last = null;
     this.clock.reset();
   }
 }

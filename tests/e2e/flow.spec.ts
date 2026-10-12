@@ -3,7 +3,7 @@ import { BOT, CAST_SKILL, CELL, HERO, SWITCH } from "@/game/links";
 
 test("a finished wave shows the result, and retry starts run 2 at tick 0", async ({ page }) => {
   await open(page, `${CELL}&manual=1&bot=${BOT}`);
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   await expect(page.locator("#result h1")).toHaveText(/Survived|Defeated/);
   await expect(page.locator("#result")).toContainText("Wizard · build 1 · threat 1");
@@ -27,7 +27,7 @@ test("without seed= every run gets a fresh seed, shown with a repro URL that rep
       return f.scenario.seed;
     });
   const first = await seedOf();
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   await expect(page.locator("#result .repro")).toContainText(`seed=${first}`);
   const repro = await page.locator("#result .repro").innerText();
@@ -42,7 +42,7 @@ test("without seed= every run gets a fresh seed, shown with a repro URL that rep
 
 test("the HUD shows life, time and kills during a wave", async ({ page }) => {
   await open(page, `${CELL}&manual=1`);
-  await page.evaluate(() => window.__game?.step(120));
+  await page.evaluate(() => window.__game?.frames(120));
   await expect(page.locator("#hud .stats")).toContainText("kills");
 });
 

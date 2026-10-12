@@ -1,4 +1,4 @@
-import { queryName, toolQuery } from "@scripts/game-page";
+import { parseActions, queryName, toolQuery, wholeArg } from "@scripts/game-page";
 import { describe, expect, it } from "vitest";
 
 describe("toolQuery", () => {
@@ -34,5 +34,27 @@ describe("toolQuery overrides", () => {
   it("adds each --o as an o= after the query's own", () => {
     const q = new URLSearchParams(toolQuery("o=a/b.c=1", ["d/e.f=2", 'g/h.i="x"']));
     expect(q.getAll("o")).toEqual(["a/b.c=1", "d/e.f=2", 'g/h.i="x"']);
+  });
+});
+
+describe("parseActions", () => {
+  it("reads a JSON array of the game's actions", () => {
+    expect(parseActions('[{"frames":30,"cast":[1,0]},"move"]')).toEqual([
+      { frames: 30, cast: [1, 0] },
+      "move",
+    ]);
+  });
+
+  it("refuses anything but a JSON array", () => {
+    expect(() => parseActions("{frames:3}")).toThrow(/not JSON/);
+    expect(() => parseActions('{"frames":3}')).toThrow(/JSON array/);
+  });
+});
+
+describe("wholeArg", () => {
+  it("takes a whole number at or above the minimum", () => {
+    expect(wholeArg("frames", "600", 0)).toBe(600);
+    expect(() => wholeArg("every", "0", 1)).toThrow("--every 0: expected a whole number ≥ 1");
+    expect(() => wholeArg("frames", "1.5", 0)).toThrow(/--frames 1.5/);
   });
 });

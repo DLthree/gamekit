@@ -26,7 +26,7 @@ test("@content a schema error names file and field; fixing it restarts the wave"
 
 test("@content a sim edit restarts the wave; hot=keep keeps it", async ({ page }) => {
   await open(page, `${CELL}&manual=1`);
-  await page.evaluate(() => window.__game?.step(300));
+  await page.evaluate(() => window.__game?.frames(300));
   await editContent("threats/tier-1.json", (t) =>
     t.replace(/"durationS": (\d+)/, (_, d) => `"durationS": ${Number(d) + 1}`),
   );
@@ -36,13 +36,16 @@ test("@content a sim edit restarts the wave; hot=keep keeps it", async ({ page }
   });
   expect(await page.evaluate(() => window.__game?.state().tick)).toBe(0);
 
+  // Wait for the server to see the restore, or the next page may load the edited file.
+  const restored = hotUpdated(page);
   restoreContent();
+  await restored;
   // bot=kite finishes the wave itself, so retry() (only valid from the result screen) has
   // something to act on; this proves hot=keep's new content actually reaches the next run,
   // not just that the current one was left alone.
   await open(page, `${CELL}&manual=1&bot=${BOT}&hot=keep`);
   const before = await page.evaluate(() => window.__game?.state().durationTicks);
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   const reloaded = hotUpdated(page);
   await editContent("threats/tier-1.json", (t) =>
@@ -62,7 +65,7 @@ test("@content a sim edit restarts the wave; hot=keep keeps it", async ({ page }
 
 test("@content a look edit swaps in without restarting", async ({ page }) => {
   await open(page, `${CELL}&manual=1`);
-  await page.evaluate(() => window.__game?.step(300));
+  await page.evaluate(() => window.__game?.frames(300));
   const reloaded = hotUpdated(page);
   await editContent("look/controls.json", (t) =>
     t.replace(/"stickRadius": (\d+)/, (_, r) => `"stickRadius": ${Number(r) + 4}`),

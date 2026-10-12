@@ -24,7 +24,7 @@ const kinds = (seed: number) => logFor(seed).map((l) => l.kind);
 test("telemetry=1 logs the load and the run's report", async ({ page }) => {
   const seed = 10_000 + Math.floor(Math.random() * 80_000);
   await open(page, `${CELL}&seed=${seed}&manual=1&bot=${BOT}&telemetry=1`);
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await expect.poll(() => kinds(seed)).toEqual(expect.arrayContaining(["load", "run"]));
   const [load, run] = ["load", "run"].map((k) => logFor(seed).find((l) => l.kind === k));
   const commit = expect.stringMatching(/[0-9a-f]{7,}(-dirty)?$/);
@@ -43,7 +43,7 @@ test("telemetry=1 logs the load and the run's report", async ({ page }) => {
 test("without telemetry=1 the dev build sends nothing", async ({ page }) => {
   const seed = 90_000 + Math.floor(Math.random() * 9_000);
   await open(page, `${CELL}&seed=${seed}&manual=1&bot=${BOT}`);
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForTimeout(1000);
   expect(kinds(seed)).toEqual([]);
 });
@@ -53,7 +53,7 @@ test("a dropped /__telemetry connection doesn't crash the game", async ({ page }
   await open(page, `${CELL}&manual=1&bot=${BOT}&telemetry=1`);
   // Finishing the wave queues its "run" record, which flushes at once (src/agent/telemetry.ts)
   // instead of waiting for the 5 s interval flush.
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await expect
     .poll(() => page.evaluate(() => window.__game?.telemetryFailures()))
     .toBeGreaterThan(0);

@@ -6,10 +6,10 @@ import { PERF_QUERY } from "@/game/links";
 import { OUTCOMES } from "@/game/vocab";
 
 describe("timeline", () => {
-  it("lists a run's telling moments in tick order, ending with the wave", () => {
+  it("lists a run's telling moments in frame order, ending with the wave", () => {
     const lines = timeline(PERF_QUERY, 600);
-    const ticks = lines.map((l) => Number(l.split(" ")[0]));
-    expect(ticks).toEqual([...ticks].sort((a, b) => a - b));
+    const frames = lines.map((l) => Number(l.split(" ")[0]));
+    expect(frames).toEqual([...frames].sort((a, b) => a - b));
     const ends = OUTCOMES.map((outcome) => tickLine({ t: "waveEnded", tick: 0, outcome }));
     expect(ends).toContain(lines.at(-1)?.split(" ").slice(1).join(" "));
   });

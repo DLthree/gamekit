@@ -1,6 +1,6 @@
 import "@/ui/page.css";
 import "@/game/ui/game.css";
-import { installHandle } from "@/agent/handle";
+import { clockHandle, installHandle } from "@/agent/handle";
 import { recordText } from "@/agent/record";
 import { classifyChange, loadContent, onContentReload } from "@/app/hot";
 import { saveStore, steamDeeds, steamProblem } from "@/app/platform";
@@ -8,6 +8,8 @@ import { createTelemetry } from "@/app/telemetry-setup";
 import { formatContentError } from "@/content/errors";
 import { switchOn } from "@/content/switches";
 import type { Content } from "@/content/types";
+import { type Frame, FrameClock } from "@/core/frames";
+import { actionCommand } from "@/game/actions";
 import { deedList, deedsMet, readEarned, writeEarned } from "@/game/deeds";
 import { type Flow, type FlowEvent, next } from "@/game/flow";
 import { pickerModel } from "@/game/picker";
@@ -29,7 +31,6 @@ import type { SoundStatus } from "@/realtime/present/sound";
 import { AudioOut } from "@/realtime/render/audio";
 import { bootRenderer } from "@/realtime/render/boot";
 import type { WorldScene } from "@/realtime/render/world-scene";
-import { IDLE } from "@/realtime/sim/command";
 import { summarize } from "@/realtime/sim/snapshot";
 import { hideError, showError } from "@/ui/error";
 import { markPadKeys } from "@/ui/pad-keys";
@@ -42,6 +43,8 @@ function el(id: string): HTMLElement {
 }
 
 const url = parseUrl(location.search, __RELEASE__ ? "release" : "dev");
+/** Every frame runs on the kit clock: the display drives it, or a tool steps it (manual=1). */
+const clock = new FrameClock(url.options.manual);
 const perf = new PerfMeter(120);
 const { telemetry, failures: telemetryFailures } = createTelemetry(url.options);
 let lastPerfS = 0;
@@ -53,6 +56,7 @@ const elements: ControlElements = {
   skillKnob: el("skill-knob"),
 };
 const hud = new Hud(el("hud"));
+clock.onFrame(frame);
 let flow: Flow = { screen: "boot" };
 let content: Content | null = null;
 /** The last compile succeeded; the grid and its picks only run on valid content (fail fast). */
@@ -251,15 +255,18 @@ function startWave(scenario: Scenario): void {
   });
 }
 
-function frame(timeMs: number): void {
+function frame(f: Frame): void {
   if (wave === null) return;
+  const timeMs = f.nowS * 1000;
   const started = performance.now();
   const frozenBefore = wave.world.frozenSteps;
   try {
-    wave.frame(timeMs / 1000);
+    wave.frame(f.dtS);
     hud.update(hudModel(wave.world));
   } catch (err) {
     crash(err);
+    // A stepping tool's call fails too, not only the page.
+    if (clock.stepped) throw err;
     return;
   }
   if (scene === null) throw new Error("a frame before boot");
@@ -296,17 +303,17 @@ if (!__RELEASE__)
     flow: () => flow,
     on: () => url.options.on,
     state: () => summarize(need().world),
-    step: (n, command = IDLE) => {
-      if (!url.options.manual) throw new Error("step needs manual=1 in the URL");
+    ...clockHandle(clock),
+    act: (action) => {
+      if (!url.options.manual) throw new Error("act needs manual=1 in the URL");
+      const { command, frames } = actionCommand(action);
       const w = need();
+      w.script(command);
       try {
-        w.step(n, command);
-      } catch (err) {
-        // Fail fast: the page shows the blocking panel, and the agent's call still throws.
-        crash(err);
-        throw err;
+        for (let i = 0; i < frames && !w.loop.ended; i++) clock.step(1);
+      } finally {
+        w.script(null);
       }
-      return summarize(w.world);
     },
     events: (since = 0) => {
       if (!url.options.agent) throw new Error("events needs agent=1 in the URL");
@@ -388,7 +395,7 @@ async function boot(): Promise<void> {
   // The renderer boots before the address and cell are checked, so their error panels can lead
   // to the grid and on to a playable cell.
   scene = await bootRenderer(el("game"), content, view);
-  scene.onFrame = frame;
+  scene.onFrame = (timeMs) => clock.display(timeMs / 1000);
   audio = new AudioOut(scene);
   const target = url.target;
   if (target === null)
