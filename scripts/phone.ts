@@ -1,12 +1,12 @@
 /**
- * pnpm phone <ref>: build <ref> in the detached worktree .phone/ and serve it to the LAN on 5182,
+ * pnpm phone <ref>: build <ref> in the detached worktree .phone/ and serve it to the LAN on 5282,
  * with telemetry going to this checkout's telemetry/ folder.
  */
 import { execFileSync, spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 
-const PORT = 5182;
+const PORT = 5282;
 
 /** The grid, the diagonal (balanced), one cell above it (overkill) and one below (struggle). */
 export function phoneUrls(ip: string, port: number): string[] {
@@ -54,7 +54,7 @@ function main(): void {
   run("pnpm", ["install", "--frozen-lockfile"], dir);
   run("pnpm", ["exec", "vite", "build"], dir, { ...process.env, VITE_PHONE: "1" });
   const ip = lanIp(repo);
-  const env = { ...process.env, INCPOE_TELEMETRY_DIR: resolve(repo, "telemetry") };
+  const env = { ...process.env, GAMEKIT_TELEMETRY_DIR: resolve(repo, "telemetry") };
   const preview = spawn(
     "pnpm",
     ["exec", "vite", "preview", "--host", "0.0.0.0", "--port", String(PORT), "--strictPort"],

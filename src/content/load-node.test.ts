@@ -20,7 +20,7 @@ describe("the Node content loader", () => {
   });
 
   it("reports a file that is not JSON by name", () => {
-    const dir = mkdtempSync(join(tmpdir(), "incpoe-content-"));
+    const dir = mkdtempSync(join(tmpdir(), "gamekit-content-"));
     writeFileSync(join(dir, "stray.json"), "{");
     const r = loadContentDir(dir, []);
     expect(r.ok).toBe(false);

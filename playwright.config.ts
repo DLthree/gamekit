@@ -3,11 +3,11 @@ import { checkE2eArgs, E2E_MAX_WORKERS } from "@scripts/browser-guard";
 
 // Every worker is a WebKit browser running the game; unguarded parallel runs froze the dev
 // machine (scripts/browser-guard.ts). `pnpm e2e` takes the browser lock and sets the mark.
-if (process.env.INCPOE_E2E_GUARD !== "1")
+if (process.env.GAMEKIT_E2E_GUARD !== "1")
   throw new Error("run e2e through `pnpm e2e` (scripts/e2e.ts), not `playwright test` directly");
 checkE2eArgs(process.argv);
 
-const PORT = 5181;
+const PORT = 5281;
 const TOUCH_SPECS = ["controls.spec.ts", "sound.spec.ts"];
 
 export default defineConfig({
@@ -16,8 +16,8 @@ export default defineConfig({
   workers: E2E_MAX_WORKERS,
   reporter: "list",
   timeout: 60_000,
-  // No trace screenshots: WebKit's screencast leaks kernel memory on macOS until reboot
-  // (design/incidents/2026-09-27-webkit-trace-kernel-leak.md). Actions and DOM snapshots are kept.
+  // No trace screenshots: WebKit's screencast leaks kernel memory on macOS until reboot.
+  // Actions and DOM snapshots are kept.
   use: {
     baseURL: `http://127.0.0.1:${PORT}`,
     trace: { mode: "retain-on-failure", screenshots: false },
@@ -46,6 +46,6 @@ export default defineConfig({
     url: `http://127.0.0.1:${PORT}/`,
     reuseExistingServer: false,
     timeout: 60_000,
-    env: { INCPOE_CONTENT_DIR: ".e2e/content", INCPOE_TELEMETRY_DIR: ".e2e/telemetry" },
+    env: { GAMEKIT_CONTENT_DIR: ".e2e/content", GAMEKIT_TELEMETRY_DIR: ".e2e/telemetry" },
   },
 });

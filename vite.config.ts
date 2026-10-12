@@ -10,7 +10,7 @@ const scripts = fileURLToPath(new URL("./scripts", import.meta.url));
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 /** The content folder the browser loads: the repo's, or the e2e server's scratch copy. */
-const contentDir = resolve(root, process.env.INCPOE_CONTENT_DIR ?? "content");
+const contentDir = resolve(root, process.env.GAMEKIT_CONTENT_DIR ?? "content");
 /**
  * The tree being built or served (this config's own checkout: `pnpm phone` builds in `.phone/`,
  * so it reports the ref the phone runs). Throws outside a git checkout (fail fast).
@@ -58,7 +58,7 @@ function telemetry(dir: string): Plugin {
     });
   };
   return {
-    name: "incpoe-telemetry",
+    name: "gamekit-telemetry",
     configureServer: (server) => {
       server.middlewares.use(handle);
     },
@@ -77,10 +77,10 @@ export default defineConfig({
       { find: "@", replacement: src },
     ],
   },
-  server: { host: "0.0.0.0", port: 5180, strictPort: true },
+  server: { host: "0.0.0.0", port: 5280, strictPort: true },
   // The app with Phaser is one ~1.7 MB chunk (~430 kB gzipped) and the game can't start without
   // Phaser, so splitting it buys nothing; the limit sits just above it to catch real growth.
   build: { chunkSizeWarningLimit: 1800 },
-  plugins: [telemetry(resolve(root, process.env.INCPOE_TELEMETRY_DIR ?? "telemetry"))],
+  plugins: [telemetry(resolve(root, process.env.GAMEKIT_TELEMETRY_DIR ?? "telemetry"))],
   test: { include: ["src/**/*.test.ts", "scripts/**/*.test.ts"] },
 });

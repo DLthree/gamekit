@@ -18,7 +18,7 @@ import { acquireBrowserLock } from "@scripts/browser-guard";
 import { createServer } from "vite";
 import type { PerfSummary } from "@/agent/perf";
 
-const PORT = 5183;
+const PORT = 5283;
 const QUERY = "char=wizard&build=3&threat=3&seed=7&bot=kite&agent=1&telemetry=0";
 const RESULT_TIMEOUT_MS = 120_000;
 /** Comfortably under PerfMeter's 2 s reset window (src/app/main.ts), so no window is missed. */

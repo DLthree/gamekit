@@ -1,6 +1,6 @@
 {
-  "name": "inc-poe-game",
-  "short_name": "inc-poe",
+  "name": "gamekit",
+  "short_name": "gamekit",
   "display": "fullscreen",
   "orientation": "any",
   "start_url": "/?char=wizard&build=1&threat=1",

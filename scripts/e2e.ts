@@ -11,7 +11,7 @@ checkE2eArgs(args);
 acquireBrowserLock(`pnpm e2e ${args.join(" ")}`.trim());
 const child = spawn("playwright", ["test", ...args], {
   stdio: "inherit",
-  env: { ...process.env, INCPOE_E2E_GUARD: "1" },
+  env: { ...process.env, GAMEKIT_E2E_GUARD: "1" },
 });
 for (const sig of ["SIGINT", "SIGTERM"] as const) process.on(sig, () => child.kill(sig));
 child.on("exit", (code, signal) => {

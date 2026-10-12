@@ -10,7 +10,7 @@ import { devices, webkit } from "@playwright/test";
 import { acquireBrowserLock } from "@scripts/browser-guard";
 import { createServer } from "vite";
 
-const PORT = 5183;
+const PORT = 5283;
 const USAGE =
   'usage: pnpm shot "char=wizard&build=1&threat=1&bot=kite" [--tick 600] [--name NAME] [--phone [--landscape]]';
 

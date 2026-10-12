@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseJsonl, summarizeTelemetry } from "@scripts/telemetry-summary";
 
-const dir = process.env.INCPOE_TELEMETRY_DIR ?? "telemetry";
+const dir = process.env.GAMEKIT_TELEMETRY_DIR ?? "telemetry";
 const arg = process.argv[2];
 let file = arg;
 if (file === undefined) {
