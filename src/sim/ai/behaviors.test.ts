@@ -1,8 +1,35 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
+import { BEHAVIORS } from "@/game/behaviors";
 import { keepDistance } from "@/sim/ai/behaviors";
 import { playerOf } from "@/sim/world";
 import { ROLE_A } from "@/test/vocab";
 import { place, run, testWorld } from "@/test/world";
+
+describe("a game behaviour", () => {
+  afterEach(() => {
+    delete BEHAVIORS["test-drift"];
+  });
+
+  it("sets the move intent of the enemies that name it", () => {
+    BEHAVIORS["test-drift"] = (_world, actor) => {
+      actor.moveX = 0;
+      actor.moveY = 1;
+    };
+    const w = testWorld({
+      "enemies/dummy.json": {
+        role: ROLE_A,
+        stats: { life: 10, moveSpeed: 60, radius: 10, knockbackResist: 0 },
+        behavior: { kind: "game", id: "test-drift" },
+        skills: ["nibble"],
+        look: "dummy",
+      },
+    });
+    const a = place(w, "dummy", 300, 0);
+    run(w, 60);
+    expect(a.x).toBeCloseTo(300, 5);
+    expect(a.y).toBeGreaterThan(50);
+  });
+});
 
 describe("keepDistance", () => {
   it("approaches from afar, backs off when close, rests in the band", () => {

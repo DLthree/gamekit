@@ -352,6 +352,18 @@ describe("checkContent", () => {
     );
   });
 
+  it("rejects an enemy naming a game behaviour the game doesn't have", () => {
+    const e = errs({
+      "enemies/dummy.json": {
+        ...base("enemies/dummy.json"),
+        behavior: { kind: "game", id: "nope" },
+      },
+    });
+    expect(
+      e.some((m) => m.startsWith("enemies/dummy.json › behavior.id: no game behaviour nope")),
+    ).toBe(true);
+  });
+
   it("rejects a keepDistance enemy with no skill whose range reaches distance × 1.1", () => {
     const distance = 50;
     const e = errs({

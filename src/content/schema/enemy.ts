@@ -5,6 +5,8 @@ export const Behavior = z.discriminatedUnion("kind", [
   z.strictObject({ kind: z.literal("chase") }),
   /** Approaches past `distance × 1.1`, backs off inside `distance × 0.9`, else holds still. */
   z.strictObject({ kind: z.literal("keepDistance"), distance: z.number().positive() }),
+  /** One of the game's own behaviours (src/game/behaviors.ts BEHAVIORS). */
+  z.strictObject({ kind: z.literal("game"), id: ContentId }),
 ]);
 export type Behavior = z.infer<typeof Behavior>;
 

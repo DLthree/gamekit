@@ -1,3 +1,4 @@
+import { BEHAVIORS } from "@/game/behaviors";
 import { chase, keepDistance } from "@/sim/ai/behaviors";
 import { playerOf, type World } from "@/sim/world";
 
@@ -14,6 +15,12 @@ export function thinkEnemies(world: World): void {
       case "keepDistance":
         keepDistance(a, player, behavior.distance);
         break;
+      case "game": {
+        const behave = BEHAVIORS[behavior.id];
+        if (behave === undefined) throw new Error(`${a.def}: no game behaviour ${behavior.id}`);
+        behave(world, a);
+        break;
+      }
     }
   }
 }

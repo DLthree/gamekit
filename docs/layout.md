@@ -64,6 +64,7 @@ seam modules listed below.
 | `switches.ts` | The example's feature switches (`throwers`) and what each cuts when off. |
 | `vocab.ts` | Name lists: tags, damage types, enemy roles, wave outcomes. |
 | `bots.ts`, `kite-bot.ts` | Bots `?bot=` can name. |
+| `behaviors.ts` | The game's own enemy behaviours (none in the example). |
 | `picker.ts`, `ui/` | The 3×3 grid model and the HUD, pause, picker and result screens; `ui/pad-keys.ts` is their pad shortcuts. |
 | `headless.ts` | A query's world without the renderer, and the events `pnpm ticks` lists. |
 | `sweep.ts` | The run model `pnpm sweep` plays: run ids, one run with the kite bot, the summary table. |
@@ -85,6 +86,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/wave/director`, `@/game/wave/tick` | world, step | `WaveState`, `tickWave` |
 | `@/game/flow` | agent handle | `Flow` |
 | `@/game/bots` | URL options | `BOTS` |
+| `@/game/behaviors` | AI (step phase 2), content check | `BEHAVIORS` (may be `{}`) |
 | `@/game/switches` | `content/switches.ts` | `SWITCHES` |
 | `@/game/url` | `scripts/telemetry-summary.ts` | `reproUrl` |
 | `@/game/links` | `perf`, `phone`, `shot`, `film`, `ticks`, `screens`, e2e specs | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS` |
@@ -95,6 +97,29 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/setup`, `@/game/test-files` | `src/test/`, sim tests | `worldFor`, `heroBuild`, `GAME_TEST_FILES`, `TEST_NAMES` |
 
 Role-specific looks live in content: `look/feedback.json` `bigDeathRoles`.
+
+## What the sim expresses
+
+Check a new game's mechanics against this before planning; anything outside it is either game
+code at a seam or a kit edit.
+
+| Mechanic | The sim does | Content / seam |
+|----------|--------------|----------------|
+| Player movement | Direct: position += stick × `moveSpeed` each tick (no inertia), knockback on top, clamped to the arena. | `characters/*.json` stats, `rules/movement.json`, `rules/arena.json` |
+| Enemy movement | `chase`, `keepDistance`, or a game behaviour; separation pushes enemies apart. | `enemies/*.json` `behavior`; `src/game/behaviors.ts` |
+| Skills | Auto (by rate) or manual (cooldown, aimed); targets `nearest`, `aim`, `player`. | `skills/*.json` |
+| Delivery | A tree of primitives: `projectile` (fan, nearest, nova, scatter; pierce; damage or trigger), `burst` (circle, arc, lane; warned telegraphs), `zone` (static, pulsing), `dash`; children on end. | `skills/*.json` `deliver`, `modifiers/*.json` `attach` |
+| Damage | Sum of the game's damage types; tags select StatMods; knockback. No armour or resistances. | `DAMAGE_TYPES`, `TAGS` |
+| Spawns | Whatever the game queues: `queueEnemy(world, def, x, y)` in step phase 9, joined in phase 10. Placement helpers: `src/sim/spawn-points.ts` (`edgePoint`, `ringPoints`, `fieldPoints`). | `src/game/wave/` (`tickWave`) |
+| On death | Phase 9 sees this tick's `died` events (`world.events`), so "dies → splits" or "dies → drops" is game code in `tickWave`. | `src/game/wave/` |
+| Win and loss | Game code sets `world.outcome` and pushes `waveEnded`. | `OUTCOMES`, `src/game/wave/` |
+
+A new enemy movement: add a function to `src/game/behaviors.ts` `BEHAVIORS` (it sets
+`actor.moveX`/`moveY` each tick; keep per-actor state in the game's `WaveState`) and name it in
+the enemy file as `behavior: { kind: "game", id }`. Player inertia, a new delivery primitive or a
+spawn with a starting velocity are kit edits (`src/sim/actors/movement.ts`, `src/sim/skills/`,
+`src/sim/spawn-queue.ts` with their schemas in `src/content/schema/`); make them content-driven so
+they can go back to the template.
 
 ## Creature art
 

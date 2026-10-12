@@ -18,12 +18,16 @@ Gate: `pnpm verify`.
 
 ## 2. Content kinds and schemas
 
+First map the game's mechanics onto docs/layout.md "What the sim expresses": what is content,
+what is game code at a seam, and what (if anything) is a kit edit.
+
 - Kit kinds (`src/content/kinds.ts`: skills, modifiers, characters, enemies, rules, look, stages…)
   stay; change their files in `content/`.
 - Game kinds: replace `src/game/content.ts` `GAME_KINDS` and `src/game/schema/*` with the new
   game's folders (the example has `builds/`, `threats/`, `deeds/`).
-- Names: `src/game/vocab.ts` `TAGS`, `DAMAGE_TYPES`, `ROLES`, `OUTCOMES` (how a wave ends). Then `src/game/test-files.ts`
-  `TEST_NAMES`: which of them the kit's test content uses (3 tags, 1–2 damage types, 2 roles).
+- Names: `src/game/vocab.ts` `TAGS`, `DAMAGE_TYPES`, `ROLES`, `OUTCOMES` (how a wave ends). Then
+  `src/game/test-files.ts` `TEST_NAMES`: which of them the kit's test content uses (3 tags, 1–2
+  damage types, 2 roles).
 - Cross-file rules: `src/game/check.ts` (`checkGame`, `checkGameResolved`).
 - `pnpm content:schema` rewrites `content/schema/`.
 
@@ -45,6 +49,7 @@ Replace each `src/game/` module the kit imports, keeping its exports (types may 
 | `headless.ts` | `worldForQuery`, `tickLine` (what `pnpm ticks` prints) |
 | `record.ts` | `recordOf`, `replayQuery` |
 | `switches.ts` | `SWITCHES` (may be `{}`) |
+| `behaviors.ts` | `BEHAVIORS` (may be `{}`): enemy movement beyond chase and keepDistance |
 | `test-files.ts` | `heroBuild`, `GAME_TEST_FILES` (a quiet wave: no end in its first 10 s while the player lives, an end within 10 min), `TEST_NAMES` |
 
 Then the rest of the game: `main.ts`, `wave-session.ts`, `ui/` screens, `ui/pad-keys.ts`,

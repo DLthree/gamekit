@@ -4,6 +4,7 @@ import type { ContentError } from "@/content/errors";
 import { hasSkillStat, type SkillStatId } from "@/content/skill-stats";
 import { checkStages } from "@/content/stages";
 import type { Content } from "@/content/types";
+import { BEHAVIORS } from "@/game/behaviors";
 import { checkGame, checkGameResolved } from "@/game/check";
 
 function checkSkills(c: Content, push: Push): void {
@@ -41,6 +42,14 @@ function checkEnemies(c: Content, push: Push): void {
       else if (skill.activation !== "auto" || skill.target !== "player") {
         push(file, `skills.${i}`, `${skillId} is not an enemy skill (auto, target player)`);
       }
+    }
+    if (enemy.behavior.kind === "game" && !Object.hasOwn(BEHAVIORS, enemy.behavior.id)) {
+      const known = Object.keys(BEHAVIORS).join(", ") || "none";
+      push(
+        file,
+        "behavior.id",
+        `no game behaviour ${enemy.behavior.id} (src/game/behaviors.ts has ${known})`,
+      );
     }
     if (enemy.behavior.kind === "keepDistance") {
       // keepDistance rests up to a centre gap of distance × 1.1; casting checks the edge gap
