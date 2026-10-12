@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createRng } from "@/core/rng";
 import { SoundPlan } from "@/realtime/present/sound";
-import { testContent, testFiles } from "@/test/content";
+import { testContent, testFiles } from "@/realtime/test/content";
 
 function plan(minGapS = 0.05) {
   const sounds = structuredClone(testFiles()["look/sounds.json"]) as {

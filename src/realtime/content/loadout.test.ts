@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { type AppliedModifier, mergeSkill, nodesOf } from "@/realtime/content/loadout";
 import { Modifier } from "@/realtime/content/schema/modifier";
+import { testContent } from "@/realtime/test/content";
 import { DMG_A, TAG_A, TAG_B, TAG_C } from "@/realtime/test/vocab";
-import { testContent } from "@/test/content";
 
 const boom = testContent().sim.skills.boom;
 

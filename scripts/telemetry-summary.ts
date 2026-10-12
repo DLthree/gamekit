@@ -1,14 +1,25 @@
+import { parseRecord, type RunRecord } from "@/agent/record";
 import type { TelemetryLine } from "@/agent/telemetry";
-import { runLines, sessionLines } from "@/game/telemetry";
-import { reproUrl } from "@/game/url";
 
-type RunRecord = Extract<TelemetryLine, { kind: "run" | "error" }>;
+type RunLine = Extract<TelemetryLine, { kind: "run" | "error" }>;
+type RunReport = Extract<TelemetryLine, { kind: "run" }>["report"];
 
-/** Seed, repro URL and build of a run or error; records logged before these fields say so. */
-function repro(l: RunRecord): string {
-  if (!("options" in l)) return "no repro (logged before scenario/options were recorded)";
-  if (l.scenario === null) return `no scenario · ${l.commit}`;
-  return `seed ${l.scenario.seed} · ${reproUrl(l.scenario, l.options)} · ${l.commit}`;
+/** How the game words its records (src/game/telemetry.ts, src/game/record.ts). */
+export interface TelemetryWords {
+  /** A run's report: a headline, then detail lines. */
+  runLines(report: RunReport): string[];
+  /** The game's own records of one session. */
+  sessionLines(lines: readonly TelemetryLine[]): string[];
+  /** The address (query, no `?`) that replays a run record. */
+  replayQuery(record: RunRecord): string;
+}
+
+/** Seed, replay address and build of a run or error; records logged before these fields say so. */
+function repro(l: RunLine, words: TelemetryWords): string {
+  if (!("record" in l)) return "no repro (logged before run records)";
+  if (l.record === null) return `no run · ${l.commit}`;
+  const r = parseRecord(l.record);
+  return `seed ${r.seed} · /?${words.replayQuery(r)} · ${l.commit}`;
 }
 
 export function parseJsonl(text: string): TelemetryLine[] {
@@ -26,7 +37,10 @@ export function parseJsonl(text: string): TelemetryLine[] {
 }
 
 /** One block per session, in first-seen order: device, runs, errors, then the game's own lines. */
-export function summarizeTelemetry(lines: readonly TelemetryLine[]): string[] {
+export function summarizeTelemetry(
+  lines: readonly TelemetryLine[],
+  words: TelemetryWords,
+): string[] {
   const sessions = new Map<string, TelemetryLine[]>();
   for (const l of lines) {
     const list = sessions.get(l.session) ?? [];
@@ -43,13 +57,13 @@ export function summarizeTelemetry(lines: readonly TelemetryLine[]): string[] {
     out.push(`session ${id.slice(0, 8)} · ${list[0].receivedAt} · ${where}`);
     for (const l of list) {
       if (l.kind !== "run") continue;
-      const [headline, ...detail] = runLines(l.report);
-      out.push(`  ${headline}`, ...detail.map((d) => `    ${d}`), `    ${repro(l)}`);
+      const [headline, ...detail] = words.runLines(l.report);
+      out.push(`  ${headline}`, ...detail.map((d) => `    ${d}`), `    ${repro(l, words)}`);
     }
     for (const l of list)
       if (l.kind === "error")
-        out.push(`  error ${l.title}: ${l.lines.join(" | ")}`, `    ${repro(l)}`);
-    out.push(...sessionLines(list).map((line) => `  ${line}`));
+        out.push(`  error ${l.title}: ${l.lines.join(" | ")}`, `    ${repro(l, words)}`);
+    out.push(...words.sessionLines(list).map((line) => `  ${line}`));
   }
   return out;
 }

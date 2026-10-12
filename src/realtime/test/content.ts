@@ -1,5 +1,12 @@
+import { GAME_TEST_FILES } from "@/game/test-files";
 import { DMG_A, ROLE_B, TAG_A } from "@/realtime/test/vocab";
-import { type FilePatch, testFiles } from "@/test/content";
+import { contentFixture, type FilePatch, KIT_TEST_FILES } from "@/test/content";
+
+/** The real-time tests' small content: the kit's sounds and the game's GAME_TEST_FILES. */
+export const { testFiles, testTexts, testContent } = contentFixture(() => ({
+  ...KIT_TEST_FILES,
+  ...GAME_TEST_FILES,
+}));
 
 /** The hero's auto zap with range 1, so it never fires and only the skill under test acts. */
 export const quietZap: FilePatch = {

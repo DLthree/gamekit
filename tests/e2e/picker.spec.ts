@@ -38,7 +38,7 @@ test("a tapped cell starts and writes its address; a reload lands on it again", 
 test(`the result's Grid button returns to the ${HERO}'s grid, and a reload stays there`, async ({
   page,
 }) => {
-  await open(page, `${CELL}&manual=1&bot=${BOT}`);
+  await open(page, `${CELL}&manual=1&bot=${BOT}`, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await screen(page, "result");
   await page.locator("#grid").click();
@@ -81,7 +81,7 @@ test("a content error has no Grid button", async ({ page }) => {
 // Unrun this session: the machine is overloaded, no browser/e2e runs allowed (see report,
 // "Fix round 1"). The coordinator will run this after the restart.
 test("the last-played cell is highlighted on return to the grid", async ({ page }) => {
-  await open(page, `${CELL}&manual=1&bot=${BOT}`);
+  await open(page, `${CELL}&manual=1&bot=${BOT}`, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await screen(page, "result");
   await page.locator("#grid").click();

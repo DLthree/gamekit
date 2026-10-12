@@ -31,10 +31,9 @@ import {
   wholeArg,
   withGameBrowser,
 } from "@scripts/game-page";
-import { PERF_QUERY } from "@/game/links";
 
 const USAGE = `usage: pnpm film "<query>" [--actions '[…]'] [--at 300] [--frames 8] [--every 6] [--crop x,y,w,h] [--viewport ${DEVICES.join("|")}] [--compare "<query>"] [--o PATCH ...] [--out DIR]
-  e.g. pnpm film "${PERF_QUERY}" --at 240 --frames 8 --every 6`;
+  e.g. pnpm film "seed=3" --at 240 --frames 8 --every 6`;
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,

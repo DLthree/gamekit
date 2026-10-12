@@ -24,10 +24,10 @@ export { expect };
  * the query sets them, so ordinary e2e runs don't write telemetry logs; specs that want
  * telemetry (tests/e2e/telemetry.spec.ts) opt in explicitly with telemetry=1.
  */
-export async function open(page: Page, query: string, screen = "wave"): Promise<void> {
+export async function open(page: Page, query: string, screen: string): Promise<void> {
   const params = new URLSearchParams(query);
   if (!params.has("telemetry")) params.set("telemetry", "0");
-  // A run with no seed= is random; tests pin one so every run is the same wave.
+  // A run with no seed= is random; tests pin one so every run is the same.
   if (!params.has("seed")) params.set("seed", "7");
   await page.goto(`/?${params.toString()}`);
   await page.waitForFunction((s) => window.__game?.flow().screen === s, screen);
@@ -85,35 +85,4 @@ export async function touch(
     },
     { id, type, x, y },
   );
-}
-
-/** Waits for the wave to be past its countdown. */
-export async function playing(page: Page): Promise<void> {
-  await page.waitForFunction(() => window.__game?.state().phase === "playing");
-}
-
-/** Waits for the player's next cast of `skill` at or after tick `since`; returns its aim. */
-export async function waitForCast(
-  page: Page,
-  skill: string,
-  since: number,
-): Promise<{ ax: number; ay: number }> {
-  const handle = await page.waitForFunction(
-    ({ skill, since }) => {
-      const e = window.__game
-        ?.events(since)
-        .find((it) => it.t === "cast" && it.team === "player" && it.skill === skill);
-      return e !== undefined && e.t === "cast" ? { ax: e.ax, ay: e.ay } : false;
-    },
-    { skill, since },
-  );
-  const value = await handle.jsonValue();
-  if (value === false) throw new Error(`no ${skill} cast found`);
-  return value;
-}
-
-export async function buttonCenter(page: Page): Promise<{ x: number; y: number }> {
-  const box = await page.locator("#skill-button").boundingBox();
-  if (box === null) throw new Error("#skill-button is not visible");
-  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
 }

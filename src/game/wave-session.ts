@@ -2,7 +2,7 @@ import type { UrlOptions } from "@/agent/url-options";
 import type { Content } from "@/content/types";
 import { TICK_HZ, tickSeconds } from "@/core/clock";
 import type { Vec } from "@/core/vec";
-import { BOTS } from "@/game/bots";
+import { BOTS, type BotId } from "@/game/bots";
 import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
 import { worldFor } from "@/game/setup";
@@ -37,7 +37,7 @@ import { playerOf, type World } from "@/realtime/sim/world";
 export interface WaveSetup {
   content: Content;
   scenario: Scenario;
-  options: UrlOptions;
+  options: UrlOptions<BotId>;
   scene: WorldScene;
   audio: AudioOut;
   elements: ControlElements;

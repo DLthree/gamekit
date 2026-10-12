@@ -23,9 +23,12 @@ for (const key of Object.keys(KIT_KINDS.look)) {
     throw new Error(`GAME_KINDS.look.${key} is a kit kind (src/content/kinds.ts)`);
 }
 
+/** The kinds the rules read. */
+export const SIM_KINDS: readonly Kind<unknown>[] = flatten(GAME_KINDS.sim);
+
 /** Every content kind, the game's and the kit's. */
 export const KINDS: readonly Kind<unknown>[] = [
-  ...flatten(GAME_KINDS.sim),
+  ...SIM_KINDS,
   ...flatten(GAME_KINDS.look),
   ...flatten(KIT_KINDS.look),
 ];

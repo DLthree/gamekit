@@ -54,7 +54,7 @@ const telegraphVfx = {
 };
 
 /**
- * The real-time layer's files in the kit's small test content: a hero, a dummy enemy, a zap and
+ * The real-time layer's files in the real-time tests' small content: a hero, a dummy enemy, a zap and
  * a boom, and the look they need. A real-time game spreads them into its `GAME_TEST_FILES`
  * (src/game/test-files.ts); `names` are the game's `TEST_NAMES`.
  */

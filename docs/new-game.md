@@ -26,9 +26,9 @@ what is game code at a seam, and what (if anything) is a kit edit.
   spread into its `GAME_KINDS` and changes their files in `content/`; a turn-based one drops them.
 - Game kinds: replace `src/game/content.ts` `GAME_KINDS` (`{ sim, look }`) and `src/game/schema/*`
   with the new game's folders (the example has `builds/`, `threats/`, `deeds/`).
-- Names: `src/game/vocab.ts` `TAGS`, `DAMAGE_TYPES`, `ROLES`, `OUTCOMES` (how a wave ends). Then
-  `src/game/test-files.ts` `TEST_NAMES`: which of them the kit's test content uses (3 tags, 1–2
-  damage types, 2 roles).
+- Real-time names: `src/game/vocab.ts` `TAGS`, `DAMAGE_TYPES`, `ROLES`, `OUTCOMES` (how a wave
+  ends). Then `src/game/test-files.ts` `TEST_NAMES`: which of them the real-time tests' content
+  uses (3 tags, 1–2 damage types, 2 roles). The core tests read your `content/` and need nothing.
 - Cross-file rules: `src/game/check.ts` (`checkGame`, `checkGameResolved`).
 - `pnpm content:schema` rewrites `content/schema/`.
 
@@ -36,23 +36,29 @@ Gate: `pnpm content:check`, then `pnpm check`.
 
 ## 3. The seam modules
 
-Replace each `src/game/` module the kit imports, keeping its exports (types may change shape):
+Replace each `src/game/` module the kit imports, keeping its exports (types may change shape).
+Every game provides the core ones; a real-time game also the realtime ones (docs/layout.md, "The
+seam"):
 
-| Module | Must export |
-|--------|-------------|
-| `scenario.ts` | `Scenario` (one run's setup) |
-| `setup.ts` | `worldFor(scenario, content)` → kit `createWorld` |
-| `report.ts` | `WaveReport`, `recordEvents` |
-| `wave/director.ts`, `wave/tick.ts` | `WaveState`, `tickWave` (step phase 9: spawns, win/lose) |
-| `handle.ts` | `GameHandle`: the game's part of `window.__game` (its `flow()`, `state()`, and what specs drive); `main.ts` adds `act(action)`, the scripted action tools replay (a move, or a command for N frames), and runs everything that moves in `FrameClock` frames (`src/core/frames.ts`) |
-| `telemetry.ts` | `RunReport`, `GameRecord`, `runLines`, `sessionLines` (a run's record and summary) |
-| `url.ts` | `reproUrl` (and the game's own URL parsing) |
-| `links.ts` | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`, and the ids specs name (`HERO`, `BOT`…) |
-| `headless.ts` | `worldForQuery`, `tickLine` (what `pnpm ticks` prints) |
-| `record.ts` | `recordOf`, `replayQuery` |
-| `switches.ts` | `SWITCHES` (may be `{}`) |
-| `behaviors.ts` | `BEHAVIORS` (may be `{}`): enemy movement beyond chase and keepDistance |
-| `test-files.ts` | `heroBuild`, `GAME_TEST_FILES` (a quiet wave: no end in its first 10 s while the player lives, an end within 10 min), `TEST_NAMES` |
+| Module | Layer | Must export |
+|--------|-------|-------------|
+| `content.ts`, `check.ts` | core | `GAME_KINDS`; `checkGame`, `checkGameResolved`, `checkGameFiles` (step 2) |
+| `handle.ts` | core | `GameHandle`: the game's part of `window.__game` (its `flow()`, `state()`, and what specs drive); `main.ts` adds `act(action)`, the scripted action tools replay (a move, or a command for N frames), and runs everything that moves in `FrameClock` frames (`src/core/frames.ts`) |
+| `telemetry.ts` | core | `RunReport`, `GameRecord`, `runLines`, `sessionLines` (a run's record and summary) |
+| `record.ts` | core | `replayQuery` (a run record → the address that replays it) |
+| `links.ts` | core | `PHONE_QUERIES`, `SCREENS` (realtime also `PERF_QUERY`), and the ids specs name |
+| `sweep.ts`, `switches.ts`, `deeds.ts` | core | step 4; `SWITCHES` (may be `{}`); `deedList` (step 8) |
+| `scenario.ts` | realtime | `Scenario` (one run's setup) |
+| `setup.ts` | realtime | `worldFor(scenario, content)` → kit `createWorld` |
+| `report.ts` | realtime | `WaveReport`, `recordEvents` |
+| `wave/director.ts`, `wave/tick.ts` | realtime | `WaveState`, `tickWave` (step phase 9: spawns, win/lose) |
+| `bots.ts` | realtime | `BOTS`, `BOT_IDS` (`ticks` plays them; any game passes its bot ids to `parseOptions`) |
+| `headless.ts` | realtime | `worldForQuery`, `tickLine` (what `pnpm ticks` prints) |
+| `behaviors.ts` | realtime | `BEHAVIORS` (may be `{}`): enemy movement beyond chase and keepDistance |
+| `test-files.ts` | realtime | `heroBuild`, `GAME_TEST_FILES` (a quiet wave: no end in its first 10 s while the player lives, an end within 10 min), `TEST_NAMES` |
+
+A turn-based game deletes `src/realtime/`, `scripts/realtime/` and the realtime rows; `pnpm check`
+then names every package.json script and import left pointing at them.
 
 Then the rest of the game: `main.ts`, `wave-session.ts`, `ui/` screens, `ui/pad-keys.ts`,
 `index.html`, and `tests/e2e/*.spec.ts` (keep `fixtures.ts`; keep a `layout.spec.ts` that holds

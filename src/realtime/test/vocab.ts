@@ -2,7 +2,7 @@ import { TEST_NAMES } from "@/game/test-files";
 import { DAMAGE_TYPES } from "@/game/vocab";
 import type { DamageType, Role, Tag } from "@/realtime/content/schema/vocab";
 
-/** The game's names the kit's test content uses (src/game/test-files.ts `TEST_NAMES`). */
+/** The game's names the real-time tests' content uses (src/game/test-files.ts `TEST_NAMES`). */
 export interface TestNames {
   tags: readonly [Tag, Tag, Tag];
   damageTypes: readonly [DamageType] | readonly [DamageType, DamageType];

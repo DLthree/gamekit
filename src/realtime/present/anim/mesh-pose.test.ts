@@ -2,8 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createRng } from "@/core/rng";
 import { ActorAnims } from "@/realtime/present/anim/creatures";
 import { drawMeshActor, drawMeshGhost, newMeshDraw } from "@/realtime/present/anim/mesh-pose";
-import { staffFiles } from "@/realtime/test/content";
-import { testContent } from "@/test/content";
+import { staffFiles, testContent } from "@/realtime/test/content";
 
 const meshContent = () => testContent(staffFiles());
 const hero = {

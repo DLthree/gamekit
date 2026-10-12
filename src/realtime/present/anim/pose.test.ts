@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createRng } from "@/core/rng";
 import { ActorAnims, bodyHeight } from "@/realtime/present/anim/creatures";
 import { drawActor, drawGhost, newActorDraw } from "@/realtime/present/anim/pose";
-import { testContent } from "@/test/content";
+import { testContent } from "@/realtime/test/content";
 
 describe("drawActor", () => {
   const c = testContent();

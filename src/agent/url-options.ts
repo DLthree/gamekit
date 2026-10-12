@@ -1,9 +1,11 @@
 import { parseOn, type SwitchId } from "@/content/switches";
-import { BOTS, type BotId } from "@/game/bots";
 
-/** How a page runs, whatever it opens: who plays, what agents may read, and what it records. */
-export interface UrlOptions {
-  bot: BotId | null;
+/**
+ * How a page runs, whatever it opens: who plays (`B`, the game's bot ids), what agents may read,
+ * and what it records.
+ */
+export interface UrlOptions<B extends string = string> {
+  bot: B | null;
   manual: boolean;
   agent: boolean;
   ui: boolean;
@@ -52,8 +54,6 @@ function flag(p: URLSearchParams, key: string, errors: string[]): boolean | null
   return v === null ? null : v === "1";
 }
 
-const BOT_IDS = Object.keys(BOTS) as BotId[];
-
 /**
  * The parameters the release build (`pnpm build`, the shipped game) refuses: the agent and dev
  * tools, content overrides and switches, and telemetry (release telemetry is the build's choice,
@@ -73,19 +73,23 @@ export const RELEASE_REFUSED = [
   "dpr",
 ] as const;
 
-/** The parameters every address shares: the seed, content overrides (`o=`) and options. */
-export function parseOptions(
+/**
+ * The parameters every address shares: the seed, content overrides (`o=`) and options. `bots`
+ * are the ids `bot=` may name.
+ */
+export function parseOptions<B extends string>(
   p: URLSearchParams,
   errors: string[],
+  bots: readonly B[],
   build: "dev" | "release" = "dev",
-): { seed: number | null; overrides: string[]; options: UrlOptions } {
+): { seed: number | null; overrides: string[]; options: UrlOptions<B> } {
   if (build === "release")
     for (const key of RELEASE_REFUSED) if (p.has(key)) errors.push(`${key}: not in this build`);
   const seed = wholeFrom(p, "seed", 0, errors);
   const on = parseOn(p.get("on"));
   if ("problem" in on) errors.push(on.problem);
-  const options: UrlOptions = {
-    bot: oneOf(p, "bot", BOT_IDS, errors),
+  const options: UrlOptions<B> = {
+    bot: oneOf(p, "bot", bots, errors),
     manual: flag(p, "manual", errors) === true,
     agent: flag(p, "agent", errors) === true,
     ui: flag(p, "ui", errors) !== false,

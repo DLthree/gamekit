@@ -8,8 +8,8 @@ import {
   spawnVolume,
   type VolumeInit,
 } from "@/realtime/sim/volumes/store";
+import { testContent } from "@/realtime/test/content";
 import { DMG_A, damageOf } from "@/realtime/test/vocab";
-import { testContent } from "@/test/content";
 
 describe("VolumeStore", () => {
   const c = testContent();

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { FxPool, type FxSpawn } from "@/realtime/present/fx/pool";
-import { testContent } from "@/test/content";
+import { testContent } from "@/realtime/test/content";
 
 function lookFx(cap: number, evict: boolean, capacity = 100) {
   const fx = structuredClone(testContent().look.fx);

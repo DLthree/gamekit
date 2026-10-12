@@ -15,7 +15,7 @@ describe("parseOn", () => {
     expect(parseOn("")).toEqual({ on: [] });
   });
 
-  it("reads each known id once", () => {
+  it.skipIf(SWITCH_IDS.length === 0)("reads each known id once", () => {
     const id = SWITCH_IDS[0];
     expect(parseOn(`${id},${id}`)).toEqual({ on: [id] });
   });
@@ -31,13 +31,16 @@ describe("switchOn", () => {
     expect(switchOn(content, SWITCH_IDS)).toBe(content);
   });
 
-  it("cuts an off system from a frozen copy and leaves the original whole", () => {
-    const content = shipped();
-    const before = JSON.stringify(content.sim);
-    const off = switchOn(content, []);
-    expect(off).not.toBe(content);
-    expect(Object.isFrozen(off.sim)).toBe(true);
-    expect(JSON.stringify(content.sim)).toBe(before);
-    expect(JSON.stringify(off.sim)).not.toBe(before);
-  });
+  it.skipIf(SWITCH_IDS.length === 0)(
+    "cuts an off system from a frozen copy and leaves the original whole",
+    () => {
+      const content = shipped();
+      const before = JSON.stringify(content.sim);
+      const off = switchOn(content, []);
+      expect(off).not.toBe(content);
+      expect(Object.isFrozen(off.sim)).toBe(true);
+      expect(JSON.stringify(content.sim)).toBe(before);
+      expect(JSON.stringify(off.sim)).not.toBe(before);
+    },
+  );
 });

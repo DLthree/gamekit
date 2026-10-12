@@ -9,19 +9,15 @@ import { describe, expect, it } from "vitest";
  * seam import goes in docs/layout.md's seam table and here.
  */
 const CORE_SEAM = [
-  "src/game/bots",
   "src/game/check",
   "src/game/content",
   "src/game/deeds",
   "src/game/handle",
   "src/game/links",
   "src/game/record",
-  "src/game/scenario",
   "src/game/sweep",
   "src/game/switches",
   "src/game/telemetry",
-  "src/game/test-files",
-  "src/game/url",
 ];
 const REALTIME_SEAM = [
   "src/game/behaviors",

@@ -5,10 +5,10 @@ import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { treeProblems } from "@/realtime/content/check-tree";
 import type { DeliveryNode } from "@/realtime/content/schema/skill";
 import { drainSpawns, queueEnemy } from "@/realtime/sim/spawn-queue";
-import { bruteFiles } from "@/realtime/test/content";
+import { bruteFiles, testContent, testFiles } from "@/realtime/test/content";
 import { DMG_A, ROLE_A, ROLE_B, TAG_A, TAG_B } from "@/realtime/test/vocab";
 import { testWorld } from "@/realtime/test/world";
-import { type FilePatch, testContent, testFiles } from "@/test/content";
+import type { FilePatch } from "@/test/content";
 
 function errs(patch: FilePatch): string[] {
   const r = compileContent(testFiles(patch));

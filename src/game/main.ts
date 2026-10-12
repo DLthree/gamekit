@@ -1,4 +1,5 @@
 import "@/ui/page.css";
+import "@/realtime/arena.css";
 import "@/game/ui/game.css";
 import { clockHandle, installHandle } from "@/agent/handle";
 import { recordText } from "@/agent/record";
@@ -89,7 +90,6 @@ function show(prev: Flow): void {
       kind: "error",
       title: flow.title,
       lines: flow.lines,
-      scenario: flow.scenario,
       options: url.options,
       commit: __COMMIT__,
       record:
@@ -129,7 +129,6 @@ function show(prev: Flow): void {
     earn(scenario, flow.report);
     telemetry.record({
       kind: "run",
-      scenario,
       report: { ...flow.report, sound: soundStatus() },
       options: url.options,
       commit: __COMMIT__,

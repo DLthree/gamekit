@@ -2,7 +2,7 @@ import { expect, open, test } from "@e2e/fixtures";
 import { BOT, CAST_SKILL, CELL } from "@/game/links";
 
 test("a manual wave steps, casts and draws effects", async ({ page }) => {
-  await open(page, `${CELL}&manual=1&agent=1`);
+  await open(page, `${CELL}&manual=1&agent=1`, "wave");
   await expect(page.locator("#game canvas")).toBeVisible();
   await page.evaluate(() => window.__game?.frames(240));
   expect(await page.evaluate(() => window.__game?.state().tick)).toBe(240);
@@ -17,7 +17,7 @@ test("a manual wave steps, casts and draws effects", async ({ page }) => {
 });
 
 test(`the ${BOT} bot finishes the wave with kills`, async ({ page }) => {
-  await open(page, `${CELL}&manual=1&bot=${BOT}`);
+  await open(page, `${CELL}&manual=1&bot=${BOT}`, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   const report = await page.evaluate(() => window.__game?.report());
   expect(report?.outcome).not.toBeNull();
@@ -25,7 +25,7 @@ test(`the ${BOT} bot finishes the wave with kills`, async ({ page }) => {
 });
 
 test("effects drain to zero once spawning stops", async ({ page }) => {
-  await open(page, `${CELL}&manual=1&bot=${BOT}`);
+  await open(page, `${CELL}&manual=1&bot=${BOT}`, "wave");
   await page.evaluate(() => window.__game?.frames(600));
   await page.evaluate(() => window.__game?.stopFx());
   await page.evaluate(() => window.__game?.frames(600));
@@ -33,7 +33,7 @@ test("effects drain to zero once spawning stops", async ({ page }) => {
 });
 
 test("a real-time wave advances about 60 ticks a second", async ({ page }) => {
-  await open(page, CELL);
+  await open(page, CELL, "wave");
   const t0 = await page.evaluate(() => window.__game?.state().tick ?? 0);
   await page.waitForTimeout(1000);
   const t1 = await page.evaluate(() => window.__game?.state().tick ?? 0);
@@ -44,7 +44,7 @@ test("a real-time wave advances about 60 ticks a second", async ({ page }) => {
 test("a hidden page leaves the wave paused behind the overlay; Resume continues without a catch-up burst", async ({
   page,
 }) => {
-  await open(page, CELL);
+  await open(page, CELL, "wave");
   await page.waitForFunction(() => (window.__game?.state().tick ?? 0) > 30);
   const setHidden = (hidden: boolean) =>
     page.evaluate((h) => {
@@ -79,7 +79,7 @@ test("a hidden page leaves the wave paused behind the overlay; Resume continues 
 test("the HUD pause button and the agent handle pause; Grid leaves for the picker", async ({
   page,
 }) => {
-  await open(page, CELL);
+  await open(page, CELL, "wave");
   await page.locator("#pause-button").click();
   await expect(page.locator("#pause")).toBeVisible();
   await page.evaluate(() => window.__game?.resume());

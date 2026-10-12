@@ -23,7 +23,7 @@ test("a won wave earns First Light, shown on the grid and kept across a reload",
   await expect(page.locator("#picker .deeds li.earned")).toHaveCount(0);
   const before = await rowBoxes(page);
 
-  await open(page, WIN);
+  await open(page, WIN, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   await page.locator("#grid").click();

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { compileContent } from "@/content/compile";
 import { formatContentError } from "@/content/errors";
-import { type FilePatch, testFiles } from "@/test/content";
+import { testFiles } from "@/realtime/test/content";
+import type { FilePatch } from "@/test/content";
 
 function errs(patch: FilePatch): string[] {
   const r = compileContent(testFiles(patch));

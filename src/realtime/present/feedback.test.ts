@@ -4,8 +4,8 @@ import type { Role } from "@/realtime/content/schema/vocab";
 import { applyEvents } from "@/realtime/present/feedback";
 import { createPresentation, type Presentation } from "@/realtime/present/presentation";
 import type { WarningDraw } from "@/realtime/present/spawn-warnings";
+import { testContent, testFiles } from "@/realtime/test/content";
 import { ROLE_A, ROLE_B } from "@/realtime/test/vocab";
-import { testContent, testFiles } from "@/test/content";
 
 function presentation(): Presentation {
   return createPresentation(testContent(), 1);

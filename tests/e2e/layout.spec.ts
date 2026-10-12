@@ -31,7 +31,7 @@ const HUD = ["#hud .life", "#hud .stats", "#pause-button", "#skill-button"];
 test("the HUD keeps its boxes through the countdown, the fight, hurt, kills and pause", async ({
   page,
 }) => {
-  await open(page, `${CELL}&manual=1&agent=1`);
+  await open(page, `${CELL}&manual=1&agent=1`, "wave");
   // Stepped, the page draws nothing until its first frame: the HUD fills on frame 1.
   await page.evaluate(() => window.__game?.frames(1));
   const countdown = await rects(page, HUD);
@@ -56,7 +56,7 @@ const RESULT = ["#result h1", "#result ul", "#result .repro", "#retry", "#grid"]
 
 /** The result's boxes after the wave at `query`, and its title. */
 async function resultOf(page: Page, query: string): Promise<[string, Record<string, Box>]> {
-  await open(page, `${query}&manual=1`);
+  await open(page, `${query}&manual=1`, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   return [await page.locator("#result h1").innerText(), await rects(page, RESULT)];

@@ -5,7 +5,7 @@ import { HERO } from "@/game/links";
 const CELL = `char=${HERO}&build=1&threat=3&o=characters/${HERO}.stats.life=1000000`;
 
 test("the threat 3 boss telegraphs its slam, then the slam resolves", async ({ page }) => {
-  await open(page, `${CELL}&manual=1&agent=1`);
+  await open(page, `${CELL}&manual=1&agent=1`, "wave");
   // Step in batches shorter than the slam's 60-tick warning, so the first slam is still warning
   // when the stepping stops.
   const slamTick = await page.waitForFunction(() => {

@@ -23,10 +23,9 @@ import {
   wholeArg,
   withGameBrowser,
 } from "@scripts/game-page";
-import { PERF_QUERY } from "@/game/links";
 
 const USAGE = `usage: pnpm shot "<query>" [--actions '[…]'] [--frames 600] [--o PATCH ...] [--name NAME] [--deck | --phone [--landscape]]
-  e.g. pnpm shot "${PERF_QUERY}"`;
+  e.g. pnpm shot "seed=3" --actions '[…]' --frames 30`;
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,

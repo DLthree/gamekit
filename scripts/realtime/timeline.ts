@@ -8,7 +8,7 @@ import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { switchOn } from "@/content/switches";
 import { ticks } from "@/core/clock";
-import { BOTS } from "@/game/bots";
+import { BOT_IDS, BOTS } from "@/game/bots";
 import { tickLine, worldForQuery } from "@/game/headless";
 import { IDLE } from "@/realtime/sim/command";
 import { step } from "@/realtime/sim/step";
@@ -23,7 +23,7 @@ import { step } from "@/realtime/sim/step";
 export function timeline(query: string, maxS: number, overrides: readonly string[] = []): string[] {
   const search = toolQuery(query, overrides);
   const errors: string[] = [];
-  const { overrides: all, options } = parseOptions(new URLSearchParams(search), errors);
+  const { overrides: all, options } = parseOptions(new URLSearchParams(search), errors, BOT_IDS);
   if (errors.length > 0) throw new Error(errors.join("\n"));
   const loaded = loadContentDir(REPO_CONTENT_DIR, all);
   if (!loaded.ok) throw new Error(loaded.errors.map(formatContentError).join("\n"));

@@ -1,12 +1,11 @@
 import type { UrlOptions } from "@/agent/url-options";
-import type { Scenario } from "@/game/scenario";
 import type { GameRecord, RunReport } from "@/game/telemetry";
 
 /**
  * The kit's records and the game's own (`GameRecord`, src/game/telemetry.ts). `commit` is the
- * build's `git describe --always --dirty`; with the scenario and options, a `run` or `error`
- * record names everything needed to reopen that run (`reproUrl`), and its `record` is the run
- * record text (src/agent/record.ts, `pnpm run-record`).
+ * build's `git describe --always --dirty`; a `run` or `error` record's `record` is the run record
+ * text (src/agent/record.ts), which names everything needed to reopen that run (`pnpm
+ * run-record`, the game's `replayQuery`).
  */
 export type TelemetryRecord =
   | {
@@ -22,7 +21,6 @@ export type TelemetryRecord =
       kind: "error";
       title: string;
       lines: string[];
-      scenario: Scenario | null;
       options: UrlOptions;
       commit: string;
       /** The run record, when a scenario was running. */
@@ -33,7 +31,6 @@ export type TelemetryRecord =
   /** A finished run: its run record and the game's report. */
   | {
       kind: "run";
-      scenario: Scenario;
       report: RunReport;
       options: UrlOptions;
       commit: string;

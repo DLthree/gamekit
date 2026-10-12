@@ -61,8 +61,37 @@ class FakeKie:
         return [b for u, b in self.calls if u.endswith("/createTask")]
 
 
+HOUSE = {
+    "swatch": {
+        "about": "Image-to-image from a style swatch.",
+        "pre": "Match the swatch's ink and texture. Subject:",
+        "post": "Plain background.",
+        "references": ["assets/style/swatch.png"],
+        "aspect": None,
+        "transparent": True,
+        "enhance": False,
+    },
+    "words": {
+        "about": "Text-to-image, the style in words.",
+        "pre": "",
+        "post": "Style: flat black ink.",
+        "references": [],
+        "aspect": "1:1",
+        "transparent": True,
+        "enhance": False,
+    },
+}
+
+
 @pytest.fixture
-def kie(monkeypatch):
+def kie(monkeypatch, tmp_path):
+    """kie.ai faked, and a tiny repo of its own: two presets and a swatch, not the game's."""
+    repo = tmp_path / "repo"
+    (repo / "assets" / "style").mkdir(parents=True)
+    (repo / "assets" / "style" / "swatch.png").write_bytes(PNG)
+    (repo / "assets" / "style" / "presets.json").write_text(json.dumps({"presets": HOUSE}))
+    monkeypatch.setattr(q, "REPO", repo)
+    monkeypatch.setattr(q, "PRESETS", repo / "assets" / "style" / "presets.json")
     fake = FakeKie()
     monkeypatch.setattr(urllib.request, "urlopen", fake.urlopen)
     monkeypatch.setattr(q, "BACKOFF_S", 0)
@@ -72,10 +101,10 @@ def kie(monkeypatch):
     return fake
 
 
-def test_sprite_preset_wraps_the_subject_in_the_house_style_with_the_anchor(kie, tmp_path):
+def test_a_preset_wraps_the_subject_in_the_house_style_with_its_reference(kie, tmp_path):
     out = tmp_path / "moth.png"
-    assert q.main(["a moth in flight", "-o", str(out), "--preset", "sprite", "--seed", "7"]) == 0
-    style = q.presets()["sprite"]
+    assert q.main(["a moth in flight", "-o", str(out), "--preset", "swatch", "--seed", "7"]) == 0
+    style = HOUSE["swatch"]
     (sent,) = kie.created()
     assert sent["model"] == q.KIE_I2I
     assert sent["input"]["prompt"] == f"{style['pre']} a moth in flight {style['post']}"
@@ -86,9 +115,9 @@ def test_sprite_preset_wraps_the_subject_in_the_house_style_with_the_anchor(kie,
     assert out.read_bytes() == PNG
     side = json.loads(out.with_suffix(".json").read_text())
     assert side["subject"] == "a moth in flight"
-    assert side["preset"] == "sprite"
+    assert side["preset"] == "swatch"
     assert side["seed"] == 7
-    assert side["references"] == ["assets/style/anchor.png"]
+    assert side["references"] == ["assets/style/swatch.png"]
     assert side["cost_credits"] == 4.0
     assert side["cost_usd"] == 0.02
     assert side["task_id"] == "t1"
@@ -96,7 +125,7 @@ def test_sprite_preset_wraps_the_subject_in_the_house_style_with_the_anchor(kie,
 
 
 def test_image_replaces_the_preset_references(kie, tmp_path):
-    q.main(["x", "-o", str(tmp_path / "a.png"), "--preset", "sprite", "--image", "https://ref/a.png"])
+    q.main(["x", "-o", str(tmp_path / "a.png"), "--preset", "swatch", "--image", "https://ref/a.png"])
     assert kie.created()[0]["input"]["image_urls"] == ["https://ref/a.png"]
     assert not any(u == q.KIE_UPLOAD for u, _ in kie.calls)
 
@@ -114,7 +143,7 @@ def test_no_preset_and_no_reference_is_text_to_image_with_the_given_switches(kie
 def test_unknown_preset_names_the_known_ones(kie, tmp_path, capsys):
     assert q.main(["x", "-o", str(tmp_path / "a.png"), "--preset", "nope"]) == 1
     err = capsys.readouterr().err
-    assert "no preset 'nope'" in err and "sprite" in err
+    assert "no preset 'nope'" in err and "swatch" in err
     assert kie.calls == []
 
 
@@ -157,8 +186,8 @@ def test_batch_skips_done_jobs_and_resolves_paths_from_its_file(kie, tmp_path):
     (tmp_path / "done.png").write_bytes(b"old")
     (tmp_path / "done.json").write_text("{}")
     jobs = [
-        {"subject": "a", "output": "done.png", "preset": "fx"},
-        {"subject": "b", "output": "new/b.png", "preset": "fx", "seed": 3},
+        {"subject": "a", "output": "done.png", "preset": "swatch"},
+        {"subject": "b", "output": "new/b.png", "preset": "swatch", "seed": 3},
         {"subject": "c", "output": "c.png"},
     ]
     batch = tmp_path / "jobs.json"
@@ -168,7 +197,7 @@ def test_batch_skips_done_jobs_and_resolves_paths_from_its_file(kie, tmp_path):
     assert (tmp_path / "done.png").read_bytes() == b"old"
     assert json.loads((tmp_path / "new" / "b.json").read_text())["seed"] == 3
     assert (tmp_path / "c.png").read_bytes() == PNG
-    assert sum(u == q.KIE_UPLOAD for u, _ in kie.calls) == 1  # the anchor, uploaded once
+    assert sum(u == q.KIE_UPLOAD for u, _ in kie.calls) == 1  # the swatch, uploaded once
     assert q.main(["--batch", str(batch)]) == 0
     assert len(kie.created()) == 2
 

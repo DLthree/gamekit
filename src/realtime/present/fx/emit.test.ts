@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createRng } from "@/core/rng";
 import { buildColorOf, emit, tintFor } from "@/realtime/present/fx/emit";
 import { FxPool } from "@/realtime/present/fx/pool";
-import { testContent } from "@/test/content";
+import { testContent } from "@/realtime/test/content";
 
 describe("emit", () => {
   const c = testContent();

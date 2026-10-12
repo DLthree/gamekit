@@ -4,8 +4,8 @@ import { createRng } from "@/core/rng";
 import { FxPool } from "@/realtime/present/fx/pool";
 import type { HeadDraw } from "@/realtime/present/fx/recipes/projectile";
 import { ProjectileTracker } from "@/realtime/present/fx/trails";
+import { testContent } from "@/realtime/test/content";
 import { place, run, testWorld } from "@/realtime/test/world";
-import { testContent } from "@/test/content";
 
 describe("ProjectileTracker", () => {
   it("follows a live projectile, drops a trail puff every everyS and forgets it when it ends", () => {

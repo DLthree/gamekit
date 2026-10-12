@@ -18,13 +18,11 @@ describe("runSweep", () => {
   }, 60_000);
 
   it("plays the overrides it is given", async () => {
-    const content = sweepContent(SETUP);
-    const run = sweepRuns(content)[0];
-    const overrides = Object.keys(content.characters).map((c) => `characters/${c}.stats.life=7`);
-    const setup = { overrides, on: [] };
+    const run = sweepRuns(sweepContent(SETUP))[0];
+    const setup = { overrides: ["look/sounds.volume=0.5"], on: [] };
     const [row] = await runSweep(setup, sweepJobs([run], 1), 1);
     expect(row).toEqual(playRun(sweepContent(setup), run, 1));
-    const bad = { overrides: ["characters/nobody.stats.life=7"], on: [] };
+    const bad = { overrides: ["look/nobody.volume=0.5"], on: [] };
     await expect(runSweep(bad, sweepJobs([run], 1), 1)).rejects.toThrow(/nobody/);
   }, 60_000);
 

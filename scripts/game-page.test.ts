@@ -3,12 +3,12 @@ import { describe, expect, it } from "vitest";
 
 describe("toolQuery", () => {
   it("pins telemetry off and seed 7, and lets the tool step and read the sim", () => {
-    const q = new URLSearchParams(toolQuery("char=a&build=1&threat=2"));
+    const q = new URLSearchParams(toolQuery("deck=a&round=2"));
     expect(q.get("telemetry")).toBe("0");
     expect(q.get("seed")).toBe("7");
     expect(q.get("manual")).toBe("1");
     expect(q.get("agent")).toBe("1");
-    expect(q.get("threat")).toBe("2");
+    expect(q.get("round")).toBe("2");
   });
 
   it("keeps the query's own seed and telemetry", () => {
@@ -26,7 +26,7 @@ describe("toolQuery", () => {
 
 describe("queryName", () => {
   it("keeps letters, digits and = and joins the rest with _", () => {
-    expect(queryName("char=a&build=1&o=rules/feel.x=2")).toBe("char=a_build=1_o=rules_feel_x=2");
+    expect(queryName("deck=a&round=1&o=rules/run.x=2")).toBe("deck=a_round=1_o=rules_run_x=2");
   });
 });
 
@@ -39,9 +39,9 @@ describe("toolQuery overrides", () => {
 
 describe("parseActions", () => {
   it("reads a JSON array of the game's actions", () => {
-    expect(parseActions('[{"frames":30,"cast":[1,0]},"move"]')).toEqual([
-      { frames: 30, cast: [1, 0] },
-      "move",
+    expect(parseActions('[{"frames":30,"play":[1,0]},"draw"]')).toEqual([
+      { frames: 30, play: [1, 0] },
+      "draw",
     ]);
   });
 

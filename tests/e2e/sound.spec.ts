@@ -18,7 +18,7 @@ async function castFireball(page: Page): Promise<void> {
 test("audio waits for the first touch, drops what it couldn't play, then plays", async ({
   page,
 }) => {
-  await open(page, `${CELL}&manual=1`);
+  await open(page, `${CELL}&manual=1`, "wave");
   // The wave starts in its 1s countdown (rules/feel.json's countdownS): step() there returns
   // before applying a command at all, so a cast during it is lost, not queued (sim/step.ts).
   // Clear it first, as tests/e2e/wave.spec.ts does, so the cast actually lands.

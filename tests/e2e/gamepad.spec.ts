@@ -1,4 +1,5 @@
-import { expect, open, playing, test, waitForCast } from "@e2e/fixtures";
+import { expect, open, test } from "@e2e/fixtures";
+import { playing, waitForCast } from "@e2e/wave";
 import type { Page } from "@playwright/test";
 import { CAST_SKILL, CELL } from "@/game/links";
 import { PAD, type PadButton } from "@/input/gamepad";
@@ -114,7 +115,7 @@ test("on the result a pad's A retries and B goes to the grid, with hints shown",
   page,
 }) => {
   await plugPad(page);
-  await open(page, `${CELL}&manual=1`);
+  await open(page, `${CELL}&manual=1`, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   await press(page, "a");

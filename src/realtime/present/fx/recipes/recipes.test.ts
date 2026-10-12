@@ -7,7 +7,7 @@ import { explosion } from "@/realtime/present/fx/recipes/explosion";
 import { groundFire } from "@/realtime/present/fx/recipes/ground";
 import { deathInk, goldFlakes, hitInk } from "@/realtime/present/fx/recipes/ink";
 import { headDraw, newHeadDraw, trailStep } from "@/realtime/present/fx/recipes/projectile";
-import { testContent, testFiles } from "@/test/content";
+import { testContent, testFiles } from "@/realtime/test/content";
 
 /** Signed distance from `a` to `b` in radians, wrapped to (-π, π]; angles differing by a multiple
  * of 2π (e.g. atan2's -π vs the 1.5π a caller might expect) are treated as equal. */

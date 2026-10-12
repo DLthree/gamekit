@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { nextFloat } from "@/core/rng";
 import { createPresentation } from "@/realtime/present/presentation";
-import { testContent } from "@/test/content";
+import { testContent } from "@/realtime/test/content";
 
 describe("createPresentation", () => {
   it("gives shakes and sound their own streams, so neither shifts the effects", () => {

@@ -6,7 +6,8 @@ import type { SimEvent } from "@/realtime/sim/events";
 import { drainSpawns, queueEnemy } from "@/realtime/sim/spawn-queue";
 import { step } from "@/realtime/sim/step";
 import type { World } from "@/realtime/sim/world";
-import { type FilePatch, testContent } from "@/test/content";
+import { testContent } from "@/realtime/test/content";
+import type { FilePatch } from "@/test/content";
 
 export const TEST_SCENARIO: Scenario = {
   character: "hero",

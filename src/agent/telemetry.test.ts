@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { Telemetry } from "@/agent/telemetry";
 import { parseOptions } from "@/agent/url-options";
 
-const { options } = parseOptions(new URLSearchParams(""), []);
+const { options } = parseOptions(new URLSearchParams(""), [], []);
 
 function setup() {
   const sent: { body: string; keepalive: boolean }[] = [];
@@ -61,7 +61,6 @@ describe("Telemetry", () => {
       kind: "error",
       title: "Crash",
       lines: ["tick 5"],
-      scenario: null,
       options,
       commit: "c",
       record: null,

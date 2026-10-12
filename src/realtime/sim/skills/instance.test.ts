@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { TICK_HZ } from "@/core/clock";
 import { mergeSkill } from "@/realtime/content/loadout";
 import { resolveSkill, skillStat } from "@/realtime/sim/skills/instance";
+import { testContent } from "@/realtime/test/content";
 import { DMG_A, damageOf, TAG_B, TAG_C } from "@/realtime/test/vocab";
-import { testContent } from "@/test/content";
 
 describe("resolveSkill", () => {
   const c = testContent();

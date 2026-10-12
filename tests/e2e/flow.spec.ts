@@ -2,7 +2,7 @@ import { expect, open, test } from "@e2e/fixtures";
 import { BOT, CAST_SKILL, CELL, HERO, SWITCH } from "@/game/links";
 
 test("a finished wave shows the result, and retry starts run 2 at tick 0", async ({ page }) => {
-  await open(page, `${CELL}&manual=1&bot=${BOT}`);
+  await open(page, `${CELL}&manual=1&bot=${BOT}`, "wave");
   await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   await expect(page.locator("#result h1")).toHaveText(/Survived|Defeated/);
@@ -41,7 +41,7 @@ test("without seed= every run gets a fresh seed, shown with a repro URL that rep
 });
 
 test("the HUD shows life, time and kills during a wave", async ({ page }) => {
-  await open(page, `${CELL}&manual=1`);
+  await open(page, `${CELL}&manual=1`, "wave");
   await page.evaluate(() => window.__game?.frames(120));
   await expect(page.locator("#hud .stats")).toContainText("kills");
 });
@@ -80,13 +80,13 @@ test("touchmove scrolls inside the error panel but is still blocked on the page"
 });
 
 test("ui=0 hides the HUD and the skill button for screenshots", async ({ page }) => {
-  await open(page, `${CELL}&manual=1&ui=0`);
+  await open(page, `${CELL}&manual=1&ui=0`, "wave");
   await expect(page.locator("#hud")).toBeHidden();
   await expect(page.locator("#skill-button")).toBeHidden();
 });
 
 test("on= turns feature switches on, and an unknown one stops at the address", async ({ page }) => {
-  await open(page, `${CELL}&on=${SWITCH}`);
+  await open(page, `${CELL}&on=${SWITCH}`, "wave");
   expect(await page.evaluate(() => window.__game?.on())).toEqual([SWITCH]);
   await open(page, `${CELL}&on=nope`, "error");
   await expect(page.locator("#error")).toContainText('on=nope: no switch "nope"');

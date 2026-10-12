@@ -10,7 +10,7 @@ import {
   Telegraphs,
 } from "@/realtime/present/telegraphs";
 import type { SimEvent } from "@/realtime/sim/events";
-import { testContent } from "@/test/content";
+import { testContent } from "@/realtime/test/content";
 
 type Started = Extract<SimEvent, { t: "volumeStarted" }>;
 type Ended = Extract<SimEvent, { t: "volumeEnded" }>;
