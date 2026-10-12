@@ -9,7 +9,6 @@ if (process.env.GAMEKIT_E2E_GUARD !== "1")
 checkE2eArgs(process.argv);
 
 const PORT = PORTS.e2e;
-const TOUCH_SPECS = ["controls.spec.ts", "sound.spec.ts"];
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -24,15 +23,14 @@ export default defineConfig({
     trace: { mode: "retain-on-failure", screenshots: false },
   },
   projects: [
-    // Desktop is the release target; only the touch and iOS-audio specs need the phone.
+    // Desktop is the release target; only tests tagged @touch (in the title) run on the phone.
     {
       name: "desktop",
       use: devices["Desktop Safari"],
-      testIgnore: TOUCH_SPECS,
-      grepInvert: /@content/,
+      grepInvert: /@touch|@content/,
       fullyParallel: true,
     },
-    { name: "iphone", use: devices["iPhone 14"], testMatch: TOUCH_SPECS, fullyParallel: true },
+    { name: "iphone", use: devices["iPhone 14"], grep: /@touch/, fullyParallel: true },
     // Content specs edit files the server watches, so they run alone, after the rest.
     {
       name: "content",

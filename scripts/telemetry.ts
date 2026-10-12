@@ -2,6 +2,8 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseJsonl, summarizeTelemetry } from "@scripts/telemetry-summary";
+import { replayQuery } from "@/game/record";
+import { runLines, sessionLines } from "@/game/telemetry";
 
 const dir = process.env.GAMEKIT_TELEMETRY_DIR ?? "telemetry";
 const arg = process.argv[2];
@@ -18,4 +20,9 @@ if (file === undefined) {
   file = join(dir, newest);
 }
 console.log(`${file}\n`);
-for (const line of summarizeTelemetry(parseJsonl(readFileSync(file, "utf8")))) console.log(line);
+for (const line of summarizeTelemetry(parseJsonl(readFileSync(file, "utf8")), {
+  runLines,
+  sessionLines,
+  replayQuery,
+}))
+  console.log(line);

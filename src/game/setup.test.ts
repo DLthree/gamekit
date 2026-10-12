@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { ScenarioError } from "@/game/scenario";
 import { worldFor } from "@/game/setup";
-import { playerOf } from "@/sim/world";
-import { testContent } from "@/test/content";
-import { place, run, TEST_SCENARIO, testWorld } from "@/test/world";
+import { playerOf } from "@/realtime/sim/world";
+import { testContent } from "@/realtime/test/content";
+import { place, run, TEST_SCENARIO, testWorld } from "@/realtime/test/world";
 
 describe("worldFor", () => {
   it("places the player at the arena centre with the build's skills in slot order", () => {

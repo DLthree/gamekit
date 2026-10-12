@@ -1,4 +1,5 @@
 import { optionParams, parseOptions, type UrlOptions, wholeFrom } from "@/agent/url-options";
+import { BOT_IDS, type BotId } from "@/game/bots";
 import type { Flow } from "@/game/flow";
 import type { Scenario } from "@/game/scenario";
 
@@ -35,7 +36,7 @@ export function parseUrl(
   target: UrlTarget | null;
   seed: number | null;
   overrides: string[];
-  options: UrlOptions;
+  options: UrlOptions<BotId>;
   errors: string[];
 } {
   const p = new URLSearchParams(search);
@@ -45,7 +46,7 @@ export function parseUrl(
   if (cell && character === null) errors.push("char is missing");
   const buildTier = cell ? required(p, "build", errors) : null;
   const threatTier = cell ? required(p, "threat", errors) : null;
-  const { seed, overrides, options } = parseOptions(p, errors, build);
+  const { seed, overrides, options } = parseOptions(p, errors, BOT_IDS, build);
   const stage = p.get("stage");
   if (stage !== null && (cell || character !== null))
     errors.push(`stage=${stage} opens a bench: drop char, build and threat`);

@@ -3,12 +3,9 @@
  * callout, selection). CSS can't stop Safari's `gesture*` pinch events, and a non-passive
  * touchmove preventDefault is the reliable stop for rubber-band scrolling.
  */
-/** Panels whose content can outgrow the screen and need real scrolling. */
-const SCROLLABLE_PANELS = ["#error", "#result", "#picker"];
-
+/** Panels and menu page bodies (src/ui/page.css) can outgrow the screen and need real scrolling. */
 function inScrollablePanel(target: EventTarget | null): boolean {
-  if (!(target instanceof Element)) return false;
-  return SCROLLABLE_PANELS.some((sel) => target.closest(sel) !== null);
+  return target instanceof Element && target.closest(".panel, .page-body") !== null;
 }
 
 export function installIosGuards(): void {

@@ -1,12 +1,12 @@
-import type { SourcedMod } from "@/content/schema/vocab";
 import type { SimContent } from "@/content/types";
-import { ticks } from "@/core/clock";
 import { checkTunnelling, enemyTemplates, playerSkills } from "@/game/loadout";
 import { createReport } from "@/game/report";
 import { checkScenario, type Scenario } from "@/game/scenario";
-import { createStageState } from "@/sim/stage";
-import { resolveActorStats } from "@/sim/stats/resolve";
-import { createWorld, type World } from "@/sim/world";
+import type { SourcedMod } from "@/realtime/content/schema/vocab";
+import { ticks } from "@/realtime/core/clock";
+import { createStageState } from "@/realtime/sim/stage";
+import { resolveActorStats } from "@/realtime/sim/stats/resolve";
+import { createWorld, type World } from "@/realtime/sim/world";
 
 /**
  * A world for one cell: the character at its build tier against the threat tier's wave. On a

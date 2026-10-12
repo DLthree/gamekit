@@ -12,19 +12,17 @@ async function audioRunning(page: Page, step: string, running: boolean): Promise
 }
 
 async function castFireball(page: Page): Promise<void> {
-  await page.evaluate(() =>
-    window.__game?.step(30, { moveX: 0, moveY: 0, cast: { slot: "cast", aim: { x: 1, y: 0 } } }),
-  );
+  await page.evaluate(() => window.__game?.act({ frames: 30, cast: [1, 0] }));
 }
 
-test("audio waits for the first touch, drops what it couldn't play, then plays", async ({
+test("@touch audio waits for the first touch, drops what it couldn't play, then plays", async ({
   page,
 }) => {
-  await open(page, `${CELL}&manual=1`);
+  await open(page, `${CELL}&manual=1`, "wave");
   // The wave starts in its 1s countdown (rules/feel.json's countdownS): step() there returns
   // before applying a command at all, so a cast during it is lost, not queued (sim/step.ts).
   // Clear it first, as tests/e2e/wave.spec.ts does, so the cast actually lands.
-  await page.evaluate(() => window.__game?.step(240));
+  await page.evaluate(() => window.__game?.frames(240));
   await castFireball(page);
   const before = await page.evaluate(() => window.__game?.sound());
   // "suspended" or "interrupted": Phaser 4.2.1's own visibility-change guard (onGameVisible,
@@ -36,7 +34,7 @@ test("audio waits for the first touch, drops what it couldn't play, then plays",
   expect(before?.locked).toBeGreaterThan(0);
   await page.touchscreen.tap(60, 300);
   await audioRunning(page, "first tap", true);
-  await page.evaluate(() => window.__game?.step(200));
+  await page.evaluate(() => window.__game?.frames(200));
   await castFireball(page);
   const after = await page.evaluate(() => window.__game?.sound());
   expect(after?.played).toBeGreaterThan(0);

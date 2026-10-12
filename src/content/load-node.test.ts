@@ -9,13 +9,12 @@ describe("the Node content loader", () => {
   it("compiles the shipped content", () => {
     const r = loadContentDir(REPO_CONTENT_DIR, []);
     if (!r.ok) throw new Error(r.errors.map(formatContentError).join("\n"));
-    expect(Object.keys(r.content.sim.characters).length).toBeGreaterThan(0);
-    expect(Object.keys(r.content.sim.skills).length).toBeGreaterThan(0);
+    expect(r.content.look.soundManifest.sounds.length).toBeGreaterThan(0);
   });
 
   it("keys files by path relative to content/ and skips generated JSON Schemas", () => {
     const texts = readContentTexts(REPO_CONTENT_DIR);
-    expect(Object.keys(texts)).toContain("look/generated/sprites.json");
+    expect(Object.keys(texts)).toContain("look/generated/sounds.json");
     expect(Object.keys(texts).some((k) => k.startsWith("schema/"))).toBe(false);
   });
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { pickerModel } from "@/game/picker";
 import { ScenarioError } from "@/game/scenario";
-import { testContent } from "@/test/content";
+import { testContent } from "@/realtime/test/content";
 
 describe("pickerModel", () => {
   const sim = testContent().sim;

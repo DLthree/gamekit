@@ -4,7 +4,7 @@ import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { kite } from "@/game/kite-bot";
 import { BOT } from "@/game/links";
 import { worldFor } from "@/game/setup";
-import { step } from "@/sim/step";
+import { step } from "@/realtime/sim/step";
 
 const loaded = loadContentDir(REPO_CONTENT_DIR, []);
 if (!loaded.ok) throw new Error(loaded.errors.map(formatContentError).join("\n"));

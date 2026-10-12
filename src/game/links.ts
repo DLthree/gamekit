@@ -43,7 +43,7 @@ export const SCREENS: Record<
     query: CELL,
     screen: "wave",
     act: () => {
-      window.__game?.step(120);
+      window.__game?.frames(120);
       window.__game?.pause();
     },
   },
@@ -51,7 +51,7 @@ export const SCREENS: Record<
     query: `${CELL}&bot=${BOT}`,
     screen: "result",
     act: () => {
-      window.__game?.step(20_000);
+      window.__game?.act({ frames: 20_000 });
     },
   },
   error: { query: `char=${HERO}&build=9&threat=1`, screen: "error" },

@@ -1,6 +1,6 @@
 /**
  * The run record reader behind `pnpm run-record` (scripts/run-record.ts): finds records in what it
- * is given (a record's text, or a telemetry jsonl's wave and error lines), lays one out, and
+ * is given (a record's text, or a telemetry jsonl's run and error lines), lays one out, and
  * writes its replay address (the game's replayQuery).
  */
 import { parseRecord, type RunRecord } from "@/agent/record";
@@ -13,7 +13,7 @@ export interface Found {
 }
 
 /**
- * The records in `text`: the text itself when it is one (`rr1;…`), else each wave and error line
+ * The records in `text`: the text itself when it is one (`rr1;…`), else each run and error line
  * of a telemetry jsonl that carries one, in order. Throws when there is none.
  */
 export function recordsIn(text: string): Found[] {
@@ -30,14 +30,14 @@ export function recordsIn(text: string): Found[] {
     }
     if (typeof json.record !== "string") continue;
     const ended =
-      json.kind === "wave"
+      json.kind === "run"
         ? (json.report?.outcome ?? "ended")
         : json.kind === "error"
           ? `error: ${json.title}`
           : null;
     out.push({ record: parseRecord(json.record), ended });
   }
-  if (out.length === 0) throw new Error("no run records in it (wave or error lines with one)");
+  if (out.length === 0) throw new Error("no run records in it (run or error lines with one)");
   return out;
 }
 

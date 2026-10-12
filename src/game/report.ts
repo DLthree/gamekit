@@ -1,4 +1,4 @@
-import type { Outcome, SimEvent } from "@/sim/events";
+import type { Outcome, SimEvent } from "@/realtime/sim/events";
 
 /** What happened in a wave, built from the same events the view sees. */
 export interface WaveReport {

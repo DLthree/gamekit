@@ -1,0 +1,76 @@
+/* The real-time page: the canvas host, the touch zone, the touch stick and the skill button
+ * (src/realtime/input/). Colours come from the kit's theme variables (src/ui/page.css). */
+#game,
+#touch-zone {
+  position: fixed;
+  inset: 0;
+  touch-action: none;
+}
+
+#game canvas {
+  display: block;
+}
+
+#stick-base {
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  border: 3px solid color-mix(in srgb, var(--page-ink) 35%, transparent);
+  display: none;
+  pointer-events: none;
+}
+
+body.stick-active #stick-base {
+  display: grid;
+  place-items: center;
+}
+
+#stick-knob,
+#skill-knob {
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--page-ink) 35%, transparent);
+}
+
+#skill-button {
+  --cd: 0;
+  position: fixed;
+  right: calc(28px + env(safe-area-inset-right));
+  bottom: calc(28px + env(safe-area-inset-bottom));
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  touch-action: none;
+  background:
+    conic-gradient(
+      color-mix(in srgb, var(--page-ink) 45%, transparent) calc(var(--cd) * 360deg),
+      transparent 0
+    ),
+    color-mix(in srgb, var(--page-bg) 85%, transparent);
+  border: 3px solid var(--page-ink);
+}
+
+#skill-button:not(.relative) #skill-knob {
+  display: none;
+}
+
+#skill-button.pressed {
+  transform: scale(0.94);
+}
+
+#skill-button.cancel {
+  /* look/controls.json cancelColor, set by Controls. */
+  border-color: var(--cancel-color);
+}
+
+#skill-button.cooling::after {
+  content: attr(data-cooldown);
+  position: absolute;
+  font-weight: 700;
+}
+
+/* A class + id outranks the button's own display rule, so no !important. */
+body.no-ui #skill-button,
+body.no-ui #stick-base {
+  display: none;
+}

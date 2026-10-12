@@ -1,9 +1,9 @@
-import { TICK_S, ticks } from "@/core/clock";
 import type { TimedSpawn } from "@/game/schema/threat";
-import { edgePoint, fieldPoints, ringPoints } from "@/sim/spawn-points";
-import { queueEnemy } from "@/sim/spawn-queue";
-import { tickStage } from "@/sim/stage";
-import { playerOf, type World } from "@/sim/world";
+import { TICK_S, ticks } from "@/realtime/core/clock";
+import { edgePoint, fieldPoints, ringPoints } from "@/realtime/sim/spawn-points";
+import { queueEnemy } from "@/realtime/sim/spawn-queue";
+import { tickStage } from "@/realtime/sim/stage";
+import { playerOf, type World } from "@/realtime/sim/world";
 
 /** A warned field spawn waiting for its wave tick. */
 export interface PendingSpawn {

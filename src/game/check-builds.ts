@@ -1,11 +1,12 @@
-import { checkMods, type Push, type TreeProblem, treeProblems } from "@/content/check-tree";
-import { type AppliedModifier, applyTags, mergeSkill, nodesOf } from "@/content/loadout";
-import { type DeliveryNode, PRIMITIVE_KINDS, type Skill } from "@/content/schema/skill";
-import { ACTOR_STAT_IDS, SlotId, type StatMod, type Tag } from "@/content/schema/vocab";
-import { hasSkillStat, type SkillStatId } from "@/content/skill-stats";
+import type { Push } from "@/content/errors";
 import type { Content } from "@/content/types";
 import { enemyTemplates, playerSkills, tunnellingProblem } from "@/game/loadout";
 import type { BuildTier, SlotLoadout } from "@/game/schema/build";
+import { checkMods, type TreeProblem, treeProblems } from "@/realtime/content/check-tree";
+import { type AppliedModifier, applyTags, mergeSkill, nodesOf } from "@/realtime/content/loadout";
+import { type DeliveryNode, PRIMITIVE_KINDS, type Skill } from "@/realtime/content/schema/skill";
+import { ACTOR_STAT_IDS, SlotId, type StatMod, type Tag } from "@/realtime/content/schema/vocab";
+import { hasSkillStat, type SkillStatId } from "@/realtime/content/skill-stats";
 
 const ACTOR_STATS: readonly string[] = ACTOR_STAT_IDS;
 
@@ -101,7 +102,7 @@ function checkMerged(
   const lines: StatMod[] = [...merged.mods.map((m) => m.mod), ...tier.stats];
   const has = (stat: SkillStatId) => hasSkillStat(skill.stats, stat, lines, merged.tags);
   // As in the skill-file check: the file's base value. Lines can't take the resolved stat below
-  // the zone floor: STAT_CLAMPS' minimums meet it (src/sim/stats/resolve.test.ts).
+  // the zone floor: STAT_CLAMPS' minimums meet it (src/realtime/sim/stats/resolve.test.ts).
   const get = (stat: SkillStatId) => skill.stats[stat];
   const key = (p: TreeProblem) => `${p.stat}|${p.path}|${p.message}`;
   const baseHas = (stat: SkillStatId) => hasSkillStat(skill.stats, stat, [], skill.tags);

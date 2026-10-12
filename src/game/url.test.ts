@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { Flow } from "@/game/flow";
 import { BOT, CAST_SKILL, HERO, STAGE, SWITCH } from "@/game/links";
 import { parseUrl, reproUrl, urlFor } from "@/game/url";
-import { TEST_SCENARIO } from "@/test/world";
+import { TEST_SCENARIO } from "@/realtime/test/world";
 
 describe("parseUrl", () => {
   it("reads a cell with seed, overrides and options", () => {

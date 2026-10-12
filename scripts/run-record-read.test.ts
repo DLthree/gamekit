@@ -1,8 +1,9 @@
 import { describe, recordsIn } from "@scripts/run-record-read";
 import { expect, describe as group, it } from "vitest";
 import { recordText } from "@/agent/record";
+import { replayQuery } from "@/game/record";
 
-const rec = { build: "abc", seed: 9, choices: ["char=hero", "build=2", "threat=3"] };
+const rec = { build: "abc", seed: 9, choices: ["deck=red", "round=2"] };
 const text = recordText(rec);
 
 group("recordsIn", () => {
@@ -10,10 +11,10 @@ group("recordsIn", () => {
     expect(recordsIn(text)).toEqual([{ record: rec, ended: null }]);
   });
 
-  it("reads wave and error lines of a telemetry jsonl, in order, skipping the rest", () => {
+  it("reads run and error lines of a telemetry jsonl, in order, skipping the rest", () => {
     const jsonl = [
       JSON.stringify({ kind: "load", url: "/" }),
-      JSON.stringify({ kind: "wave", record: text, report: { outcome: "died" } }),
+      JSON.stringify({ kind: "run", record: text, report: { outcome: "died" } }),
       "",
       JSON.stringify({ kind: "error", title: "Crash", record: text }),
       JSON.stringify({ kind: "error", title: "Address", record: null }),
@@ -30,7 +31,7 @@ group("recordsIn", () => {
 group("describe", () => {
   it("writes the replay address and flags another build", () => {
     const lines = describe({ record: rec, ended: "died" }, "def", "http://h:5280");
-    expect(lines.at(-1)).toBe("replay   http://h:5280/?char=hero&build=2&threat=3&seed=9");
+    expect(lines.at(-1)).toBe(`replay   http://h:5280/?${replayQuery(rec)}`);
     expect(lines[0]).toContain("!! this checkout is def");
     expect(describe({ record: rec, ended: null }, "abc", "http://h")[0]).toBe("build    abc");
   });

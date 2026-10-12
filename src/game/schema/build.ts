@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { LOOK_KINDS } from "@/content/schema/skill";
-import { ContentId, SchemaRef, SlotId, StatMod } from "@/content/schema/vocab";
+import { ContentId, SchemaRef } from "@/content/schema/vocab";
+import { LOOK_KINDS } from "@/realtime/content/schema/skill";
+import { SlotId, StatMod } from "@/realtime/content/schema/vocab";
 
 export const SlotLoadout = z.strictObject({
   skill: ContentId,

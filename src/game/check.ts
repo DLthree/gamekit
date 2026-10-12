@@ -1,8 +1,11 @@
 import { achievementProblems } from "@/content/achievements";
-import { checkMods, type Push } from "@/content/check-tree";
+import type { Push } from "@/content/errors";
 import type { Content } from "@/content/types";
 import { checkBuilds, checkModifiers, checkProjectileSteps } from "@/game/check-builds";
 import { checkScenario, ScenarioError, stageScenario } from "@/game/scenario";
+import { atlasProblems } from "@/realtime/content/atlas";
+import { checkRealtime } from "@/realtime/content/check";
+import { checkMods } from "@/realtime/content/check-tree";
 
 function checkThreats(c: Content, push: Push): void {
   const smaller = Math.min(c.sim.rules.arena.halfWidth, c.sim.rules.arena.halfHeight);
@@ -67,7 +70,9 @@ function checkDeeds(c: Content, push: Push): void {
 }
 
 /** The game's cross-file rules: builds, the modifiers they use, threats, and stages' cells. */
+/** The real-time layer's checks, then the example's own. */
 export function checkGame(c: Content, push: Push): void {
+  checkRealtime(c, push);
   checkBuilds(c, push);
   checkModifiers(c, push);
   checkThreats(c, push);
@@ -78,4 +83,12 @@ export function checkGame(c: Content, push: Push): void {
 /** Checks that resolve the sim's numbers; they run only on content every other check accepted. */
 export function checkGameResolved(c: Content, push: Push): void {
   checkProjectileSteps(c, push);
+}
+
+/**
+ * Problems with files outside content/ that content names (pnpm content:check, Node only):
+ * `readPublic` reads a file under public/, null when missing.
+ */
+export function checkGameFiles(c: Content, readPublic: (path: string) => string | null): string[] {
+  return atlasProblems(c.look.sprites, readPublic);
 }

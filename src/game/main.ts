@@ -1,7 +1,7 @@
 import "@/ui/page.css";
+import "@/realtime/arena.css";
 import "@/game/ui/game.css";
-import { installHandle } from "@/agent/handle";
-import { PerfMeter } from "@/agent/perf";
+import { clockHandle, installHandle } from "@/agent/handle";
 import { recordText } from "@/agent/record";
 import { classifyChange, loadContent, onContentReload } from "@/app/hot";
 import { saveStore, steamDeeds, steamProblem } from "@/app/platform";
@@ -9,6 +9,8 @@ import { createTelemetry } from "@/app/telemetry-setup";
 import { formatContentError } from "@/content/errors";
 import { switchOn } from "@/content/switches";
 import type { Content } from "@/content/types";
+import { type Frame, FrameClock } from "@/core/frames";
+import { actionCommand } from "@/game/actions";
 import { deedList, deedsMet, readEarned, writeEarned } from "@/game/deeds";
 import { type Flow, type FlowEvent, next } from "@/game/flow";
 import { pickerModel } from "@/game/picker";
@@ -17,23 +19,24 @@ import type { WaveReport } from "@/game/report";
 import { checkScenario, type Scenario, scenarioLabel, stageScenario } from "@/game/scenario";
 import { Hud, hudModel } from "@/game/ui/hud";
 import { PAD_KEYS } from "@/game/ui/pad-keys";
-import { hidePause, showPause } from "@/game/ui/pause";
-import { type DeedRow, hidePicker, type LastCell, showPicker } from "@/game/ui/picker";
-import { hideResult, resultModel, showResult } from "@/game/ui/result";
+import { showPause } from "@/game/ui/pause";
+import { type DeedRow, type LastCell, showPicker } from "@/game/ui/picker";
+import { resultModel, showResult } from "@/game/ui/result";
 import { type CellRequest, parseUrl, reproUrl, type UrlTarget, urlFor } from "@/game/url";
 import { WaveSession } from "@/game/wave-session";
-import type { ControlElements } from "@/input/controls";
 import { installIosGuards } from "@/input/ios-guards";
-import { computeViewport } from "@/present/camera";
-import type { SoundStatus } from "@/present/sound";
-import { AudioOut } from "@/render/audio";
-import { bootRenderer } from "@/render/boot";
-import type { WorldScene } from "@/render/world-scene";
-import { IDLE } from "@/sim/command";
-import { summarize } from "@/sim/snapshot";
+import { PerfMeter } from "@/realtime/agent/perf";
+import type { ControlElements } from "@/realtime/input/controls";
+import { computeViewport } from "@/realtime/present/camera";
+import type { SoundStatus } from "@/realtime/present/sound";
+import { AudioOut } from "@/realtime/render/audio";
+import { bootRenderer } from "@/realtime/render/boot";
+import type { WorldScene } from "@/realtime/render/world-scene";
+import { summarize } from "@/realtime/sim/snapshot";
 import { hideError, showError } from "@/ui/error";
 import { markPadKeys } from "@/ui/pad-keys";
 import { startPadNav } from "@/ui/pad-nav";
+import { hidePage } from "@/ui/page";
 
 function el(id: string): HTMLElement {
   const e = document.getElementById(id);
@@ -42,6 +45,8 @@ function el(id: string): HTMLElement {
 }
 
 const url = parseUrl(location.search, __RELEASE__ ? "release" : "dev");
+/** Every frame runs on the kit clock: the display drives it, or a tool steps it (manual=1). */
+const clock = new FrameClock(url.options.manual);
 const perf = new PerfMeter(120);
 const { telemetry, failures: telemetryFailures } = createTelemetry(url.options);
 let lastPerfS = 0;
@@ -53,6 +58,7 @@ const elements: ControlElements = {
   skillKnob: el("skill-knob"),
 };
 const hud = new Hud(el("hud"));
+clock.onFrame(frame);
 let flow: Flow = { screen: "boot" };
 let content: Content | null = null;
 /** The last compile succeeded; the grid and its picks only run on valid content (fail fast). */
@@ -76,16 +82,15 @@ function show(prev: Flow): void {
   document.body.dataset.screen = flow.screen;
   const address = urlFor(flow, location.search);
   if (address !== null) history.replaceState(null, "", address);
-  if (flow.screen !== "result") hideResult(el("result"));
-  if (flow.screen !== "picker") hidePicker(el("picker"));
-  if (flow.screen !== "wave" || !flow.paused) hidePause(el("pause"));
+  if (flow.screen !== "result") hidePage(el("result"));
+  if (flow.screen !== "picker") hidePage(el("picker"));
+  if (flow.screen !== "wave" || !flow.paused) hidePage(el("pause"));
   if (flow.screen === "error") {
     endWave();
     telemetry.record({
       kind: "error",
       title: flow.title,
       lines: flow.lines,
-      scenario: flow.scenario,
       options: url.options,
       commit: __COMMIT__,
       record:
@@ -124,10 +129,8 @@ function show(prev: Flow): void {
     const { scenario } = flow;
     earn(scenario, flow.report);
     telemetry.record({
-      kind: "wave",
-      scenario,
-      report: flow.report,
-      sound: soundStatus(),
+      kind: "run",
+      report: { ...flow.report, sound: soundStatus() },
       options: url.options,
       commit: __COMMIT__,
       record: recordText(recordOf(scenario, url.options, __COMMIT__)),
@@ -252,15 +255,18 @@ function startWave(scenario: Scenario): void {
   });
 }
 
-function frame(timeMs: number): void {
+function frame(f: Frame): void {
   if (wave === null) return;
+  const timeMs = f.nowS * 1000;
   const started = performance.now();
   const frozenBefore = wave.world.frozenSteps;
   try {
-    wave.frame(timeMs / 1000);
+    wave.frame(f.dtS);
     hud.update(hudModel(wave.world));
   } catch (err) {
     crash(err);
+    // A stepping tool's call fails too, not only the page.
+    if (clock.stepped) throw err;
     return;
   }
   if (scene === null) throw new Error("a frame before boot");
@@ -297,17 +303,17 @@ if (!__RELEASE__)
     flow: () => flow,
     on: () => url.options.on,
     state: () => summarize(need().world),
-    step: (n, command = IDLE) => {
-      if (!url.options.manual) throw new Error("step needs manual=1 in the URL");
+    ...clockHandle(clock),
+    act: (action) => {
+      if (!url.options.manual) throw new Error("act needs manual=1 in the URL");
+      const { command, frames } = actionCommand(action);
       const w = need();
+      w.script(command);
       try {
-        w.step(n, command);
-      } catch (err) {
-        // Fail fast: the page shows the blocking panel, and the agent's call still throws.
-        crash(err);
-        throw err;
+        for (let i = 0; i < frames && !w.loop.ended; i++) clock.step(1);
+      } finally {
+        w.script(null);
       }
-      return summarize(w.world);
     },
     events: (since = 0) => {
       if (!url.options.agent) throw new Error("events needs agent=1 in the URL");
@@ -389,7 +395,7 @@ async function boot(): Promise<void> {
   // The renderer boots before the address and cell are checked, so their error panels can lead
   // to the grid and on to a playable cell.
   scene = await bootRenderer(el("game"), content, view);
-  scene.onFrame = frame;
+  scene.onFrame = (timeMs) => clock.display(timeMs / 1000);
   audio = new AudioOut(scene);
   const target = url.target;
   if (target === null)
@@ -411,7 +417,6 @@ document.addEventListener("visibilitychange", () => {
 el("pause-button").addEventListener("click", () => dispatch({ e: "pause" }));
 startPadNav({
   modals: ["error"],
-  screens: ["pause", "picker", "result"],
   inFight: () => flow.screen === "wave" && !flow.paused,
   start: () => {
     if (flow.screen === "wave") dispatch({ e: flow.paused ? "resume" : "pause" });

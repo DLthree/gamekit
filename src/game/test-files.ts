@@ -1,5 +1,6 @@
+import { realtimeTestFiles } from "@/realtime/test/files";
+import type { TestNames } from "@/realtime/test/vocab";
 import type { FilePatch } from "@/test/content";
-import type { TestNames } from "@/test/vocab";
 
 /** builds/hero.json with one loadout as all three tiers (the schema requires three). */
 export function heroBuild(auto: string, cast: string): FilePatch {
@@ -8,24 +9,26 @@ export function heroBuild(auto: string, cast: string): FilePatch {
 }
 
 /**
- * The game's files in the kit's small test content (src/test/content.ts): the hero's zap and boom
- * in every build tier, and a quiet ten-second wave that spawns nothing. Kit tests rely on the
- * quiet wave's contract, whatever the game's win rule: it does not end in its first 10 s while
- * the player lives (they step worlds for seconds), and it ends by itself within 10 minutes.
- */
-export const GAME_TEST_FILES: FilePatch = {
-  ...heroBuild("zap", "boom"),
-  "threats/tier-1.json": { durationS: 10, maxAlive: 100, spawns: [] },
-};
-
-/**
- * Which of the game's names (src/game/vocab.ts) the kit's test content and kit tests use: the
+ * Which of the game's names (src/game/vocab.ts) the real-time tests' content and tests use: the
  * zap is `[tags[0], damageTypes[0]]`, the boom adds `tags[1]`, a test modifier adds `tags[2]`;
  * roles[1] is a big-death role (look/feedback.json bigDeathRoles). A second damage type is
- * optional; the kit tests that need one skip without it.
+ * optional; the tests that need one skip without it.
  */
 export const TEST_NAMES: TestNames = {
   tags: ["projectile", "area", "duration"],
   damageTypes: ["fire", "physical"],
   roles: ["fodder", "elite"],
+};
+
+/**
+ * The game's files in the real-time tests' small content (src/realtime/test/content.ts): the real-time layer's
+ * (src/realtime/test/files.ts), the hero's zap and boom in every build tier, and a quiet
+ * ten-second wave that spawns nothing. Kit tests rely on the
+ * quiet wave's contract, whatever the game's win rule: it does not end in its first 10 s while
+ * the player lives (they step worlds for seconds), and it ends by itself within 10 minutes.
+ */
+export const GAME_TEST_FILES: FilePatch = {
+  ...realtimeTestFiles(TEST_NAMES),
+  ...heroBuild("zap", "boom"),
+  "threats/tier-1.json": { durationS: 10, maxAlive: 100, spawns: [] },
 };

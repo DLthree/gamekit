@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createReport } from "@/game/report";
 import { resultModel } from "@/game/ui/result";
-import { TEST_SCENARIO } from "@/test/world";
+import { TEST_SCENARIO } from "@/realtime/test/world";
 
 describe("resultModel", () => {
   it("summarises a survived wave", () => {

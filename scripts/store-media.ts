@@ -3,14 +3,15 @@
  *
  * The store page's media, from the game at 1920×1080, into release/store/ (gitignored). Every
  * frame comes from the game's manifest, ship/media.json, so after an art or balance change a
- * re-run gives the same moments, or shows which picks need new ticks (`pnpm ticks` lists a
- * fight's telling moments):
+ * re-run gives the same moments, or shows which picks need new frames (`pnpm ticks` lists a
+ * real-time fight's telling moments by frame). A moment is a query, its scripted actions (the
+ * game's shape, replayed through `window.__game.act`) and then frames of the kit clock:
  *
- * - shots: screenshots/<name>.png, a query stepped to a tick (manual=1, as `pnpm shot`).
+ * - shots: screenshots/<name>.png, a query's moment (manual=1, as `pnpm shot`).
  * - art: capsules/<name>.png cut from a screenshot with the title on it, and the trailer's
  *   cards (scripts/store_media_art.py, PIL).
- * - capture: the trailer's fight beats as frames in build/beats/<name>/, frame stepped: each
- *   frame steps TICK_HZ/fps ticks, so the pacing is exact whatever the machine's speed.
+ * - capture: the trailer's game beats as images in build/beats/<name>/: each image steps
+ *   FRAME_HZ/fps frames of the kit clock, so the pacing is exact whatever the machine's speed.
  * - trailer: trailer.mp4 (H.264, silent), the beats crossfaded.
  * - gifs: gifs/<name>.gif from a captured beat (960 px wide, own palette, under 8 MB).
  * - sheet: sheet.png, a contact sheet of everything (scripts/sheet.py).
@@ -22,9 +23,9 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync } fr
 import { join } from "node:path";
 import { parseArgs } from "node:util";
 import type { Browser, Page } from "@playwright/test";
-import { settleFrame, toolQuery, withGameBrowser } from "@scripts/game-page";
+import { openGame, reach, settleFrame, toolQuery, withGameBrowser } from "@scripts/game-page";
 import { z } from "zod";
-import { TICK_HZ } from "@/core/clock";
+import { FRAME_HZ } from "@/core/frames";
 
 export const MANIFEST = "ship/media.json";
 const OUT = "release/store";
@@ -34,17 +35,22 @@ const H = 1080;
 const GIF_MAX_BYTES = 8_000_000;
 
 const Name = z.string().regex(/^[a-z0-9-]+$/);
+/** The game's scripted actions a moment replays before its frames. */
+const Actions = z.array(z.unknown()).default([]);
 const Shot = z.strictObject({
   name: Name,
   query: z.string(),
-  tick: z.number().int().nonnegative(),
+  actions: Actions,
+  frames: z.number().int().nonnegative(),
 });
 const Beat = z.discriminatedUnion("kind", [
   z.strictObject({
     name: Name,
-    kind: z.literal("wave"),
+    kind: z.literal("game"),
     query: z.string(),
-    from: z.number().int().nonnegative(),
+    actions: Actions,
+    /** Frames after the actions where the beat starts. */
+    frames: z.number().int().nonnegative(),
     seconds: z.number().positive(),
   }),
   z.strictObject({
@@ -80,7 +86,7 @@ export const Manifest = z.strictObject({
 });
 export type Manifest = z.infer<typeof Manifest>;
 
-/** The manifest, checked: every capsule's shot and gif's beat exists, ticks step evenly. */
+/** The manifest, checked: every capsule's shot and gif's beat exists, frames step evenly. */
 export function parseManifest(text: string): Manifest {
   const r = Manifest.safeParse(JSON.parse(text));
   if (!r.success)
@@ -95,12 +101,14 @@ export function parseManifest(text: string): Manifest {
   const beats = new Map(m.trailer.beats.map((b) => [b.name, b]));
   for (const g of m.gifs) {
     const b = beats.get(g.beat);
-    if (b?.kind !== "wave") problems.push(`gif ${g.name}: no wave beat ${g.beat}`);
+    if (b?.kind !== "game") problems.push(`gif ${g.name}: no game beat ${g.beat}`);
     else if (g.from + g.seconds > b.seconds)
       problems.push(`gif ${g.name}: runs past its beat's ${b.seconds} s`);
   }
-  if (TICK_HZ % m.trailer.fps !== 0)
-    problems.push(`trailer.fps ${m.trailer.fps}: must divide the sim's ${TICK_HZ} ticks a second`);
+  if (FRAME_HZ % m.trailer.fps !== 0)
+    problems.push(
+      `trailer.fps ${m.trailer.fps}: must divide the kit clock's ${FRAME_HZ} frames a second`,
+    );
   if (problems.length > 0) throw new Error(`${MANIFEST}: ${problems.join("; ")}`);
   return m;
 }
@@ -136,8 +144,8 @@ function ffmpeg(args: string[]): void {
   run("ffmpeg", ["-hide_banner", "-loglevel", "error", "-y", ...args]);
 }
 
-/** A 1920×1080 page on `query` at its wave; throws on the error panel or a page error. */
-async function openWave(
+/** A 1920×1080 page on `query`, past boot; throws on the error panel. */
+async function openAt(
   browser: Browser,
   base: string,
   query: string,
@@ -146,23 +154,8 @@ async function openWave(
   const page = await ctx.newPage();
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto(`${base}/?${toolQuery(query)}`);
-  await page.waitForFunction(() => ["wave", "error"].includes(window.__game?.flow().screen ?? ""));
-  if ((await page.evaluate(() => window.__game?.flow().screen)) === "error")
-    throw new Error(`${query}: ${await page.locator("#error").innerText()}`);
+  await openGame(page, base, toolQuery(query));
   return { page, errors };
-}
-
-/** Steps the wave to `tick`; throws if it ends first (the frame would be the result). */
-async function stepTo(page: Page, tick: number): Promise<void> {
-  await page.evaluate((target) => {
-    const g = window.__game;
-    if (g === undefined) throw new Error("no window.__game");
-    while (g.state().tick < target) {
-      if (g.state().phase === "ended") throw new Error(`the wave ended at tick ${g.state().tick}`);
-      g.step(Math.min(60, target - g.state().tick));
-    }
-  }, tick);
 }
 
 function picked<T extends { name: string }>(items: readonly T[], only: string[] | null): T[] {
@@ -173,8 +166,8 @@ async function shots(m: Manifest, only: string[] | null, browser: Browser, base:
   const dir = join(OUT, "screenshots");
   mkdirSync(dir, { recursive: true });
   for (const s of picked(m.screenshots, only)) {
-    const { page, errors } = await openWave(browser, base, s.query);
-    await stepTo(page, s.tick);
+    const { page, errors } = await openAt(browser, base, s.query);
+    await reach(page, s.actions, s.frames);
     await settleFrame(page);
     if (errors.length > 0) throw new Error(`${s.name}: page error\n${errors.join("\n")}`);
     await page.screenshot({ path: join(dir, `${s.name}.png`) });
@@ -186,14 +179,14 @@ async function shots(m: Manifest, only: string[] | null, browser: Browser, base:
 async function capture(m: Manifest, only: string[] | null, browser: Browser, base: string) {
   const { fps } = m.trailer;
   for (const beat of picked(m.trailer.beats, only)) {
-    if (beat.kind !== "wave") continue;
+    if (beat.kind !== "game") continue;
     const dir = join(BUILD, "beats", beat.name);
     rmSync(dir, { recursive: true, force: true });
     mkdirSync(dir, { recursive: true });
     const frames = Math.round(beat.seconds * fps);
-    const { page, errors } = await openWave(browser, base, beat.query);
+    const { page, errors } = await openAt(browser, base, beat.query);
     for (let i = 0; i < frames; i++) {
-      await stepTo(page, beat.from + (i * TICK_HZ) / fps);
+      await (i === 0 ? reach(page, beat.actions, beat.frames) : reach(page, [], FRAME_HZ / fps));
       await settleFrame(page);
       if (errors.length > 0) throw new Error(`${beat.name}: page error\n${errors.join("\n")}`);
       const path = join(dir, `${String(i).padStart(5, "0")}.jpg`);

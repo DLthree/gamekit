@@ -1,16 +1,16 @@
 import type { UrlOptions } from "@/agent/url-options";
-import { buildAim } from "@/app/aim";
-import { GameLoop } from "@/app/loop";
 import type { Content } from "@/content/types";
-import { TICK_HZ, tickSeconds } from "@/core/clock";
 import type { Vec } from "@/core/vec";
-import { BOTS } from "@/game/bots";
+import { BOTS, type BotId } from "@/game/bots";
 import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
 import { worldFor } from "@/game/setup";
-import { type ControlElements, type ControlState, Controls } from "@/input/controls";
-import type { SkillTrace } from "@/input/skill-button";
-import { ActorDraws } from "@/present/anim/actors";
+import { buildAim } from "@/realtime/app/aim";
+import { GameLoop } from "@/realtime/app/loop";
+import { TICK_HZ, tickSeconds } from "@/realtime/core/clock";
+import { type ControlElements, type ControlState, Controls } from "@/realtime/input/controls";
+import type { SkillTrace } from "@/realtime/input/skill-button";
+import { ActorDraws } from "@/realtime/present/anim/actors";
 import {
   computeViewport,
   followCamera,
@@ -18,26 +18,26 @@ import {
   updateLead,
   type Viewport,
   worldToCss,
-} from "@/present/camera";
-import { applyEvents } from "@/present/feedback";
-import type { HeadDraw } from "@/present/fx/recipes/projectile";
+} from "@/realtime/present/camera";
+import { applyEvents } from "@/realtime/present/feedback";
+import type { HeadDraw } from "@/realtime/present/fx/recipes/projectile";
 import {
   createPresentation,
   type Presentation,
   swapPresentationLook,
-} from "@/present/presentation";
-import type { WarningDraw } from "@/present/spawn-warnings";
-import type { TelegraphDraw } from "@/present/telegraphs";
-import type { AudioOut } from "@/render/audio";
-import type { WorldScene } from "@/render/world-scene";
-import type { Command } from "@/sim/command";
-import type { SimEvent } from "@/sim/events";
-import { playerOf, type World } from "@/sim/world";
+} from "@/realtime/present/presentation";
+import type { WarningDraw } from "@/realtime/present/spawn-warnings";
+import type { TelegraphDraw } from "@/realtime/present/telegraphs";
+import type { AudioOut } from "@/realtime/render/audio";
+import type { WorldScene } from "@/realtime/render/world-scene";
+import type { Command } from "@/realtime/sim/command";
+import type { SimEvent } from "@/realtime/sim/events";
+import { playerOf, type World } from "@/realtime/sim/world";
 
 export interface WaveSetup {
   content: Content;
   scenario: Scenario;
-  options: UrlOptions;
+  options: UrlOptions<BotId>;
   scene: WorldScene;
   audio: AudioOut;
   elements: ControlElements;
@@ -62,6 +62,8 @@ export class WaveSession {
   private readonly telegraphs: TelegraphDraw[] = [];
   /** Telegraphs drawn in the last frame (GameHandle.telegraphs). */
   telegraphCount = 0;
+  /** A tool's scripted command (GameHandle.act): it moves the player instead of the controls. */
+  private scripted: Command | null = null;
 
   constructor(s: WaveSetup) {
     this.setup = s;
@@ -70,7 +72,6 @@ export class WaveSession {
     this.pres = createPresentation(s.content, s.scenario.seed);
     this.loop = new GameLoop({
       world: this.world,
-      manual: s.options.manual,
       bot: s.options.bot === null ? null : BOTS[s.options.bot],
     });
     this.view = this.measure();
@@ -118,30 +119,26 @@ export class WaveSession {
     this.setup.scene.startWave(content, this.view);
   }
 
-  frame(nowS: number): void {
+  /** One frame of the kit clock (src/core/frames.ts), `dtS` seconds after the last. */
+  frame(dtS: number): void {
     this.resizeIfNeeded();
     const c = this.controls === null ? null : this.controls.sample();
     // Controls are sampled while paused too (a pad press that resumes is then not new), but
     // only cast while running.
     if (c !== null && c.cast !== null && !this.loop.paused) this.loop.requestCast(c.cast);
-    const events =
-      c === null ? this.loop.frame(nowS, 0, 0) : this.loop.frame(nowS, c.moveX, c.moveY);
+    const move = this.scripted ?? c ?? { moveX: 0, moveY: 0 };
+    const events = this.loop.frame(dtS, move.moveX, move.moveY);
     this.present(events);
     this.draw(c === null ? null : c.view);
   }
 
   /**
-   * manual=1: exactly n ticks with this command (its cast on the first); presentation follows
-   * each tick, so effects spawned mid-batch get their own tick's time.
+   * A tool's command (GameHandle.act) until cleared with null: its move replaces the controls',
+   * its cast is latched for the next playing tick.
    */
-  step(n: number, command: Command): SimEvent[] {
-    const out: SimEvent[] = [];
-    for (let i = 0; i < n && !this.loop.ended; i++) {
-      const events = this.loop.stepManual(1, i === 0 ? command : { ...command, cast: null });
-      this.present(events);
-      out.push(...events);
-    }
-    return out;
+  script(command: Command | null): void {
+    this.scripted = command;
+    if (command !== null && command.cast !== null) this.loop.requestCast(command.cast);
   }
 
   destroy(): void {

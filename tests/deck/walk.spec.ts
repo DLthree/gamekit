@@ -106,7 +106,7 @@ test("result: a won wave's page and back to the grid, by pad", async ({ page }) 
     `char=${HERO}&build=3&threat=1&manual=1&o=characters/${HERO}.stats.life=1000000`,
     "wave",
   );
-  await page.evaluate(() => window.__game?.step(20_000));
+  await page.evaluate(() => window.__game?.act({ frames: 20_000 }));
   await page.waitForFunction(() => window.__game?.flow().screen === "result");
   const map = await look(page, report, "result", DEV_ONLY);
   await activate(page, map, report, "result", "#grid");

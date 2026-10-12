@@ -6,8 +6,8 @@ import type { SimContent } from "@/content/types";
 import { checkScenario, type Scenario, stageScenario } from "@/game/scenario";
 import { worldFor } from "@/game/setup";
 import { parseUrl } from "@/game/url";
-import type { SimEvent } from "@/sim/events";
-import type { World } from "@/sim/world";
+import type { SimEvent } from "@/realtime/sim/events";
+import type { World } from "@/realtime/sim/world";
 
 /**
  * The world a page at `search` would play: its cell or stage, seed and overrides. `content` must already

@@ -33,8 +33,9 @@ needs `vendor/steamworks_sdk/` (gitignored) and real IDs in `ship/config.json`.
 | `pnpm store-media [all\|shots\|art\|capture\|trailer\|gifs\|sheet] [--only N,…]` | `release/store/`: screenshots, capsules, trailer.mp4, GIFs, sheet.png, from `ship/media.json`. |
 | `pnpm deck:check` | `shots/deck-check/report.{json,md}` + a shot per screen: pad-only reach, text sizes, mouse/keyboard words. On demand, not in a gate. |
 
-`ship/media.json` picks queries and ticks; after a balance or art change re-run and check the
-moments still land (`pnpm ticks` to re-aim).
+`ship/media.json` picks moments as a query, optional `actions` and frames (`frames`, a shot's or
+a game beat's); after a balance or art change re-run and check the moments still land
+(`pnpm ticks` prints a real-time fight's moments as frames, to re-aim).
 
 ## Uploads (dry runs)
 

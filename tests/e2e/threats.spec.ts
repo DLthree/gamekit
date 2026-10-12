@@ -5,13 +5,13 @@ import { HERO } from "@/game/links";
 const CELL = `char=${HERO}&build=1&threat=3&o=characters/${HERO}.stats.life=1000000`;
 
 test("the threat 3 boss telegraphs its slam, then the slam resolves", async ({ page }) => {
-  await open(page, `${CELL}&manual=1&agent=1`);
+  await open(page, `${CELL}&manual=1&agent=1`, "wave");
   // Step in batches shorter than the slam's 60-tick warning, so the first slam is still warning
   // when the stepping stops.
   const slamTick = await page.waitForFunction(() => {
     const g = window.__game;
     if (g === undefined) return false;
-    g.step(20);
+    g.frames(20);
     const slam = g.events(0).find((e) => e.t === "volumeStarted" && e.vfx === "slam");
     return slam === undefined ? false : slam.tick;
   });
@@ -25,7 +25,7 @@ test("the threat 3 boss telegraphs its slam, then the slam resolves", async ({ p
   await page.waitForFunction((since) => {
     const g = window.__game;
     if (g === undefined) return false;
-    g.step(10);
+    g.frames(10);
     return g.events(since).some((e) => e.t === "telegraphResolved" && e.vfx === "slam");
   }, since);
   await expect(page.locator("#error")).toBeHidden();

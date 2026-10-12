@@ -3,7 +3,7 @@ import { achievementName, achievementProblems, achievementTable } from "@/conten
 
 describe("achievements from deeds", () => {
   it("names each deed's achievement in upper snake case", () => {
-    expect(achievementName("wyrmslayer")).toBe("DEED_WYRMSLAYER");
+    expect(achievementName("champion")).toBe("DEED_CHAMPION");
     expect(achievementName("first-blood")).toBe("DEED_FIRST_BLOOD");
   });
 

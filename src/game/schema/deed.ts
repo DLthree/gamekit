@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { Role, SchemaRef } from "@/content/schema/vocab";
+import { SchemaRef } from "@/content/schema/vocab";
+import { Role } from "@/realtime/content/schema/vocab";
 
 /**
  * What a wave must show for the deed: every field given must hold. `won`: the player survived;

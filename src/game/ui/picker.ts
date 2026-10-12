@@ -1,4 +1,6 @@
 import { GRID, type PickerGrid } from "@/game/picker";
+import { showPage } from "@/ui/page";
+import { idWords } from "@/ui/vocabulary";
 
 /** The cell last played, if any; the grid highlights it so a return trip finds it at a glance. */
 export interface LastCell {
@@ -16,8 +18,9 @@ export interface DeedRow {
 }
 
 /**
- * The grid: per character, build tiers down the rows and threat tiers across the columns, with a "threat N" head per column and a "build N" label per row. Cells the
- * content can't play are shown disabled, so the grid's shape stays the same as tiers get
+ * The grid page: per character (its name over its grid), build tiers down the rows and threat
+ * tiers across the columns, with a "threat N" head per column and a "build N" label per row. Cells
+ * the content can't play are shown disabled, so the grid's shape stays the same as tiers get
  * authored. With one character there are no character tabs; the last-played cell gets a
  * highlight. Under it, every deed with its mark: earned or not, the row's box is the same.
  */
@@ -28,10 +31,11 @@ export function showPicker(
   last: LastCell | null,
   deeds: readonly DeedRow[],
 ): void {
-  const box = document.createElement("div");
+  const body: Node[] = [];
   for (const g of grids) {
-    const h = document.createElement("h1");
-    h.textContent = g.character;
+    const h = document.createElement("h2");
+    h.className = "character";
+    h.textContent = idWords(g.character);
     const cells = document.createElement("div");
     cells.className = "grid";
     cells.append(document.createElement("div")); // the corner above the row labels
@@ -66,7 +70,7 @@ export function showPicker(
         cells.append(b);
       }
     }
-    box.append(h, cells);
+    body.push(h, cells);
   }
   if (deeds.length > 0) {
     const h = document.createElement("h2");
@@ -86,13 +90,7 @@ export function showPicker(
       li.append(mark, name, ` ${d.text}`);
       list.append(li);
     }
-    box.append(h, list);
+    body.push(h, list);
   }
-  root.replaceChildren(box);
-  root.hidden = false;
-}
-
-export function hidePicker(root: HTMLElement): void {
-  root.hidden = true;
-  root.replaceChildren();
+  showPage(root, { title: "Choose a fight", body, buttons: [] });
 }

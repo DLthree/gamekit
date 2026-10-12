@@ -1,7 +1,8 @@
-import { TICK_HZ } from "@/core/clock";
 import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
+import { TICK_HZ } from "@/realtime/core/clock";
 import { actionButton } from "@/ui/button";
+import { showPage } from "@/ui/page";
 import { idWords } from "@/ui/vocabulary";
 
 export interface ResultModel {
@@ -44,8 +45,6 @@ export function showResult(
   onRetry: () => void,
   onGrid: () => void,
 ): void {
-  const h = document.createElement("h1");
-  h.textContent = m.title;
   const list = document.createElement("ul");
   for (const line of m.lines) {
     const li = document.createElement("li");
@@ -55,17 +54,9 @@ export function showResult(
   const repro = document.createElement("p");
   repro.className = "repro";
   repro.textContent = m.repro;
-  const actions = document.createElement("div");
-  actions.className = "actions";
-  actions.append(actionButton("retry", "Retry", onRetry), actionButton("grid", "Grid", onGrid));
-  const box = document.createElement("div");
-  box.className = "sheet";
-  box.append(h, list, repro, actions);
-  root.replaceChildren(box);
-  root.hidden = false;
-}
-
-export function hideResult(root: HTMLElement): void {
-  root.hidden = true;
-  root.replaceChildren();
+  showPage(root, {
+    title: m.title,
+    body: [list, repro],
+    buttons: [actionButton("retry", "Retry", onRetry), actionButton("grid", "Grid", onGrid)],
+  });
 }

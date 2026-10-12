@@ -1,48 +1,35 @@
 import { describe, expect, it } from "vitest";
 import { classifyChange } from "@/app/hot";
-import { testContent, testFiles } from "@/test/content";
+import { aSimEdit, testContent, testFiles } from "@/test/content";
 
 const base = testContent();
+const simEdit = aSimEdit();
 
 describe("classifyChange", () => {
   it("sees no change in an identical compile", () => {
     expect(classifyChange(base, testContent())).toBe("none");
   });
 
-  it("tells a sim edit from a look edit", () => {
-    const threat = testFiles()["threats/tier-1.json"];
-    expect(
-      classifyChange(
-        base,
-        testContent({ "threats/tier-1.json": { ...Object(threat), durationS: 20 } }),
-      ),
-    ).toBe("sim");
-    const controls = testFiles()["look/controls.json"];
-    expect(
-      classifyChange(
-        base,
-        testContent({ "look/controls.json": { ...Object(controls), stickRadius: 70 } }),
-      ),
-    ).toBe("look");
+  it.skipIf(simEdit === null)("tells a rules edit", () => {
+    expect(classifyChange(base, testContent(simEdit ?? {}))).toBe("sim");
   });
 
-  it("flags a sprite or sound manifest change as new assets", () => {
-    const sprites = testFiles()["look/generated/sprites.json"];
-    const next = testContent({
-      "look/generated/sprites.json": { ...Object(sprites), pxPerWorldUnit: 9 },
-    });
-    expect(classifyChange(base, next)).toBe("assets");
+  it("tells a look edit", () => {
+    const sounds = testFiles()["look/sounds.json"] as { volume: number };
+    const quieter = { ...sounds, volume: sounds.volume / 2 };
+    expect(classifyChange(base, testContent({ "look/sounds.json": quieter }))).toBe("look");
+  });
 
-    const manifest = testFiles()["look/generated/sounds.json"];
-    const louder = testContent({
-      "look/generated/sounds.json": {
-        ...Object(manifest),
-        sounds: [
-          { id: "tick", file: "sounds/tick.wav", lengthS: 0.2 },
-          { id: "chime", file: "sounds/chime.wav", lengthS: 0.4 },
-        ],
-      },
-    });
-    expect(classifyChange(base, louder)).toBe("assets");
+  it("flags a generated manifest change as new assets", () => {
+    const manifest = testFiles()["look/generated/sounds.json"] as {
+      sounds: { id: string; file: string; lengthS: number }[];
+    };
+    const longer = {
+      ...manifest,
+      sounds: manifest.sounds.map((s, i) => (i === 0 ? { ...s, lengthS: s.lengthS + 1 } : s)),
+    };
+    expect(classifyChange(base, testContent({ "look/generated/sounds.json": longer }))).toBe(
+      "assets",
+    );
   });
 });

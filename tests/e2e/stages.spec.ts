@@ -4,8 +4,8 @@ import { STAGE } from "@/game/links";
 test("a stage opens with dev=1: its actors stand at their places and it keeps its address", async ({
   page,
 }) => {
-  await open(page, `stage=${STAGE}&dev=1&manual=1&agent=1`);
-  await page.evaluate(() => window.__game?.step(2));
+  await open(page, `stage=${STAGE}&dev=1&manual=1&agent=1`, "wave");
+  await page.evaluate(() => window.__game?.frames(2));
   const spawned = await page.evaluate(() =>
     window.__game?.events().filter((e) => e.t === "spawned" && e.team === "enemy"),
   );

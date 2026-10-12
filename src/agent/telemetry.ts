@@ -1,14 +1,11 @@
-import type { PerfSummary } from "@/agent/perf";
 import type { UrlOptions } from "@/agent/url-options";
-import type { WaveReport } from "@/game/report";
-import type { Scenario } from "@/game/scenario";
-import type { SkillTrace } from "@/input/skill-button";
-import type { SoundStatus } from "@/present/sound";
+import type { GameRecord, RunReport } from "@/game/telemetry";
 
 /**
- * `commit` is the build's `git describe --always --dirty`; with the scenario and options, a
- * `wave` or `error` record names everything needed to reopen that run (`reproUrl`), and its
- * `record` is the run record text (src/agent/record.ts, `pnpm run-record`).
+ * The kit's records and the game's own (`GameRecord`, src/game/telemetry.ts). `commit` is the
+ * build's `git describe --always --dirty`; a `run` or `error` record's `record` is the run record
+ * text (src/agent/record.ts), which names everything needed to reopen that run (`pnpm
+ * run-record`, the game's `replayQuery`).
  */
 export type TelemetryRecord =
   | {
@@ -20,30 +17,26 @@ export type TelemetryRecord =
       commit: string;
       options: UrlOptions;
     }
-  | { kind: "perf"; tick: number; perf: PerfSummary }
   | {
       kind: "error";
       title: string;
       lines: string[];
-      scenario: Scenario | null;
       options: UrlOptions;
       commit: string;
       /** The run record, when a scenario was running. */
       record: string | null;
     }
-  | { kind: "gesture"; tick: number; trace: SkillTrace }
-  /** Deeds (achievements) earned by the wave just ended. */
+  /** Deeds (achievements) earned by the run just ended. */
   | { kind: "deeds"; earned: string[] }
+  /** A finished run: its run record and the game's report. */
   | {
-      kind: "wave";
-      scenario: Scenario;
-      report: WaveReport;
-      /** Tells "audio stayed locked" or "resumes kept failing" apart from "sounds were bad". */
-      sound: SoundStatus;
+      kind: "run";
+      report: RunReport;
       options: UrlOptions;
       commit: string;
       record: string;
-    };
+    }
+  | GameRecord;
 
 /** One line of the log: the record, who sent it, in what order, when (ms since load). */
 export type TelemetryLine = TelemetryRecord & {
@@ -91,7 +84,7 @@ export class Telemetry {
   record(r: TelemetryRecord): void {
     this.queue.push({ session: this.session, seq: this.seq, t: Math.round(this.now()), ...r });
     this.seq += 1;
-    if (r.kind === "error" || r.kind === "wave" || this.queue.length >= BATCH) this.flush(false);
+    if (r.kind === "error" || r.kind === "run" || this.queue.length >= BATCH) this.flush(false);
   }
 
   flush(keepalive: boolean): void {

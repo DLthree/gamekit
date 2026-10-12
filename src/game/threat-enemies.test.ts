@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { worldFor } from "@/game/setup";
-import type { SimEvent } from "@/sim/events";
-import { playerOf, type World } from "@/sim/world";
-import { enemies, place, run, runUntilEvent } from "@/test/world";
+import type { SimEvent } from "@/realtime/sim/events";
+import { playerOf, type World } from "@/realtime/sim/world";
+import { enemies, place, run, runUntilEvent } from "@/realtime/test/world";
 
 /**
  * The real shipped content: the wizard on tier-1 (no threat file spawns these enemies yet, so

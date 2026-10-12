@@ -1,7 +1,7 @@
 /**
  * pnpm screens [--screen NAME|all] [--device desktop|deck|phone|phone-landscape|all] [--o PATCH ...] [--out DIR]
  *
- * Screenshots the game's pages that are not a moment of a wave (the game's SCREENS in
+ * Screenshots the game's pages that are not a moment of play (the game's SCREENS in
  * src/game/links.ts: its grid, pause, result, error…) at every device size, on the shot tools'
  * own server (scripts/game-page.ts). A page is ready once the flow reaches its screen. Writes
  * <out>/<screen>-<device>.png; default out shots/screens.
