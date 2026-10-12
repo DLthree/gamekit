@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ScenarioError } from "@/sim/scenario";
+import { ScenarioError } from "@/game/scenario";
 import { createWorld, playerOf } from "@/sim/world";
 import { testContent } from "@/test/content";
 import { place, run, TEST_SCENARIO, testWorld } from "@/test/world";

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Telemetry } from "@/agent/telemetry";
-import { parseUrl } from "@/flow/url";
+import { parseUrl } from "@/game/url";
 
 const { options } = parseUrl("");
 

@@ -1,11 +1,11 @@
 import type { PerfSummary } from "@/agent/perf";
 import type { Vec } from "@/core/vec";
-import type { Flow } from "@/flow/machine";
+import type { Flow } from "@/game/flow";
+import type { WaveReport } from "@/game/report";
 import type { FxCounts } from "@/present/fx/pool";
 import type { SoundStatus } from "@/present/sound";
 import type { Command } from "@/sim/command";
 import type { SimEvent } from "@/sim/events";
-import type { WaveReport } from "@/sim/report";
 import type { WorldSummary } from "@/sim/snapshot";
 
 /** What an agent (Playwright, a script, a person in the console) can read and drive. */

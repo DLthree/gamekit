@@ -1,4 +1,3 @@
-import type { Build } from "@/content/schema/build";
 import type { Character } from "@/content/schema/character";
 import type { Enemy } from "@/content/schema/enemy";
 import type {
@@ -16,7 +15,8 @@ import type { ArenaRules, FeelRules, LimitRules, MovementRules } from "@/content
 import type { Skill } from "@/content/schema/skill";
 import type { LookSounds, SoundManifest } from "@/content/schema/sounds";
 import type { Sprites } from "@/content/schema/sprites";
-import type { Threat } from "@/content/schema/threat";
+import type { Build } from "@/game/schema/build";
+import type { Threat } from "@/game/schema/threat";
 
 /** What the sim reads. Collections are keyed by id (the file name). */
 export interface SimContent {

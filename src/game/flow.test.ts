@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { type Flow, next } from "@/flow/machine";
-import { createReport } from "@/sim/report";
+import { type Flow, next } from "@/game/flow";
+import { createReport } from "@/game/report";
 import { TEST_SCENARIO } from "@/test/world";
 
 const report = createReport(100);

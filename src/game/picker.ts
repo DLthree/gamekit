@@ -1,5 +1,5 @@
 import type { SimContent } from "@/content/types";
-import { ScenarioError } from "@/sim/scenario";
+import { ScenarioError } from "@/game/scenario";
 
 /** Each character's grid is 3 build tiers × 3 threat tiers. */
 export const GRID = 3;

@@ -1,6 +1,6 @@
 import type { TelemetryLine } from "@/agent/telemetry";
 import { TICK_HZ } from "@/core/clock";
-import { reproUrl } from "@/flow/url";
+import { reproUrl } from "@/game/url";
 
 type RunRecord = Extract<TelemetryLine, { kind: "wave" | "error" }>;
 

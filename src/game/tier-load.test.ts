@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { kite } from "@/bots/kite";
 import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { tickSeconds } from "@/core/clock";
+import { kite } from "@/game/kite-bot";
 import { applyEvents } from "@/present/feedback";
 import { createPresentation } from "@/present/presentation";
 import { step } from "@/sim/step";
@@ -18,7 +18,7 @@ const UNKILLABLE = "characters/wizard.stats.life=1000000";
 
 /**
  * Each shipped wizard tier plays a whole wave with the kite bot through
- * the sim and the presentation (as src/app/wave.ts runs them each tick), and nothing is
+ * the sim and the presentation (as src/game/wave-session.ts runs them each tick), and nothing is
  * dropped. Evict kinds replace their oldest instance at their cap, which is not a drop, and the
  * caps sum below the pool's capacity, so any drop is a tuning error to fix here.
  */

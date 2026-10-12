@@ -1,7 +1,7 @@
+import type { Scenario } from "@/game/scenario";
 import type { Actor } from "@/sim/actors/store";
 import { type Command, IDLE } from "@/sim/command";
 import type { SimEvent } from "@/sim/events";
-import type { Scenario } from "@/sim/scenario";
 import { drainSpawns, queueEnemy } from "@/sim/spawn-queue";
 import { step } from "@/sim/step";
 import { createWorld, type World } from "@/sim/world";

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { hudModel } from "@/game/ui/hud";
 import { run, testWorld } from "@/test/world";
-import { hudModel } from "@/ui/hud";
 
 describe("hudModel", () => {
   it("shows life, whole seconds left and kills while playing", () => {

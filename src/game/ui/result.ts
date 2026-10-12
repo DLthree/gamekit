@@ -1,6 +1,6 @@
 import { TICK_HZ } from "@/core/clock";
-import type { WaveReport } from "@/sim/report";
-import { type Scenario, scenarioLabel } from "@/sim/scenario";
+import type { WaveReport } from "@/game/report";
+import { type Scenario, scenarioLabel } from "@/game/scenario";
 
 export interface ResultModel {
   title: string;

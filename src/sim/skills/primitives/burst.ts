@@ -3,8 +3,8 @@ import { ticks } from "@/core/clock";
 import { nextFloat } from "@/core/rng";
 import type { Vec } from "@/core/vec";
 import { skillStat } from "@/sim/skills/instance";
+import { insideArena } from "@/sim/spawn-points";
 import { queueVolume } from "@/sim/spawn-queue";
-import { insideArena } from "@/sim/wave/spawn-points";
 import type { Delivery, World } from "@/sim/world";
 
 /**

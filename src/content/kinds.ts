@@ -1,5 +1,4 @@
 import type { z } from "zod";
-import { Build } from "@/content/schema/build";
 import { Character } from "@/content/schema/character";
 import { Enemy } from "@/content/schema/enemy";
 import {
@@ -17,7 +16,8 @@ import { ArenaRules, FeelRules, LimitRules, MovementRules } from "@/content/sche
 import { Skill } from "@/content/schema/skill";
 import { LookSounds, SoundManifest } from "@/content/schema/sounds";
 import { Sprites } from "@/content/schema/sprites";
-import { Threat } from "@/content/schema/threat";
+import { Build } from "@/game/schema/build";
+import { Threat } from "@/game/schema/threat";
 
 /** One content kind: a folder of files (collection) or a single file, and its schema. */
 export interface Kind<T> {

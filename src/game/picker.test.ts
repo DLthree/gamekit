@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { pickerModel } from "@/flow/picker";
-import { ScenarioError } from "@/sim/scenario";
+import { pickerModel } from "@/game/picker";
+import { ScenarioError } from "@/game/scenario";
 import { testContent } from "@/test/content";
 
 describe("pickerModel", () => {

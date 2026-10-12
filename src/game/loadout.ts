@@ -2,7 +2,7 @@ import { type AppliedModifier, mergeSkill, nodesOf } from "@/content/loadout";
 import type { SourcedMod } from "@/content/schema/vocab";
 import type { SimContent } from "@/content/types";
 import { TICK_S } from "@/core/clock";
-import { ScenarioError } from "@/sim/scenario";
+import { ScenarioError } from "@/game/scenario";
 import { resolveSkill, type SkillInstance, skillStat } from "@/sim/skills/instance";
 import { resolveActorStats } from "@/sim/stats/resolve";
 import type { EnemyTemplate } from "@/sim/world";

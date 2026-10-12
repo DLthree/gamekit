@@ -1,6 +1,6 @@
 import { parseJsonl, summarizeTelemetry } from "@scripts/telemetry-summary";
 import { describe, expect, it } from "vitest";
-import { parseUrl } from "@/flow/url";
+import { parseUrl } from "@/game/url";
 
 const SCENARIO = {
   character: "wizard",

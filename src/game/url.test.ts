@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { Flow } from "@/flow/machine";
-import { parseUrl, reproUrl, urlFor } from "@/flow/url";
+import type { Flow } from "@/game/flow";
+import { parseUrl, reproUrl, urlFor } from "@/game/url";
 import { TEST_SCENARIO } from "@/test/world";
 
 describe("parseUrl", () => {

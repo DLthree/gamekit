@@ -1,11 +1,11 @@
 import { checkMods, type Push, type TreeProblem, treeProblems } from "@/content/check-tree";
 import { type AppliedModifier, applyTags, mergeSkill, nodesOf } from "@/content/loadout";
-import type { BuildTier, SlotLoadout } from "@/content/schema/build";
 import { type DeliveryNode, PRIMITIVE_KINDS, type Skill } from "@/content/schema/skill";
 import { ACTOR_STAT_IDS, SlotId, type StatMod, type Tag } from "@/content/schema/vocab";
 import { hasSkillStat, type SkillStatId } from "@/content/skill-stats";
 import type { Content } from "@/content/types";
-import { enemyTemplates, playerSkills, tunnellingProblem } from "@/sim/loadout";
+import { enemyTemplates, playerSkills, tunnellingProblem } from "@/game/loadout";
+import type { BuildTier, SlotLoadout } from "@/game/schema/build";
 
 const ACTOR_STATS: readonly string[] = ACTOR_STAT_IDS;
 

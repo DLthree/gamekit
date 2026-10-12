@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createRng } from "@/core/rng";
-import { edgePoint, fieldPoints, ringPoints } from "@/sim/wave/spawn-points";
+import { edgePoint, fieldPoints, ringPoints } from "@/sim/spawn-points";
 
 const arena = { $schema: "x", halfWidth: 1000, halfHeight: 1000, spawnRadius: 600 };
 

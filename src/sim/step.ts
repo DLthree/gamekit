@@ -1,16 +1,16 @@
+import { recordEvents } from "@/game/report";
+import { tickDirector } from "@/game/wave/director";
+import { checkOutcome } from "@/game/wave/outcome";
 import { applyCommand, indexActors, moveActors } from "@/sim/actors/movement";
 import { releaseActor } from "@/sim/actors/store";
 import { thinkEnemies } from "@/sim/ai/think";
 import type { Command } from "@/sim/command";
-import { recordEvents } from "@/sim/report";
 import { thinkSkills } from "@/sim/skills/activate";
 import { activate } from "@/sim/skills/deliver";
 import { drainSpawns } from "@/sim/spawn-queue";
 import { applyHits, collectHits, endVolumes } from "@/sim/volumes/hits";
 import { moveVolumes } from "@/sim/volumes/motion";
 import { releaseVolume } from "@/sim/volumes/store";
-import { tickDirector } from "@/sim/wave/director";
-import { checkOutcome } from "@/sim/wave/outcome";
 import type { World } from "@/sim/world";
 
 /** Phase 10 (start): the sim forgets the dead and the ended; their events already went out. */

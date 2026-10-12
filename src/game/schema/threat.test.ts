@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Threat } from "@/content/schema/threat";
+import { Threat } from "@/game/schema/threat";
 
 const base = { $schema: "../schema/threat.schema.json", durationS: 60, maxAlive: 120 };
 

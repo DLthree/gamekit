@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { kite } from "@/bots/kite";
 import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
+import { kite } from "@/game/kite-bot";
 import { step } from "@/sim/step";
 import { createWorld } from "@/sim/world";
 

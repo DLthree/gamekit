@@ -1,8 +1,8 @@
 import type { DamageType, SlotId } from "@/content/schema/vocab";
 import type { SkillStatId } from "@/content/skill-stats";
+import type { Scenario } from "@/game/scenario";
 import type { Actor } from "@/sim/actors/store";
 import type { Outcome, Team, VolumeKind } from "@/sim/events";
-import type { Scenario } from "@/sim/scenario";
 import { playerOf, type WavePhase, type World } from "@/sim/world";
 
 export interface ActorSummary {

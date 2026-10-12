@@ -1,4 +1,4 @@
-import { GRID, type PickerGrid } from "@/flow/picker";
+import { GRID, type PickerGrid } from "@/game/picker";
 
 /** The cell last played, if any; the grid highlights it so a return trip finds it at a glance. */
 export interface LastCell {

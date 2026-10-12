@@ -1,9 +1,9 @@
-import { checkBuilds, checkModifiers, checkProjectileSteps } from "@/content/check-builds";
 import { checkLook } from "@/content/check-look";
 import { checkMods, type Push, treeProblems } from "@/content/check-tree";
 import type { ContentError } from "@/content/errors";
 import { hasSkillStat, type SkillStatId } from "@/content/skill-stats";
 import type { Content } from "@/content/types";
+import { checkBuilds, checkModifiers, checkProjectileSteps } from "@/game/check-builds";
 
 function checkSkills(c: Content, push: Push): void {
   for (const [id, skill] of Object.entries(c.sim.skills)) {

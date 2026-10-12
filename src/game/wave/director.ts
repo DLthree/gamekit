@@ -1,7 +1,7 @@
-import type { TimedSpawn } from "@/content/schema/threat";
 import { TICK_S, ticks } from "@/core/clock";
+import type { TimedSpawn } from "@/game/schema/threat";
+import { edgePoint, fieldPoints, ringPoints } from "@/sim/spawn-points";
 import { queueEnemy } from "@/sim/spawn-queue";
-import { edgePoint, fieldPoints, ringPoints } from "@/sim/wave/spawn-points";
 import { type PendingSpawn, playerOf, type World } from "@/sim/world";
 
 function spawnAtEdge(world: World, def: string): void {

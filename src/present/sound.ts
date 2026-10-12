@@ -49,7 +49,7 @@ export class SoundPlan {
   }
 
   /**
-   * A look-only hot swap (src/app/wave.ts): the sound config may have changed, but the caps and
+   * A look-only hot swap (src/game/wave-session.ts): the sound config may have changed, but the caps and
    * gaps already in flight are real playback state, not something a dev edit should reset.
    */
   setLook(look: LookContent): void {

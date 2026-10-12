@@ -1,10 +1,12 @@
 import { buildAim } from "@/app/aim";
 import { GameLoop } from "@/app/loop";
-import { kite } from "@/bots/kite";
 import type { Content } from "@/content/types";
 import { TICK_HZ, tickSeconds } from "@/core/clock";
 import type { Vec } from "@/core/vec";
-import type { UrlOptions } from "@/flow/url";
+import { kite } from "@/game/kite-bot";
+import type { WaveReport } from "@/game/report";
+import type { Scenario } from "@/game/scenario";
+import type { UrlOptions } from "@/game/url";
 import { type ControlElements, type ControlState, Controls } from "@/input/controls";
 import type { SkillTrace } from "@/input/skill-button";
 import { ActorDraws } from "@/present/anim/actors";
@@ -29,8 +31,6 @@ import type { AudioOut } from "@/render/audio";
 import type { WorldScene } from "@/render/world-scene";
 import type { Command } from "@/sim/command";
 import type { SimEvent } from "@/sim/events";
-import type { WaveReport } from "@/sim/report";
-import type { Scenario } from "@/sim/scenario";
 import { createWorld, playerOf, type World } from "@/sim/world";
 
 export interface WaveSetup {

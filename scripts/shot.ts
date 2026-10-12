@@ -38,7 +38,7 @@ if (!Number.isInteger(tick) || tick < 0) {
   console.error(`--tick ${values.tick}: expected a whole number\n${USAGE}`);
   process.exit(1);
 }
-// Dev boots with telemetry on by default (src/app/main.ts); a shot is a script run, not a
+// Dev boots with telemetry on by default (src/game/main.ts); a shot is a script run, not a
 // playtest, so it turns telemetry off unless the query already says one way or the other.
 // A run with no seed is random; a shot is reproducible, so it pins one unless the query does.
 const params = new URLSearchParams(query);

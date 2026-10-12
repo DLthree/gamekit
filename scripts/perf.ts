@@ -5,7 +5,7 @@
  * bot may die before the wave ends; a died outcome still reaches the result
  * screen and still prints, same as a survived one.
  *
- * `__game.perf()` (src/agent/perf.ts) is a ring buffer that src/app/main.ts resets every 2 real
+ * `__game.perf()` (src/agent/perf.ts) is a ring buffer that src/game/main.ts resets every 2 real
  * seconds (its telemetry cadence) — a single read at the end would only cover the last, likely
  * partial, window before the wave ended. So this polls it every POLL_MS (well under 2 s) while
  * waiting for the result, keeps the last snapshot of each window it catches before a reset, and
@@ -21,7 +21,7 @@ import type { PerfSummary } from "@/agent/perf";
 const PORT = 5283;
 const QUERY = "char=wizard&build=3&threat=3&seed=7&bot=kite&agent=1&telemetry=0";
 const RESULT_TIMEOUT_MS = 120_000;
-/** Comfortably under PerfMeter's 2 s reset window (src/app/main.ts), so no window is missed. */
+/** Comfortably under PerfMeter's 2 s reset window (src/game/main.ts), so no window is missed. */
 const POLL_MS = 500;
 
 const round1 = (v: number) => Math.round(v * 10) / 10;

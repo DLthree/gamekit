@@ -1,5 +1,5 @@
-import type { WaveReport } from "@/sim/report";
-import type { Scenario } from "@/sim/scenario";
+import type { WaveReport } from "@/game/report";
+import type { Scenario } from "@/game/scenario";
 
 /** Every screen the app can be on. */
 export type Flow =

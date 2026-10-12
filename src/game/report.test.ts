@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { createReport, recordEvents } from "@/game/report";
 import type { SimEvent } from "@/sim/events";
-import { createReport, recordEvents } from "@/sim/report";
 
 const volume = {
   tick: 1,

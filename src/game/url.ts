@@ -1,5 +1,5 @@
-import type { Flow } from "@/flow/machine";
-import type { Scenario } from "@/sim/scenario";
+import type { Flow } from "@/game/flow";
+import type { Scenario } from "@/game/scenario";
 
 /** A cell asked for by URL; the seed and overrides apply to whatever the URL opens. */
 export interface CellRequest {
