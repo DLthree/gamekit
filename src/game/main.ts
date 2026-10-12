@@ -4,18 +4,21 @@ import { installHandle } from "@/agent/handle";
 import { PerfMeter } from "@/agent/perf";
 import { recordText } from "@/agent/record";
 import { classifyChange, loadContent, onContentReload } from "@/app/hot";
+import { saveStore, steamDeeds, steamProblem } from "@/app/platform";
 import { createTelemetry } from "@/app/telemetry-setup";
 import { formatContentError } from "@/content/errors";
 import { switchOn } from "@/content/switches";
 import type { Content } from "@/content/types";
+import { deedList, deedsMet, readEarned, writeEarned } from "@/game/deeds";
 import { type Flow, type FlowEvent, next } from "@/game/flow";
 import { pickerModel } from "@/game/picker";
 import { recordOf } from "@/game/record";
+import type { WaveReport } from "@/game/report";
 import { checkScenario, type Scenario, scenarioLabel, stageScenario } from "@/game/scenario";
 import { Hud, hudModel } from "@/game/ui/hud";
 import { PAD_KEYS } from "@/game/ui/pad-keys";
 import { hidePause, showPause } from "@/game/ui/pause";
-import { hidePicker, type LastCell, showPicker } from "@/game/ui/picker";
+import { type DeedRow, hidePicker, type LastCell, showPicker } from "@/game/ui/picker";
 import { hideResult, resultModel, showResult } from "@/game/ui/result";
 import { type CellRequest, parseUrl, reproUrl, type UrlTarget, urlFor } from "@/game/url";
 import { WaveSession } from "@/game/wave-session";
@@ -60,6 +63,8 @@ let wave: WaveSession | null = null;
 let lastFrameMs: number | null = null;
 /** The cell last played this session; the grid highlights it. */
 let lastCell: LastCell | null = null;
+/** The deeds earned, as the save has them (read at boot). */
+let earned = new Set<string>();
 
 function dispatch(ev: FlowEvent): void {
   const prev = flow;
@@ -108,6 +113,7 @@ function show(prev: Flow): void {
           scenario: scenarioFor({ character, buildTier: b, threatTier: t }),
         }),
       lastCell,
+      deedRows(),
     );
   }
   if (flow.screen === "wave") {
@@ -116,6 +122,7 @@ function show(prev: Flow): void {
   }
   if (flow.screen === "result") {
     const { scenario } = flow;
+    earn(scenario, flow.report);
     telemetry.record({
       kind: "wave",
       scenario,
@@ -138,6 +145,22 @@ function show(prev: Flow): void {
     );
     markPadKeys(PAD_KEYS, el("result"));
   }
+}
+
+function deedRows(): DeedRow[] {
+  if (content === null) throw new Error("deeds before content loaded");
+  return deedList(content.sim).map((d) => ({ ...d, earned: earned.has(d.id) }));
+}
+
+/** Saves the deeds the wave met that weren't earned yet, and unlocks them on Steam. */
+function earn(scenario: Scenario, report: WaveReport): void {
+  if (content === null) throw new Error("deeds before content loaded");
+  const fresh = deedsMet(content.sim, scenario, report).filter((id) => !earned.has(id));
+  if (fresh.length === 0) return;
+  earned = new Set([...earned, ...fresh]);
+  writeEarned(saveStore(), earned);
+  telemetry.record({ kind: "deeds", earned: fresh });
+  steamDeeds(fresh);
 }
 
 /** The URL's seed, or a fresh random uint32 for every run (the sim itself stays seeded). */
@@ -339,6 +362,21 @@ async function boot(): Promise<void> {
     return;
   }
   content = switchOn(compiled.content, url.options.on);
+  // Nothing plays without Steam in the Steam build, or on a save the game can't read: their
+  // panels have no way on (contentOk stays false until both are good).
+  const steam = steamProblem();
+  if (steam !== null) {
+    dispatch({ e: "failed", title: "Steam", lines: [steam], scenario: null });
+    return;
+  }
+  try {
+    earned = readEarned(saveStore());
+  } catch (err) {
+    dispatch({ e: "failed", title: "Save", lines: [String(err)], scenario: null });
+    return;
+  }
+  // Steam re-syncs every earned deed at start-up (one earned offline, or before a reinstall).
+  steamDeeds([...earned]);
   contentOk = true;
   const cam = content.look.camera;
   const view = computeViewport(

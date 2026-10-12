@@ -44,6 +44,18 @@ describe("checkGame", () => {
     );
   });
 
+  it("rejects a deed asking for a threat tier the content lacks", () => {
+    const e = errs({
+      "deeds/far.json": { name: "Far", text: "Go far.", needs: { threat: 9 } },
+    });
+    expect(e).toContain("deeds/far.json › needs.threat: no threats/tier-9.json");
+  });
+
+  it("rejects a deed that needs nothing", () => {
+    const e = errs({ "deeds/free.json": { name: "Free", text: "Nothing.", needs: {} } });
+    expect(e.join("\n")).toContain("a deed needs at least one of won, threat, kills");
+  });
+
   it("keeps spawn timelines inside the wave", () => {
     const e = errs({
       "threats/tier-1.json": {

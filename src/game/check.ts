@@ -1,3 +1,4 @@
+import { achievementProblems } from "@/content/achievements";
 import { checkMods, type Push } from "@/content/check-tree";
 import type { Content } from "@/content/types";
 import { checkBuilds, checkModifiers, checkProjectileSteps } from "@/game/check-builds";
@@ -54,12 +55,24 @@ function checkStageCells(c: Content, push: Push): void {
   }
 }
 
+/** Each deed asks for a threat tier the content has, and makes a Steam achievement name. */
+function checkDeeds(c: Content, push: Push): void {
+  for (const [id, deed] of Object.entries(c.sim.deeds)) {
+    const { threat } = deed.needs;
+    if (threat !== undefined && !Object.hasOwn(c.sim.threats, `tier-${threat}`))
+      push(`deeds/${id}.json`, "needs.threat", `no threats/tier-${threat}.json`);
+  }
+  for (const { deed, message } of achievementProblems(Object.keys(c.sim.deeds)))
+    push(`deeds/${deed}.json`, "", message);
+}
+
 /** The game's cross-file rules: builds, the modifiers they use, threats, and stages' cells. */
 export function checkGame(c: Content, push: Push): void {
   checkBuilds(c, push);
   checkModifiers(c, push);
   checkThreats(c, push);
   checkStageCells(c, push);
+  checkDeeds(c, push);
 }
 
 /** Checks that resolve the sim's numbers; they run only on content every other check accepted. */

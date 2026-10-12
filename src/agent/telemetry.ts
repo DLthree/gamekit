@@ -32,6 +32,8 @@ export type TelemetryRecord =
       record: string | null;
     }
   | { kind: "gesture"; tick: number; trace: SkillTrace }
+  /** Deeds (achievements) earned by the wave just ended. */
+  | { kind: "deeds"; earned: string[] }
   | {
       kind: "wave";
       scenario: Scenario;

@@ -1,5 +1,6 @@
 import type { Kind } from "@/content/kinds";
 import { Build } from "@/game/schema/build";
+import { Deed } from "@/game/schema/deed";
 import { Threat } from "@/game/schema/threat";
 
 /**
@@ -9,4 +10,5 @@ import { Threat } from "@/game/schema/threat";
 export const GAME_KINDS = {
   builds: { path: "builds", schemaName: "build", schema: Build, collection: true },
   threats: { path: "threats", schemaName: "threat", schema: Threat, collection: true },
+  deeds: { path: "deeds", schemaName: "deed", schema: Deed, collection: true },
 } satisfies Record<string, Kind<unknown> & { collection: true }>;

@@ -1,0 +1,6 @@
+{
+  "$schema": "../schema/deed.schema.json",
+  "name": "Lion Tamer",
+  "text": "Defeat an elite.",
+  "needs": { "kills": { "role": "elite", "count": 1 } }
+}

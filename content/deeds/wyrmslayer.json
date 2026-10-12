@@ -1,0 +1,6 @@
+{
+  "$schema": "../schema/deed.schema.json",
+  "name": "Wyrmslayer",
+  "text": "Defeat the dragon at threat 3.",
+  "needs": { "threat": 3, "kills": { "role": "boss", "count": 1 } }
+}

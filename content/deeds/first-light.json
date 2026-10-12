@@ -1,0 +1,6 @@
+{
+  "$schema": "../schema/deed.schema.json",
+  "name": "First Light",
+  "text": "Survive a wave.",
+  "needs": { "won": true }
+}

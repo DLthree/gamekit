@@ -140,6 +140,41 @@ body:not([data-screen="wave"]) #skill-button {
   box-shadow: 0 0 0 3px rgb(179 38 30 / 0.35);
 }
 
+/* The deeds under the grid: one line each, cut rather than wrapped, so earning one (its mark
+ * filling) never moves a row. */
+#picker h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+#picker .deeds {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: min(520px, calc(100vw - 48px));
+}
+
+#picker .deeds li {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.6;
+}
+
+#picker .deeds .mark {
+  display: inline-block;
+  width: 1.4em;
+  color: #9a8f78;
+}
+
+#picker .deeds .earned .mark {
+  color: #b3261e;
+}
+
+#picker .deeds b {
+  margin-right: 0.4em;
+}
+
 #result .actions {
   margin-top: 12px;
   display: flex;
