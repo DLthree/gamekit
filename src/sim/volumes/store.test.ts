@@ -9,6 +9,7 @@ import {
   type VolumeInit,
 } from "@/sim/volumes/store";
 import { testContent } from "@/test/content";
+import { DMG_A, damageOf } from "@/test/vocab";
 
 describe("VolumeStore", () => {
   const c = testContent();
@@ -46,7 +47,7 @@ describe("VolumeStore", () => {
   it("snapshots the skill's damage times the node's scale", () => {
     const s = createVolumeStore(2);
     const v = spawnVolume(s, init, 0);
-    expect(v?.damage).toEqual({ fire: 5, physical: 0 });
+    expect(v?.damage).toEqual(damageOf({ [DMG_A]: 5 }));
     expect(v?.ended).toBe(false);
     expect(v?.travelled).toBe(0);
   });

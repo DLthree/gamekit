@@ -1,13 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { type DamagePacket, resolveHit } from "@/sim/combat/damage";
+import { DMG_A, DMG_B, damageOf } from "@/test/vocab";
+
+/** 6 of one type plus 1 of a second when the game has one. */
+const TOTAL = DMG_B === null ? 6 : 7;
 
 const packet: DamagePacket = {
   source: 1,
   owner: 2,
   ownerDef: "hero",
   skill: "boom",
-  tags: ["fire"],
-  amounts: { fire: 6, physical: 1 },
+  tags: [DMG_A],
+  amounts: damageOf({ [DMG_A]: 6, ...(DMG_B === null ? {} : { [DMG_B]: 1 }) }),
   knockback: 100,
   originX: 0,
   originY: 0,
@@ -18,10 +22,10 @@ const packet: DamagePacket = {
 describe("resolveHit", () => {
   it("sums the damage types and reports a kill", () => {
     expect(resolveHit(packet, { hp: 10, x: 10, y: 0, knockbackResist: 0 })).toMatchObject({
-      damage: 7,
+      damage: TOTAL,
       killed: false,
     });
-    expect(resolveHit(packet, { hp: 7, x: 10, y: 0, knockbackResist: 0 }).killed).toBe(true);
+    expect(resolveHit(packet, { hp: TOTAL, x: 10, y: 0, knockbackResist: 0 }).killed).toBe(true);
   });
 
   it("pushes away from the origin, scaled down by knockback resist", () => {

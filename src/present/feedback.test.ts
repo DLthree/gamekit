@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
+import type { Role } from "@/content/schema/vocab";
 import { tickSeconds } from "@/core/clock";
 import { applyEvents } from "@/present/feedback";
 import { createPresentation, type Presentation } from "@/present/presentation";
 import type { WarningDraw } from "@/present/spawn-warnings";
 import { testContent, testFiles } from "@/test/content";
+import { ROLE_A, ROLE_B } from "@/test/vocab";
 
 function presentation(): Presentation {
   return createPresentation(testContent(), 1);
@@ -107,7 +109,7 @@ describe("applyEvents", () => {
           tick: 1,
           id: 5,
           def: "dummy",
-          role: "fodder",
+          role: ROLE_A,
           x: 0,
           y: 0,
           killer: "hero",
@@ -169,7 +171,7 @@ describe("applyEvents", () => {
     expect(Math.max(...p.em.pool.items.map((i) => i.at + i.life))).toBeLessThanOrEqual(5 + 1e-9);
   });
 
-  function died(role: "fodder" | "elite" | "boss") {
+  function died(role: Role) {
     return {
       t: "died",
       tick: 1,
@@ -183,8 +185,8 @@ describe("applyEvents", () => {
     } as const;
   }
 
-  it("drops gold flakes, a big shake and the gold sound when an elite or boss dies", () => {
-    for (const role of ["elite", "boss"] as const) {
+  it("drops gold flakes, a big shake and the gold sound when a big-death role dies", () => {
+    for (const role of [ROLE_B]) {
       const p = presentation();
       p.sound.running = true;
       applyEvents(p, [died(role)], 1);
@@ -194,10 +196,10 @@ describe("applyEvents", () => {
     }
   });
 
-  it("keeps gold off fodder deaths", () => {
+  it("keeps gold off other roles' deaths", () => {
     const p = presentation();
     p.sound.running = true;
-    applyEvents(p, [died("fodder")], 1);
+    applyEvents(p, [died(ROLE_A)], 1);
     expect(p.em.pool.counts().kinds["gold-flake"]).toBe(0);
     expect(p.camera.shakeUntil).toBeLessThan(1);
     expect(p.sound.take().map((s) => s.id)).toEqual(["tick"]);

@@ -13,10 +13,11 @@ if (!r.ok) throw new Error(r.errors.map(formatContentError).join("\n"));
 const { sim } = r.content;
 
 /**
- * The example's banned words: the kit's dev terms. "build" and "threat" are the grid's own words
- * here, so they stay; a game whose players never see its tiers would add them.
+ * The example's banned words: the kit's dev terms plus its own ("fodder", an enemy role). "build"
+ * and "threat" are the grid's own words here, so they stay; a game whose players never see its
+ * tiers would add them.
  */
-const TERMS = DEV_TERMS;
+const TERMS = [...DEV_TERMS, "fodder"];
 
 /** Fails naming the term and the full string, so a hit is easy to place. */
 function clean(where: string, text: string, ids = true): void {

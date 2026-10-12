@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { Skill } from "@/content/schema/skill";
+import { DMG_A, TAG_A, TAG_B } from "@/test/vocab";
 
 const fireball = {
   $schema: "../schema/skill.schema.json",
-  tags: ["spell", "projectile", "area", "fire"],
+  tags: [TAG_A, TAG_B, DMG_A],
   activation: "manual",
   target: "aim",
   stats: {
-    damage: { fire: 6 },
+    damage: { [DMG_A]: 6 },
     cooldown: 2.5,
     range: 380,
     area: 60,

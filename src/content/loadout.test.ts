@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { type AppliedModifier, mergeSkill, nodesOf } from "@/content/loadout";
 import { Modifier } from "@/content/schema/modifier";
 import { testContent } from "@/test/content";
+import { DMG_A, TAG_A, TAG_B, TAG_C } from "@/test/vocab";
 
 const boom = testContent().sim.skills.boom;
 
@@ -10,8 +11,8 @@ function mod(id: string, body: Record<string, unknown>): AppliedModifier {
 }
 
 const lingering = mod("lingering", {
-  requires: ["area"],
-  addTags: ["duration"],
+  requires: [TAG_B],
+  addTags: [TAG_C],
   stats: [
     { stat: "duration", op: "flat", value: 2 },
     { stat: "pulse", op: "flat", value: 0.5 },
@@ -38,8 +39,8 @@ const echo = (id: string) =>
 
 describe("mergeSkill", () => {
   it("adds and removes tags in order and labels the modifiers' StatMods", () => {
-    const m = mergeSkill("boom", boom, [lingering, mod("dry", { removeTags: ["fire"] })], {});
-    expect(m.tags).toEqual(["spell", "projectile", "area", "duration"]);
+    const m = mergeSkill("boom", boom, [lingering, mod("dry", { removeTags: [DMG_A] })], {});
+    expect(m.tags).toEqual([TAG_A, TAG_B, TAG_C]);
     expect(m.mods.map((s) => [s.mod.stat, s.source])).toEqual([
       ["duration", "modifiers/lingering.json"],
       ["pulse", "modifiers/lingering.json"],

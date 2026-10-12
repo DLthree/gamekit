@@ -2,13 +2,14 @@ import { describe, expect, it } from "vitest";
 import { buildAim } from "@/app/aim";
 import type { ControlState } from "@/input/controls";
 import type { ResolvedSkill, SkillInstance } from "@/sim/skills/instance";
+import { damageOf } from "@/test/vocab";
 
 const skill: ResolvedSkill = {
   id: "boom",
   def: {} as ResolvedSkill["def"],
   deliver: {} as ResolvedSkill["deliver"],
   tags: [],
-  damage: { fire: 0, physical: 0 },
+  damage: damageOf({}),
   stats: { range: 300, area: 50 },
   breakdown: {},
   intervalTicks: 60,

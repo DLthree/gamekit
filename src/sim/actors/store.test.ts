@@ -6,11 +6,12 @@ import {
   releaseActor,
   spawnActor,
 } from "@/sim/actors/store";
+import { ROLE_A } from "@/test/vocab";
 
 const init: ActorInit = {
   def: "dummy",
   team: "enemy",
-  role: "fodder",
+  role: ROLE_A,
   x: 1,
   y: 2,
   radius: 10,

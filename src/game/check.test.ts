@@ -153,10 +153,10 @@ describe("loadout modifiers", () => {
 
   it("checks requires against the tags earlier modifiers added", () => {
     expect(errs(withMods(build(["stoke", "lingering"])))).toContain(
-      "builds/hero.json › tiers.0.loadout.cast.modifiers.0: stoke requires duration; boom has spell, projectile, area, fire here",
+      "builds/hero.json › tiers.0.loadout.cast.modifiers.0: stoke requires duration; boom has projectile, area, fire here",
     );
     expect(errs(withMods(build(["lingering", "stoke"], {}, ["lingering"])))).toContain(
-      "builds/hero.json › tiers.0.loadout.auto.modifiers.0: lingering requires area; zap has spell, projectile, fire here",
+      "builds/hero.json › tiers.0.loadout.auto.modifiers.0: lingering requires area; zap has projectile, fire here",
     );
   });
 

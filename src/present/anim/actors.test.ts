@@ -3,7 +3,7 @@ import { createRng } from "@/core/rng";
 import { ActorDraws } from "@/present/anim/actors";
 import { ActorAnims } from "@/present/anim/creatures";
 import { playerOf } from "@/sim/world";
-import { eliteFiles, staffFiles, testContent } from "@/test/content";
+import { bruteFiles, staffFiles, testContent } from "@/test/content";
 import { place, testWorld } from "@/test/world";
 
 const anims = () => new ActorAnims(createRng(1), 0);
@@ -35,20 +35,20 @@ describe("ActorDraws", () => {
   });
 
   it("draws a dead creature's ghost on its own grid after the living, until it is pruned", () => {
-    const files = eliteFiles();
+    const files = bruteFiles();
     const content = testContent(files);
     const world = testWorld(files);
-    const lion = place(world, "lion", 50, 0);
+    const brute = place(world, "brute", 50, 0);
     const a = anims();
     const d = new ActorDraws();
     d.collect(content, a, world, 0);
-    expect(d.draws.slice(0, 2).map((m) => m.def)).toEqual(["hero", "lion"]);
+    expect(d.draws.slice(0, 2).map((m) => m.def)).toEqual(["hero", "brute"]);
     expect(d.draws[1].prop).toBeNull();
-    lion.hp = 0;
-    a.died(lion.id, "lion", 50, 0, 0.1);
+    brute.hp = 0;
+    a.died(brute.id, "brute", 50, 0, 0.1);
     d.collect(content, a, world, 0.15);
     expect(d.count).toBe(2);
-    expect(d.draws[1].def).toBe("lion");
+    expect(d.draws[1].def).toBe("brute");
     expect(d.draws[1].body.flash).toBe(true);
     a.prune(5, content.look.feedback.death.durationS);
     d.collect(content, a, world, 5);

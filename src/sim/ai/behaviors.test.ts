@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { keepDistance } from "@/sim/ai/behaviors";
 import { playerOf } from "@/sim/world";
+import { ROLE_A } from "@/test/vocab";
 import { place, run, testWorld } from "@/test/world";
 
 describe("keepDistance", () => {
@@ -27,7 +28,7 @@ describe("keepDistance", () => {
   it("backing into a wall slides along it without leaving the arena", () => {
     const w = testWorld({
       "enemies/dummy.json": {
-        role: "fodder",
+        role: ROLE_A,
         stats: { life: 10, moveSpeed: 200, radius: 10, knockbackResist: 0 },
         behavior: { kind: "keepDistance", distance: 15 },
         skills: ["nibble"],

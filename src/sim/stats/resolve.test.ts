@@ -3,6 +3,7 @@ import type { SourcedMod, StatMod } from "@/content/schema/vocab";
 import { ticks } from "@/core/clock";
 import { STAT_CLAMPS } from "@/sim/stats/ids";
 import { resolveActorStats, resolveDamage, resolveStat } from "@/sim/stats/resolve";
+import { DMG_A, DMG_B, second, TAG_A, TAG_B, TAG_C } from "@/test/vocab";
 
 function mod(
   stat: StatMod["stat"],
@@ -25,7 +26,7 @@ describe("resolveStat", () => {
         mod("area", "more", 0.2),
         mod("area", "more", 0.2),
       ],
-      ["area"],
+      [TAG_A],
     );
     expect(r.value).toBeCloseTo(50 * 1.4 * 1.44);
     expect(r.base).toBe(40);
@@ -33,9 +34,9 @@ describe("resolveStat", () => {
   });
 
   it("applies a conditioned mod only when the skill has every tag", () => {
-    const fire = mod("area", "increased", 0.5, ["fire", "area"]);
-    expect(resolveStat("area", 10, [fire], ["area"]).value).toBe(10);
-    expect(resolveStat("area", 10, [fire], ["area", "fire", "spell"]).value).toBe(15);
+    const both = mod("area", "increased", 0.5, [TAG_A, TAG_B]);
+    expect(resolveStat("area", 10, [both], [TAG_B]).value).toBe(10);
+    expect(resolveStat("area", 10, [both], [TAG_B, TAG_A, TAG_C]).value).toBe(15);
   });
 
   it("ignores mods for other stats and keeps them out of the breakdown", () => {
@@ -53,20 +54,22 @@ describe("resolveStat", () => {
 });
 
 describe("resolveDamage", () => {
-  it("treats each damage type as an implicit tag of its portion", () => {
+  it.skipIf(DMG_B === null)("treats each damage type as an implicit tag of its portion", () => {
+    const b = second();
     const d = resolveDamage(
-      { fire: 10, physical: 10 },
-      [mod("damage", "increased", 1, ["fire"]), mod("damage", "flat", 2, ["physical"])],
-      ["attack"],
+      { [DMG_A]: 10, [b]: 10 },
+      [mod("damage", "increased", 1, [DMG_A]), mod("damage", "flat", 2, [b])],
+      [TAG_A],
     );
-    expect(d.fire.value).toBe(20);
-    expect(d.physical.value).toBe(12);
+    expect(d[DMG_A].value).toBe(20);
+    expect(d[b].value).toBe(12);
   });
 
-  it("leaves types absent from the base at 0", () => {
-    const d = resolveDamage({ fire: 5 }, [mod("damage", "flat", 3, ["physical"])], []);
-    expect(d.physical.value).toBe(0);
-    expect(d.physical.lines).toEqual([]);
+  it.skipIf(DMG_B === null)("leaves types absent from the base at 0", () => {
+    const b = second();
+    const d = resolveDamage({ [DMG_A]: 5 }, [mod("damage", "flat", 3, [b])], []);
+    expect(d[b].value).toBe(0);
+    expect(d[b].lines).toEqual([]);
   });
 });
 

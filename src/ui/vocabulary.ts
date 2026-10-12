@@ -4,7 +4,6 @@
  */
 export const DEV_TERMS: readonly string[] = [
   "tick",
-  "fodder",
   "telegraph",
   "volume",
   "seed",

@@ -2,19 +2,20 @@ import { describe, expect, it } from "vitest";
 import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/sim/events";
 import { quietZap } from "@/test/content";
+import { DMG_A, ROLE_A, TAG_A, TAG_B } from "@/test/vocab";
 import { castAt, place, run, testWorld } from "@/test/world";
 
-/** A manual skill that drops a zone at the caster: 4 fire per pulse, 4 pulses, radius 30. */
+/** A manual skill that drops a zone at the caster: 4 damage per pulse, 4 pulses, radius 30. */
 function pool(node: Record<string, unknown> = {}) {
   return {
     ...quietZap,
     ...heroBuild("zap", "pool"),
     "skills/pool.json": {
-      tags: ["spell", "area", "fire"],
+      tags: [TAG_A, TAG_B, DMG_A],
       activation: "manual",
       target: "aim",
       stats: {
-        damage: { fire: 4 },
+        damage: { [DMG_A]: 4 },
         cooldown: 0.5,
         range: 100,
         area: 30,
@@ -25,7 +26,7 @@ function pool(node: Record<string, unknown> = {}) {
       deliver: { do: "zone", motion: "static", vfx: "none", ...node },
     },
     "enemies/dummy.json": {
-      role: "fodder",
+      role: ROLE_A,
       stats: { life: 1000, moveSpeed: 0, radius: 10, knockbackResist: 0 },
       behavior: { kind: "chase" },
       skills: ["nibble"],

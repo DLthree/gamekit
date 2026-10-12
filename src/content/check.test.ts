@@ -5,7 +5,8 @@ import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import type { DeliveryNode } from "@/content/schema/skill";
 import { drainSpawns, queueEnemy } from "@/sim/spawn-queue";
-import { eliteFiles, type FilePatch, testContent, testFiles } from "@/test/content";
+import { bruteFiles, type FilePatch, testContent, testFiles } from "@/test/content";
+import { DMG_A, ROLE_A, ROLE_B, TAG_A, TAG_B } from "@/test/vocab";
 import { testWorld } from "@/test/world";
 
 function errs(patch: FilePatch): string[] {
@@ -56,11 +57,11 @@ describe("checkContent", () => {
     );
   });
 
-  it("keeps gold off fodder: a creature's sprite role must equal the enemy role", () => {
+  it("a creature's sprite role must equal the enemy role", () => {
     const sprites = base("look/generated/sprites.json") as { sprites: { role: string }[] };
-    sprites.sprites[1].role = "elite";
+    sprites.sprites[1].role = ROLE_B;
     expect(errs({ "look/generated/sprites.json": sprites })).toContain(
-      "enemies/dummy.json › look: sprite dummy is drawn for elite, the enemy is fodder",
+      `enemies/dummy.json › look: sprite dummy is drawn for ${ROLE_B}, the enemy is ${ROLE_A}`,
     );
   });
 
@@ -76,7 +77,7 @@ describe("checkContent", () => {
   it("requires a flat damage StatMod to name exactly one damage type", () => {
     const tier = {
       loadout: { auto: { skill: "zap" }, cast: { skill: "boom" } },
-      stats: [{ stat: "damage", op: "flat", value: 2, if: ["spell"] }],
+      stats: [{ stat: "damage", op: "flat", value: 2, if: [TAG_A] }],
     };
     const e = errs({
       "builds/hero.json": { character: "hero", tiers: [tier, tier, tier] },
@@ -91,7 +92,7 @@ describe("checkContent", () => {
       "threats/tier-1.json": {
         durationS: 10,
         maxAlive: 10,
-        enemyMods: [{ stat: "life", op: "more", value: 1, if: ["fire"] }],
+        enemyMods: [{ stat: "life", op: "more", value: 1, if: [DMG_A] }],
         spawns: [],
       },
     });
@@ -207,10 +208,10 @@ describe("checkContent", () => {
   it("requires area, duration and pulse on a zone, and a vfx a zone can draw", () => {
     const e = errs({
       "skills/pool.json": {
-        tags: ["spell", "area", "fire"],
+        tags: [TAG_A, TAG_B, DMG_A],
         activation: "manual",
         target: "aim",
-        stats: { damage: { fire: 1 }, cooldown: 1, range: 100, area: 30, knockback: 0 },
+        stats: { damage: { [DMG_A]: 1 }, cooldown: 1, range: 100, area: 30, knockback: 0 },
         deliver: { do: "zone", motion: "static", vfx: "blast" },
       },
     });
@@ -224,11 +225,11 @@ describe("checkContent", () => {
   it("rejects a zone whose duration or pulse is too short to ever pulse", () => {
     const e = errs({
       "skills/pool.json": {
-        tags: ["spell", "area", "fire"],
+        tags: [TAG_A, TAG_B, DMG_A],
         activation: "manual",
         target: "aim",
         stats: {
-          damage: { fire: 1 },
+          damage: { [DMG_A]: 1 },
           cooldown: 1,
           range: 100,
           area: 30,
@@ -248,7 +249,7 @@ describe("checkContent", () => {
   });
 
   it("accepts a bent elite holding nothing beside a hero holding a prop", () => {
-    expect(errs(eliteFiles())).toEqual([]);
+    expect(errs(bruteFiles())).toEqual([]);
   });
 
   it("rejects pierce on a trigger projectile", () => {

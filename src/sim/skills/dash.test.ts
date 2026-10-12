@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { SimEvent } from "@/sim/events";
 import type { World } from "@/sim/world";
 import { quietZap } from "@/test/content";
+import { DMG_A, ROLE_A, TAG_B, TAG_C } from "@/test/vocab";
 import { enemies, place, run, runUntilEvent, testWorld } from "@/test/world";
 
 /**
@@ -15,11 +16,11 @@ function worldWithCharge(
   const w = testWorld({
     ...quietZap,
     "skills/charge.json": {
-      tags: ["attack", "area", "physical"],
+      tags: [TAG_C, TAG_B, DMG_A],
       activation: "auto",
       target: "player",
       stats: {
-        damage: { physical: 5 },
+        damage: { [DMG_A]: 5 },
         rate: 0.1,
         range: 200,
         area: 10,
@@ -36,7 +37,7 @@ function worldWithCharge(
       },
     },
     "enemies/caster.json": {
-      role: "fodder",
+      role: ROLE_A,
       stats: { life: 100, moveSpeed, radius: 10, knockbackResist: 0 },
       behavior: { kind: "chase" },
       skills: ["charge"],

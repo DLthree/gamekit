@@ -16,7 +16,10 @@ export const TAGS = [
 ] as const;
 
 /** Each damage type is also a tag, carried implicitly by that portion of a skill's damage. */
-export const DAMAGE_TYPES = ["physical", "fire"] as const;
+export const DAMAGE_TYPES = [
+  "physical",
+  "fire",
+] as const satisfies readonly (typeof TAGS)[number][];
 
 /** Enemy roles: the report counts kills and spawns by role, and look rules key off them. */
 export const ROLES = ["fodder", "elite", "boss"] as const;

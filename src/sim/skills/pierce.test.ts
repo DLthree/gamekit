@@ -2,12 +2,13 @@ import { describe, expect, it } from "vitest";
 import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/sim/events";
 import { quietZap } from "@/test/content";
+import { DMG_A, ROLE_A, TAG_A } from "@/test/vocab";
 import { castAt, place, run, testWorld } from "@/test/world";
 
 /** A manual bolt (2 units a tick by default) that pierces `pierce` bodies. */
 function lance(pierce: number | null, projectileSpeed = 120) {
   const stats: Record<string, unknown> = {
-    damage: { fire: 5 },
+    damage: { [DMG_A]: 5 },
     cooldown: 5,
     range: 300,
     projectileSpeed,
@@ -20,7 +21,7 @@ function lance(pierce: number | null, projectileSpeed = 120) {
     ...quietZap,
     ...heroBuild("zap", "lance"),
     "skills/lance.json": {
-      tags: ["spell", "projectile", "fire"],
+      tags: [TAG_A, DMG_A],
       activation: "manual",
       target: "aim",
       stats,
@@ -29,7 +30,7 @@ function lance(pierce: number | null, projectileSpeed = 120) {
     // Enemy schema requires at least one skill; nibble's range (20) is far short of the
     // distances used here, so the dummies never land a hit back.
     "enemies/dummy.json": {
-      role: "fodder",
+      role: ROLE_A,
       stats: { life: 1000, moveSpeed: 0, radius: 10, knockbackResist: 0 },
       behavior: { kind: "chase" },
       skills: ["nibble"],

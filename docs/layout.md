@@ -26,7 +26,7 @@ seam modules listed below.
 | `src/ui/` | kit | Blocking error panel, base page styles (canvas, controls, `.panel`, `.act`), the action button (`button.ts`), gamepad menu navigation (`pad-nav.ts`) and pad shortcut hints (`pad-keys.ts`, from a game's `PadKeyMap`), and the dev terms no player may read (`vocabulary.ts`, checked by the game's `ui/vocabulary.test.ts`). |
 | `desktop/` | kit | The Electron shell: `main.ts` (app:// on dist/, window mode, single instance), `preload.ts` (`window.gameDesktop`), atomic saves and telemetry files (`files.ts`), `ship.ts` (reads and checks `ship/config.json`), Steam (`steam*.ts`, the Steam flavour only). |
 | `ship/` | game | What the game publishes as: `config.json` (product name, bundle id, Steam App and depot IDs, itch target; "TODO" placeholders until filled), `media.json` (the store media manifest), `icon.png`. |
-| `src/test/` | kit | Test helpers: small synthetic content and worlds built through the game's setup. |
+| `src/test/` | kit | Test helpers: small synthetic content and worlds built through the game's setup; `vocab.ts` gives kit tests the game's names (`TEST_NAMES`), never the example's words. |
 | `src/game/` | game | The example game's rules, screens and wiring (below). |
 | `content/` | game | The example's JSON content (`content/stages/`: its benches); `content/schema/` is generated (`pnpm content:schema`). |
 | `assets/` | game | Source art that `pnpm atlas` packs: `creatures/<id>.png` + sidecar, `fx/<id>/<n>.png` + `fx/<id>.json`. |
@@ -68,7 +68,7 @@ seam modules listed below.
 | `sweep.ts` | The run model `pnpm sweep` plays: run ids, one run with the kite bot, the summary table. |
 | `record.ts` | The example's run record: its choices (the replay address's parameters) and `replayQuery`. |
 | `links.ts` | Addresses the tools open: `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`. |
-| `test-files.ts` | The game's files in the kit's test content (`heroBuild`). |
+| `test-files.ts` | The game's files in the kit's test content (`heroBuild`, `GAME_TEST_FILES`) and the names it uses (`TEST_NAMES`). |
 
 ## The seam
 
@@ -91,7 +91,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/sweep` | `scripts/sweep*.ts` | `SweepRow`, `sweepRuns`, `playRun`, `sweepTable` |
 | `@/game/record` | `scripts/run-record-read.ts` | `recordOf`, `replayQuery` |
 | `@/game/deeds` | `scripts/steam-dashboard.ts` | `deedList` |
-| `@/game/setup`, `@/game/test-files` | `src/test/`, sim tests | `worldFor`, `heroBuild` |
+| `@/game/setup`, `@/game/test-files` | `src/test/`, sim tests | `worldFor`, `heroBuild`, `GAME_TEST_FILES`, `TEST_NAMES` |
 
 Role-specific looks live in content: `look/feedback.json` `bigDeathRoles`.
 

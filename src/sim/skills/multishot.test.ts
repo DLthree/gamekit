@@ -3,6 +3,7 @@ import type { Multishot } from "@/content/schema/skill";
 import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/sim/events";
 import { quietZap } from "@/test/content";
+import { DMG_A, ROLE_A, TAG_A } from "@/test/vocab";
 import { castAt, place, run, testWorld } from "@/test/world";
 
 /** A manual multishot bolt; dummies that never move or bite back at these distances. */
@@ -11,11 +12,11 @@ function shot(multishot: Multishot, projectileCount: number, spread = 0) {
     ...quietZap,
     ...heroBuild("zap", "shot"),
     "skills/shot.json": {
-      tags: ["spell", "projectile", "fire"],
+      tags: [TAG_A, DMG_A],
       activation: "manual",
       target: "aim",
       stats: {
-        damage: { fire: 1 },
+        damage: { [DMG_A]: 1 },
         cooldown: 5,
         range: 200,
         projectileSpeed: 120,
@@ -26,7 +27,7 @@ function shot(multishot: Multishot, projectileCount: number, spread = 0) {
       deliver: { do: "projectile", multishot, impact: "damage", radius: 4, vfx: "zap" },
     },
     "enemies/dummy.json": {
-      role: "fodder",
+      role: ROLE_A,
       stats: { life: 1000, moveSpeed: 0, radius: 10, knockbackResist: 0 },
       behavior: { kind: "chase" },
       skills: ["nibble"],

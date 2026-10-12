@@ -3,16 +3,17 @@ import { heroBuild } from "@/game/test-files";
 import type { SimEvent } from "@/sim/events";
 import { playerOf } from "@/sim/world";
 import { quietZap } from "@/test/content";
+import { DMG_A, ROLE_A, TAG_A, TAG_B } from "@/test/vocab";
 import { castAt, place, run, testWorld } from "@/test/world";
 
 function boom(patch: { hitStop?: boolean } = {}) {
   return {
     "skills/boom.json": {
-      tags: ["spell", "projectile", "area", "fire"],
+      tags: [TAG_A, TAG_B, DMG_A],
       activation: "manual",
       target: "aim",
       stats: {
-        damage: { fire: 10 },
+        damage: { [DMG_A]: 10 },
         cooldown: 1,
         range: 300,
         area: 50,
@@ -39,11 +40,11 @@ function boom(patch: { hitStop?: boolean } = {}) {
 function twin() {
   return {
     "skills/twin.json": {
-      tags: ["spell", "projectile", "fire"],
+      tags: [TAG_A, DMG_A],
       activation: "manual",
       target: "aim",
       stats: {
-        damage: { fire: 10 },
+        damage: { [DMG_A]: 10 },
         cooldown: 1,
         range: 300,
         projectileSpeed: 600,
@@ -61,11 +62,11 @@ function twin() {
 function spike() {
   return {
     "skills/spike.json": {
-      tags: ["spell", "projectile", "fire"],
+      tags: [TAG_A, DMG_A],
       activation: "manual",
       target: "aim",
       stats: {
-        damage: { fire: 7 },
+        damage: { [DMG_A]: 7 },
         cooldown: 1,
         range: 100,
         projectileSpeed: 1200,
@@ -127,7 +128,7 @@ describe("the cast skill", () => {
     expect(push?.ky).toBeGreaterThan(0);
     const died = only(events, "died");
     expect(died).toHaveLength(2);
-    expect(died[0]).toMatchObject({ killer: "hero", skill: "boom", role: "fodder" });
+    expect(died[0]).toMatchObject({ killer: "hero", skill: "boom", role: ROLE_A });
   });
 
   it("ends at its range with no contact and bursts there", () => {

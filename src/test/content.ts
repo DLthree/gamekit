@@ -3,6 +3,7 @@ import { formatContentError } from "@/content/errors";
 import { KINDS, schemaRefFor } from "@/content/kinds";
 import type { Content } from "@/content/types";
 import { GAME_TEST_FILES } from "@/game/test-files";
+import { DMG_A, DMG_B, ROLE_A, ROLE_B, TAG_A, TAG_B, TAG_C } from "@/test/vocab";
 
 /** path → replacement file (without `$schema`, which is inserted), or null to delete the file. */
 export type FilePatch = Record<string, unknown>;
@@ -69,11 +70,11 @@ const BASE: Record<string, Record<string, unknown>> = {
     ],
   },
   "skills/zap.json": {
-    tags: ["spell", "projectile", "fire"],
+    tags: [TAG_A, DMG_A],
     activation: "auto",
     target: "nearest",
     stats: {
-      damage: { fire: 5 },
+      damage: { [DMG_A]: 5 },
       rate: 2,
       range: 200,
       projectileSpeed: 300,
@@ -84,11 +85,11 @@ const BASE: Record<string, Record<string, unknown>> = {
     deliver: { do: "projectile", multishot: "fan", impact: "damage", radius: 4, vfx: "zap" },
   },
   "skills/boom.json": {
-    tags: ["spell", "projectile", "area", "fire"],
+    tags: [TAG_A, TAG_B, DMG_A],
     activation: "manual",
     target: "aim",
     stats: {
-      damage: { fire: 10 },
+      damage: { [DMG_A]: 10 },
       cooldown: 1,
       range: 300,
       area: 50,
@@ -107,14 +108,14 @@ const BASE: Record<string, Record<string, unknown>> = {
     },
   },
   "skills/nibble.json": {
-    tags: ["attack", "melee", "physical"],
+    tags: [TAG_C, DMG_B ?? DMG_A],
     activation: "auto",
     target: "player",
-    stats: { damage: { physical: 3 }, rate: 1, range: 20, area: 20, knockback: 0 },
+    stats: { damage: { [DMG_B ?? DMG_A]: 3 }, rate: 1, range: 20, area: 20, knockback: 0 },
     deliver: { do: "burst", shape: { kind: "arc", halfAngleDeg: 60 }, vfx: "none" },
   },
   "enemies/dummy.json": {
-    role: "fodder",
+    role: ROLE_A,
     stats: { life: 10, moveSpeed: 0, radius: 10, knockbackResist: 0 },
     behavior: { kind: "chase" },
     skills: ["nibble"],
@@ -187,7 +188,7 @@ const BASE: Record<string, Record<string, unknown>> = {
       big: { durationS: 0.2, intensity: 0.01 },
     },
     playerHurtShake: "hurt",
-    bigDeathRoles: ["elite", "boss"],
+    bigDeathRoles: [ROLE_B],
     bigDeathShake: "big",
     sounds: { hit: "tick", death: "tick", playerHurt: "tick", cast: "tick", bigDeath: "chime" },
     goldFlakes: { kind: "gold-flake", count: 6, size: 4, pop: 30 },
@@ -253,7 +254,7 @@ const BASE: Record<string, Record<string, unknown>> = {
       },
       {
         id: "dummy",
-        role: "fodder",
+        role: ROLE_A,
         frame: "creature/dummy",
         px: [90, 90],
         world: [20, 20],
@@ -352,11 +353,11 @@ export function testContent(patch: FilePatch = {}): Content {
 /** The hero's auto zap with range 1, so it never fires and only the skill under test acts. */
 export const quietZap: FilePatch = {
   "skills/zap.json": {
-    tags: ["spell", "projectile", "fire"],
+    tags: [TAG_A, DMG_A],
     activation: "auto",
     target: "nearest",
     stats: {
-      damage: { fire: 5 },
+      damage: { [DMG_A]: 5 },
       rate: 2,
       range: 1,
       projectileSpeed: 300,
@@ -397,23 +398,23 @@ export function staffFiles(): FilePatch {
   return { "look/creatures.json": creatures, "look/generated/sprites.json": sprites };
 }
 
-/** staffFiles plus an elite enemy, "lion", drawn with an elite sprite. */
-export function eliteFiles(): FilePatch {
+/** staffFiles plus a ROLE_B enemy, "brute", drawn with a ROLE_B sprite. */
+export function bruteFiles(): FilePatch {
   const files = staffFiles();
   const creatures = files["look/creatures.json"] as {
     creatures: Record<string, Record<string, unknown>>;
   };
-  creatures.creatures.lion = {
+  creatures.creatures.brute = {
     ...creatures.creatures.dummy,
-    sprite: "lion",
+    sprite: "brute",
   };
   const sprites = files["look/generated/sprites.json"] as { sprites: Record<string, unknown>[] };
   sprites.sprites.push({
     ...sprites.sprites[1],
-    id: "lion",
-    role: "elite",
-    frame: "creature/lion",
+    id: "brute",
+    role: ROLE_B,
+    frame: "creature/brute",
   });
-  const lion = { ...BASE["enemies/dummy.json"], role: "elite", look: "lion" };
-  return { ...files, "enemies/lion.json": lion };
+  const brute = { ...BASE["enemies/dummy.json"], role: ROLE_B, look: "brute" };
+  return { ...files, "enemies/brute.json": brute };
 }

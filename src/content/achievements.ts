@@ -15,7 +15,7 @@ export interface DeedEntry {
 /** Steamworks API names: letters, digits and underscores (we use upper case), at most 128. */
 const API_NAME = /^[A-Z][A-Z0-9_]{0,127}$/;
 
-/** A deed id's achievement API name: `wyrmslayer` → `DEED_WYRMSLAYER`, `lion-tamer` → `DEED_LION_TAMER`. */
+/** A deed id's achievement API name: `first-blood` → `DEED_FIRST_BLOOD`. */
 export function achievementName(deedId: string): string {
   return `DEED_${deedId.toUpperCase().replaceAll("-", "_")}`;
 }

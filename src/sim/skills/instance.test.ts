@@ -3,13 +3,14 @@ import { mergeSkill } from "@/content/loadout";
 import { TICK_HZ } from "@/core/clock";
 import { resolveSkill, skillStat } from "@/sim/skills/instance";
 import { testContent } from "@/test/content";
+import { DMG_A, damageOf, TAG_B, TAG_C } from "@/test/vocab";
 
 describe("resolveSkill", () => {
   const c = testContent();
 
   it("resolves base stats and damage, and turns rate into an interval in ticks", () => {
     const zap = resolveSkill(mergeSkill("zap", c.sim.skills.zap, [], {}), []);
-    expect(zap.damage).toEqual({ fire: 5, physical: 0 });
+    expect(zap.damage).toEqual(damageOf({ [DMG_A]: 5 }));
     expect(skillStat(zap, "range")).toBe(200);
     expect(zap.intervalTicks).toBe(TICK_HZ / 2);
   });
@@ -17,11 +18,11 @@ describe("resolveSkill", () => {
   it("uses the cooldown for manual skills and applies tagged mods with a breakdown", () => {
     const boom = resolveSkill(mergeSkill("boom", c.sim.skills.boom, [], {}), [
       {
-        mod: { stat: "area", op: "increased", value: 0.5, if: ["area"] },
+        mod: { stat: "area", op: "increased", value: 0.5, if: [TAG_B] },
         source: "builds/hero.json tier 1",
       },
       {
-        mod: { stat: "damage", op: "more", value: 1, if: ["physical"] },
+        mod: { stat: "damage", op: "more", value: 1, if: [TAG_C] },
         source: "builds/hero.json tier 1",
       },
     ]);
@@ -29,7 +30,7 @@ describe("resolveSkill", () => {
     expect(boom.breakdown.area.lines).toEqual([
       { source: "builds/hero.json tier 1", op: "increased", value: 0.5 },
     ]);
-    expect(boom.damage.fire).toBe(10);
+    expect(boom.damage[DMG_A]).toBe(10);
     expect(boom.intervalTicks).toBe(TICK_HZ);
   });
 

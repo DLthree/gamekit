@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { ticks } from "@/core/clock";
 import { playerOf } from "@/sim/world";
+import { ROLE_A } from "@/test/vocab";
 import { enemies, run, TEST_SCENARIO, testWorld } from "@/test/world";
 
 const bench = (over: Record<string, unknown> = {}) => ({
@@ -21,7 +22,7 @@ const bench = (over: Record<string, unknown> = {}) => ({
 /** The test dummy, but walking. */
 const walker = {
   "enemies/dummy.json": {
-    role: "fodder",
+    role: ROLE_A,
     stats: { life: 10, moveSpeed: 60, radius: 10, knockbackResist: 0 },
     behavior: { kind: "chase" },
     skills: ["nibble"],

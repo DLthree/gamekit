@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { quietZap } from "@/test/content";
+import { DMG_A, TAG_A, TAG_B } from "@/test/vocab";
 import { castAt, run, testWorld } from "@/test/world";
 
 const CASTS = 2000;
@@ -15,11 +16,11 @@ function lucky(chance?: number) {
     "threats/tier-1.json": { durationS: 1000, maxAlive: 100, spawns: [] },
     "builds/hero.json": { character: "hero", tiers: [tier, tier, tier] },
     "skills/pop.json": {
-      tags: ["spell", "projectile", "area", "fire"],
+      tags: [TAG_A, TAG_B, DMG_A],
       activation: "manual",
       target: "aim",
       stats: {
-        damage: { fire: 1 },
+        damage: { [DMG_A]: 1 },
         cooldown: 0.05,
         range: 4,
         area: 10,

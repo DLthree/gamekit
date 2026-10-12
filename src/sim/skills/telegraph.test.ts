@@ -2,11 +2,12 @@ import { describe, expect, it } from "vitest";
 import type { SimEvent } from "@/sim/events";
 import { playerOf, type World } from "@/sim/world";
 import { quietZap } from "@/test/content";
+import { DMG_A, ROLE_A, TAG_B, TAG_C } from "@/test/vocab";
 import { castAt, enemies, place, run, runUntilEvent, testWorld } from "@/test/world";
 
 /**
  * The player at the origin (its zap too short to fire) and one "caster" enemy at (x, 0) whose
- * only skill is `slam`: an auto burst on the player, 5 physical, area 40, range 300, once per 4 s.
+ * only skill is `slam`: an auto burst on the player, 5 damage, area 40, range 300, once per 4 s.
  */
 function worldWithEnemySkill(
   node: Record<string, unknown>,
@@ -15,14 +16,14 @@ function worldWithEnemySkill(
   const w = testWorld({
     ...quietZap,
     "skills/slam.json": {
-      tags: ["attack", "area", "physical"],
+      tags: [TAG_C, TAG_B, DMG_A],
       activation: "auto",
       target: "player",
-      stats: { damage: { physical: 5 }, rate: 0.25, range: 300, area: 40, knockback: 0, ...stats },
+      stats: { damage: { [DMG_A]: 5 }, rate: 0.25, range: 300, area: 40, knockback: 0, ...stats },
       deliver: { do: "burst", vfx: "mark", shape: { kind: "circle" }, ...node },
     },
     "enemies/caster.json": {
-      role: "fodder",
+      role: ROLE_A,
       stats: { life: 100, moveSpeed, radius: 10, knockbackResist: 0 },
       behavior: { kind: "chase" },
       skills: ["slam"],
