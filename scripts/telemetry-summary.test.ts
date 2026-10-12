@@ -22,7 +22,7 @@ const line = (o: object) =>
   });
 
 describe("summarizeTelemetry", () => {
-  it("summarises each session: device, waves, errors, perf and gestures", () => {
+  it("summarises each session: device, runs, errors, perf and gestures", () => {
     const text = [
       line({
         kind: "load",
@@ -53,16 +53,21 @@ describe("summarizeTelemetry", () => {
         },
       }),
       line({
-        kind: "wave",
+        kind: "run",
         scenario: SCENARIO,
-        report: { outcome: "died", kills: 41, ticks: 3000, causeOfDeath: "dummy" },
-        sound: {
-          played: 120,
-          locked: 0,
-          capped: 4,
-          gapped: 30,
-          state: "running",
-          unlockFailures: 1,
+        report: {
+          outcome: "died",
+          kills: 41,
+          ticks: 3000,
+          causeOfDeath: "dummy",
+          sound: {
+            played: 120,
+            locked: 0,
+            capped: 4,
+            gapped: 30,
+            state: "running",
+            unlockFailures: 1,
+          },
         },
         options: OPTIONS,
         commit: "a1b2c3d",
@@ -104,22 +109,6 @@ describe("summarizeTelemetry", () => {
       "session abcdef12 · 2026-09-26T10:00:00.000Z · (no load record)",
       "  error Crash: boom",
       "    no repro (logged before scenario/options were recorded)",
-    ]);
-  });
-
-  it("says when a wave record predates the sound fields", () => {
-    const text = line({
-      kind: "wave",
-      scenario: SCENARIO,
-      report: { outcome: "won", kills: 90, ticks: 6000, causeOfDeath: null },
-      options: OPTIONS,
-      commit: "a1b2c3d",
-    });
-    expect(summarizeTelemetry(parseJsonl(text))).toEqual([
-      "session abcdef12 · 2026-09-26T10:00:00.000Z · (no load record)",
-      "  wave won at 100.0 s, 90 kills",
-      "    no sound (logged before sound was recorded)",
-      `    seed 7 · ${REPRO} · a1b2c3d`,
     ]);
   });
 

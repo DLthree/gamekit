@@ -124,10 +124,9 @@ function show(prev: Flow): void {
     const { scenario } = flow;
     earn(scenario, flow.report);
     telemetry.record({
-      kind: "wave",
+      kind: "run",
       scenario,
-      report: flow.report,
-      sound: soundStatus(),
+      report: { ...flow.report, sound: soundStatus() },
       options: url.options,
       commit: __COMMIT__,
       record: recordText(recordOf(scenario, url.options, __COMMIT__)),

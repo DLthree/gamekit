@@ -78,10 +78,7 @@ await withGameBrowser(`pnpm shot ${query}`, async (browser, base) => {
     values.name ?? `${queryName(query)}-t${tick}${device === "desktop" ? "" : `-${device}`}`;
   mkdirSync("shots", { recursive: true });
   await page.screenshot({ path: `shots/${name}.png` });
-  const read = await page.evaluate(() => ({
-    state: window.__game?.state(),
-    fx: window.__game?.fx(),
-  }));
+  const read = await page.evaluate(() => ({ state: window.__game?.state() }));
   const commit = execFileSync("git", ["rev-parse", "--short", "HEAD"], {
     encoding: "utf8",
   }).trim();

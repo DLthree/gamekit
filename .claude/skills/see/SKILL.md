@@ -35,7 +35,7 @@ its patches; identical rows are refused).
 ## Reading output
 
 - Open the PNG with the Read tool. Strips are wide; `--crop` (CSS px of the viewport) to zoom.
-- The shot sidecar holds the world summary at that tick: check counts there, not by eye.
+- The shot sidecar holds the handle's `state()` at that tick (the example: the world summary): check counts there, not by eye.
 - Pages are the game's `SCREENS` in `src/game/links.ts`; add one there to shoot a new page.
 
 ## Pitfalls

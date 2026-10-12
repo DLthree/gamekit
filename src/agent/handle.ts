@@ -1,57 +1,32 @@
 import type { SwitchId } from "@/content/switches";
-import type { Vec } from "@/core/vec";
-import type { Flow } from "@/game/flow";
-import type { WaveReport } from "@/game/report";
-import type { PerfSummary } from "@/realtime/agent/perf";
-import type { FxCounts } from "@/realtime/present/fx/pool";
-import type { SoundStatus } from "@/realtime/present/sound";
-import type { Command } from "@/realtime/sim/command";
-import type { SimEvent } from "@/realtime/sim/events";
-import type { WorldSummary } from "@/realtime/sim/snapshot";
+import type { GameHandle } from "@/game/handle";
 
-/** What an agent (Playwright, a script, a person in the console) can read and drive. */
-export interface GameHandle {
-  flow(): Flow;
+/**
+ * What every game's handle offers the kit's tools (shot, screens, e2e fixtures): the screen it
+ * is on, its state as JSON, the feature switches on, and failed telemetry sends.
+ */
+export interface KitHandle {
+  flow(): { screen: string };
+  state(): unknown;
   /** The feature switches the address turned on (`on=`, src/content/switches.ts), in its order. */
   on(): readonly SwitchId[];
-  state(): WorldSummary;
-  /** manual=1 only: runs n ticks (the command's cast on the first) and returns the new state. */
-  step(n: number, command?: Command): WorldSummary;
-  /** agent=1 only: this wave's events with tick ≥ since. */
-  events(since?: number): SimEvent[];
-  report(): WaveReport;
-  fx(): FxCounts;
-  /** Enemy telegraphs drawn in the last frame. */
-  telegraphs(): number;
-  /** Stop spawning effects so a test can watch the pool drain to zero. */
-  stopFx(): void;
-  perf(): PerfSummary;
-  /** From the result screen: a new run of the same scenario. */
-  retry(): void;
-  /** Pauses the running wave behind the pause overlay (`flow().paused`), as the HUD button does. */
-  pause(): void;
-  /** Resumes a paused wave, as the overlay's Resume button does. */
-  resume(): void;
   /** Telemetry POSTs that failed (network error or non-2xx) since boot. */
   telemetryFailures(): number;
-  /** The player's feet on screen (CSS px); absolute aim goes from here to the finger. */
-  playerCss(): Vec;
-  /** Sound requests this wave (played or why dropped), the audio context state, failed resumes. */
-  sound(): SoundStatus;
-  /**
-   * manual=1 only, test hook: forces the audio context back to "suspended" so an e2e can prove a
-   * later gesture is resumed by AudioUnlock, not Phaser's own one-shot unlock listener (already
-   * spent by the first successful resume).
-   */
-  suspendAudio(): Promise<void>;
 }
+
+/**
+ * What an agent (Playwright, a script, a person in the console) can read and drive: the kit's
+ * part and the game's (src/game/handle.ts). The game's comes first, so its narrower `flow` and
+ * `state` types are the ones callers see.
+ */
+export type Handle = GameHandle & KitHandle;
 
 declare global {
   interface Window {
-    __game?: GameHandle;
+    __game?: Handle;
   }
 }
 
-export function installHandle(h: GameHandle): void {
+export function installHandle(h: Handle): void {
   window.__game = h;
 }

@@ -13,7 +13,7 @@ group("recordsIn", () => {
   it("reads wave and error lines of a telemetry jsonl, in order, skipping the rest", () => {
     const jsonl = [
       JSON.stringify({ kind: "load", url: "/" }),
-      JSON.stringify({ kind: "wave", record: text, report: { outcome: "died" } }),
+      JSON.stringify({ kind: "run", record: text, report: { outcome: "died" } }),
       "",
       JSON.stringify({ kind: "error", title: "Crash", record: text }),
       JSON.stringify({ kind: "error", title: "Address", record: null }),
