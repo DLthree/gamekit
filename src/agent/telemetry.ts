@@ -7,7 +7,8 @@ import type { SoundStatus } from "@/present/sound";
 
 /**
  * `commit` is the build's `git describe --always --dirty`; with the scenario and options, a
- * `wave` or `error` record names everything needed to reopen that run (`reproUrl`).
+ * `wave` or `error` record names everything needed to reopen that run (`reproUrl`), and its
+ * `record` is the run record text (src/agent/record.ts, `pnpm run-record`).
  */
 export type TelemetryRecord =
   | {
@@ -27,6 +28,8 @@ export type TelemetryRecord =
       scenario: Scenario | null;
       options: UrlOptions;
       commit: string;
+      /** The run record, when a scenario was running. */
+      record: string | null;
     }
   | { kind: "gesture"; tick: number; trace: SkillTrace }
   | {
@@ -37,6 +40,7 @@ export type TelemetryRecord =
       sound: SoundStatus;
       options: UrlOptions;
       commit: string;
+      record: string;
     };
 
 /** One line of the log: the record, who sent it, in what order, when (ms since load). */

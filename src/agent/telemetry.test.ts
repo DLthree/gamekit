@@ -55,6 +55,7 @@ describe("Telemetry", () => {
       scenario: null,
       options,
       commit: "c",
+      record: null,
     });
     expect(sent).toHaveLength(1);
     const perf = { frames: 1, meanMs: 16, p95Ms: 16, maxMs: 16, longFrames: 0, simMeanMs: 1 };

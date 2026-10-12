@@ -2,6 +2,7 @@ import "@/ui/page.css";
 import "@/game/ui/game.css";
 import { installHandle } from "@/agent/handle";
 import { PerfMeter } from "@/agent/perf";
+import { recordText } from "@/agent/record";
 import { classifyChange, loadContent, onContentReload } from "@/app/hot";
 import { createTelemetry } from "@/app/telemetry-setup";
 import { formatContentError } from "@/content/errors";
@@ -9,6 +10,7 @@ import { switchOn } from "@/content/switches";
 import type { Content } from "@/content/types";
 import { type Flow, type FlowEvent, next } from "@/game/flow";
 import { pickerModel } from "@/game/picker";
+import { recordOf } from "@/game/record";
 import { checkScenario, type Scenario, scenarioLabel, stageScenario } from "@/game/scenario";
 import { Hud, hudModel } from "@/game/ui/hud";
 import { hidePause, showPause } from "@/game/ui/pause";
@@ -78,6 +80,10 @@ function show(prev: Flow): void {
       scenario: flow.scenario,
       options: url.options,
       commit: __COMMIT__,
+      record:
+        flow.scenario === null
+          ? null
+          : recordText(recordOf(flow.scenario, url.options, __COMMIT__)),
     });
     const back = flow.scenario?.character ?? flow.picker?.character ?? null;
     const toGrid = () => dispatch({ e: "showPicker", character: back });
@@ -113,6 +119,7 @@ function show(prev: Flow): void {
       sound: soundStatus(),
       options: url.options,
       commit: __COMMIT__,
+      record: recordText(recordOf(scenario, url.options, __COMMIT__)),
     });
     showResult(
       el("result"),

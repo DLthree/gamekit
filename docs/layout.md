@@ -21,7 +21,7 @@ seam modules listed below.
 | `src/render/` | kit | Phaser boot, the world scene and its views, audio output and unlock. |
 | `src/input/` | kit | Touch stick, skill button, keyboard, mouse → one `Command` per tick. |
 | `src/app/` | kit | Real-time loop, content hot reload, aim view, telemetry setup. |
-| `src/agent/` | kit | `window.__game` handle, URL options, perf meter, telemetry client. |
+| `src/agent/` | kit | `window.__game` handle, URL options, perf meter, telemetry client, run record (`record.ts`). |
 | `src/ui/` | kit | Blocking error panel and base page styles (canvas, controls, `.panel`). |
 | `src/test/` | kit | Test helpers: small synthetic content and worlds built through the game's setup. |
 | `src/game/` | game | The example game's rules, screens and wiring (below). |
@@ -29,7 +29,7 @@ seam modules listed below.
 | `assets/` | game | Source art (creatures, fx) that `pnpm atlas` packs. |
 | `public/atlas/`, `public/sounds/` | game | Packed atlas and sounds the game loads. |
 | `index.html` | game | The page: canvas, controls, and one element per screen. |
-| `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `perf`, `phone`, `telemetry`, `content-check`, `e2e` + browser guard, atlas, sounds, image prompts. |
+| `scripts/` | kit | `shot`, `film` (frame strips over sim time), `ticks` + `timeline.ts` (headless event ticks), `screens` (non-wave pages × devices), `sweep` + `sweep-run.ts`/`sweep-worker.ts` (parallel headless bot runs), `run-record` + `run-record-read.ts` (records → replay links), `perf`, `phone`, `telemetry`, `content-check`, `e2e` + browser guard, atlas, sounds, image prompts. |
 | `scripts/game-page.ts` | kit | The WebKit tools' shared setup: browser lock, own server on 5283, device pages, `toolQuery`. |
 | `tests/e2e/fixtures.ts` | kit | Playwright fixtures: error capture, `open`, touch helpers, content edits. |
 | `tests/e2e/*.spec.ts` | game | Browser tests of the example game. |
@@ -56,6 +56,7 @@ seam modules listed below.
 | `picker.ts`, `ui/` | The 3×3 grid model and the HUD, pause, picker and result screens. |
 | `headless.ts` | A query's world without the renderer, and the events `pnpm ticks` lists. |
 | `sweep.ts` | The run model `pnpm sweep` plays: run ids, one run with the kite bot, the summary table. |
+| `record.ts` | The example's run record: its choices (the replay address's parameters) and `replayQuery`. |
 | `links.ts` | Addresses the tools open: `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS`. |
 | `test-files.ts` | The game's files in the kit's test content (`heroBuild`). |
 
@@ -78,6 +79,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/links` | `perf`, `phone`, `shot`, `film`, `ticks`, `screens`, e2e specs | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS` |
 | `@/game/headless` | `scripts/timeline.ts` | `worldForQuery`, `tickLine` |
 | `@/game/sweep` | `scripts/sweep*.ts` | `SweepRow`, `sweepRuns`, `playRun`, `sweepTable` |
+| `@/game/record` | `scripts/run-record-read.ts` | `recordOf`, `replayQuery` |
 | `@/game/setup`, `@/game/test-files` | `src/test/`, sim tests | `worldFor`, `heroBuild` |
 
 Role-specific looks live in content: `look/feedback.json` `bigDeathRoles` and

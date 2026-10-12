@@ -26,7 +26,8 @@
     "film": "node --import ./scripts/node-alias.ts scripts/film.ts",
     "ticks": "node --import ./scripts/node-alias.ts scripts/ticks.ts",
     "screens": "node --import ./scripts/node-alias.ts scripts/screens.ts",
-    "sweep": "node --import ./scripts/node-alias.ts scripts/sweep.ts"
+    "sweep": "node --import ./scripts/node-alias.ts scripts/sweep.ts",
+    "run-record": "node --import ./scripts/node-alias.ts scripts/run-record.ts"
   },
   "dependencies": {
     "phaser": "4.2.1",
