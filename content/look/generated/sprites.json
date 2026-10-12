@@ -7,49 +7,6 @@
   "pxPerWorldUnit": 4.5,
   "sprites": [
     {
-      "id": "barbarian-axe",
-      "role": "prop",
-      "frame": "creature/barbarian-axe",
-      "px": [
-        58,
-        171
-      ],
-      "world": [
-        12.89,
-        38.0
-      ],
-      "pivot": [
-        0.414,
-        0.927
-      ],
-      "flying": false,
-      "grip": [
-        0.414,
-        0.927
-      ],
-      "owner": "barbarian"
-    },
-    {
-      "id": "barbarian",
-      "role": "player",
-      "frame": "creature/barbarian",
-      "px": [
-        139,
-        225
-      ],
-      "world": [
-        30.89,
-        50.0
-      ],
-      "pivot": [
-        0.469,
-        0.991
-      ],
-      "flying": false,
-      "grip": null,
-      "owner": null
-    },
-    {
       "id": "bat",
       "role": "fodder",
       "frame": "creature/bat",
@@ -215,29 +172,6 @@
   ],
   "fx": [
     {
-      "id": "cyclone",
-      "frames": [
-        "fx/cyclone/0",
-        "fx/cyclone/1"
-      ],
-      "px": [
-        [
-          256,
-          237
-        ],
-        [
-          242,
-          256
-        ]
-      ],
-      "pivot": [
-        0.5,
-        0.5
-      ],
-      "worldSize": 110,
-      "tintable": true
-    },
-    {
       "id": "flame",
       "frames": [
         "fx/flame/0",
@@ -363,29 +297,6 @@
       "tintable": false
     },
     {
-      "id": "slash",
-      "frames": [
-        "fx/slash/0",
-        "fx/slash/1"
-      ],
-      "px": [
-        [
-          256,
-          195
-        ],
-        [
-          256,
-          204
-        ]
-      ],
-      "pivot": [
-        0.5,
-        0.5
-      ],
-      "worldSize": 70,
-      "tintable": true
-    },
-    {
       "id": "smoke",
       "frames": [
         "fx/smoke/0",
@@ -463,34 +374,6 @@
       ],
       "worldSize": 30,
       "tintable": false
-    },
-    {
-      "id": "tuft",
-      "frames": [
-        "fx/tuft/0",
-        "fx/tuft/1",
-        "fx/tuft/2"
-      ],
-      "px": [
-        [
-          72,
-          52
-        ],
-        [
-          72,
-          59
-        ],
-        [
-          67,
-          72
-        ]
-      ],
-      "pivot": [
-        0.5,
-        0.5
-      ],
-      "worldSize": 14,
-      "tintable": true
     }
   ]
 }
