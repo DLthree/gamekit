@@ -1,0 +1,31 @@
+{
+  "presets": {
+    "sprite": {
+      "about": "One creature or prop still, in the anchor's ink, camera and scale. The subject names the creature and its palette.",
+      "pre": "The reference image is a style and camera reference only. Match its ink line weight, woodcut hatching, cream parchment fill, three-quarter top-down camera angle, and sprite scale exactly, but draw a completely different subject; do not copy the reference creature. Subject:",
+      "post": "Style: a medieval manuscript marginalia drollery drawn as a bold woodcut print. Thick, confident black ink outlines, simplified chunky shapes, a little bold black hatching for shadow only, no fine cross-hatching. Camera: a single isolated game sprite seen in three-quarter top-down view, camera above and in front looking down at 45 degrees. Whole body fully visible with empty margin on all sides, centered, facing right, in profile-three-quarter. No ground, no cast shadow, no text, no frame, transparent background.",
+      "references": ["assets/style/anchor.png"],
+      "aspect": null,
+      "transparent": true,
+      "enhance": false
+    },
+    "fx": {
+      "about": "An effect texture: black ink on a flat white fill, so the game can tint it.",
+      "pre": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject:",
+      "post": "Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "references": ["assets/style/anchor.png"],
+      "aspect": null,
+      "transparent": true,
+      "enhance": false
+    },
+    "concept": {
+      "about": "A wide scene in the reference's style, for mood and store art.",
+      "pre": "Same style as the reference: a medieval woodcut marginalia drawing on cream parchment.",
+      "post": "",
+      "references": ["assets/style/anchor.png"],
+      "aspect": "16:9",
+      "transparent": false,
+      "enhance": false
+    }
+  }
+}
