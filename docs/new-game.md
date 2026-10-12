@@ -6,7 +6,8 @@ docs/layout.md says which files are kit (keep) and game (replace).
 
 ## 1. Rename and ports
 
-- Name: `package.json` `name`, `index.html` `<title>`, `public/manifest.webmanifest`,
+- Name: `package.json` `name`, `index.html` `<title>`, `public/manifest.webmanifest` (`name`,
+  `short_name`; its `start_url` follows `CELL` in step 3, a test checks it),
   `ship/config.json` (`productName`, `appId`, `executableName`), `ship/media.json` `title`, the
   expectation in `scripts/desktop-build.test.ts`, the top of README.md.
 - Ports, if another gamekit game (this template's checkout counts) runs on this machine: `BASE`
