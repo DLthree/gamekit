@@ -9,6 +9,7 @@
     "node": ">=26.10.0"
   },
   "scripts": {
+    "prepare": "prek install -t pre-commit -t pre-push",
     "dev": "vite",
     "build": "vite build --mode release",
     "preview": "vite preview --mode release",
@@ -21,7 +22,7 @@
     "steam:upload": "node --import ./scripts/node-alias.ts scripts/steam-upload.ts",
     "itch:push": "node --import ./scripts/node-alias.ts scripts/itch-push.ts",
     "typecheck": "tsc -p tsconfig.json",
-    "lint": "biome check --error-on-warnings .",
+    "lint": "biome check --error-on-warnings . || { echo 'lint failed; formatting is fixed by pnpm format' >&2; exit 1; }",
     "format": "biome check --write .",
     "test": "vitest run",
     "test:py": "uv run --no-project --with pytest==9.1.1 --with pillow==12.3.0 pytest -q -p no:cacheprovider scripts",

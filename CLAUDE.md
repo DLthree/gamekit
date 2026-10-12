@@ -20,6 +20,9 @@ Try a tuning value with an `o=` override or a sweep before writing it into conte
 ## Gates
 
 - `pnpm check` before every commit; `pnpm verify` (check + e2e) before a push or a build for the phone.
+  The hooks run them (`pnpm install` installs them through prek).
+- e2e serves the live working tree (its own Vite server; only `content/` is copied): don't edit
+  code while it runs, or it tests half-edited files.
 - Browser tests only through `pnpm e2e` (a hook blocks `playwright test`). One browser run at a
   time on the machine: e2e, shot, film, screens, perf, store-media and deck:check share one lock.
 

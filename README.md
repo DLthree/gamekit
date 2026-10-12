@@ -30,7 +30,8 @@ pnpm phone <sha>         # pinned build of a commit for the phone
 pnpm verify              # check + e2e, the full gate
 ```
 
-Needs Node ≥ 26.10, pnpm, `uv` (Python scripts), ffmpeg (sounds, store media). Art generation
+Needs Node ≥ 26.10, pnpm, `uv` (Python scripts), ffmpeg (sounds, store media), `prek` (`pnpm
+install` installs the commit and push hooks with it). Art generation
 reads `KIE_API_KEY` from the env or a gitignored `.env`.
 
 ## Kit and game
@@ -48,7 +49,7 @@ file map and the seam's exports: [docs/layout.md](docs/layout.md).
 | `pnpm check` | typecheck, lint, content:check, test, test:py. The commit gate. |
 | `pnpm verify` | check + e2e. The push gate. |
 | `pnpm e2e [args]` | Playwright, the only way to run browser tests (browser lock, capped workers). |
-| `pnpm typecheck` / `lint` / `format` | tsc; biome check; biome fix. |
+| `pnpm typecheck` / `lint` / `format` | tsc; biome check; biome fix (also formats JSON a script wrote). |
 | `pnpm test` / `test:py` | vitest; pytest over `scripts/*_test.py`. |
 | `pnpm content:check` | Compile and cross-check `content/`; exit 1 on any problem. |
 | `pnpm content:schema` | Rewrite `content/schema/*.schema.json` from the Zod schemas. |
