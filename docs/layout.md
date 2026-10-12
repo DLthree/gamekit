@@ -12,7 +12,7 @@ seam modules listed below.
 | `src/core/` | kit | Fixed-tick clock, seeded RNG, packed ids, vectors, spatial hash. |
 | `src/content/` | kit | Content pipeline: load (browser and Node), overrides, compile, cross-file checks, errors. |
 | `src/content/kinds.ts` | kit | The kit's content kinds (folder or file → schema); spreads in `GAME_KINDS`. |
-| `src/content/stages.ts`, `schema/stage.ts` | kit | Stages: data-defined benches (`?stage=<id>&dev=1`) — schema, lookup, actor checks. |
+| `src/content/stages.ts`, `schema/stage.ts` | kit | Stages: data-defined benches (`?stage=<id>&dev=1`) — schema and actor checks. |
 | `src/sim/stage.ts` | kit | A running stage: actors placed on tick 1, respawned at their places; the player's life floors at 1. |
 | `src/content/switches.ts` | kit | Feature switches: `on=a,b` parsing (unknown ids fail) and `switchOn`, which cuts the off systems from a frozen copy. |
 | `src/content/schema/` | kit | Zod schemas for skills, modifiers, characters, enemies, rules, look, sounds, sprites, vocab. |
