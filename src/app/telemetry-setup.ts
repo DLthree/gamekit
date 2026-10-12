@@ -1,5 +1,5 @@
 import { randomSessionId, Telemetry } from "@/agent/telemetry";
-import type { UrlOptions } from "@/game/url";
+import type { UrlOptions } from "@/agent/url-options";
 
 /**
  * The app's telemetry. Dev (pnpm dev) and the phone build (VITE_PHONE=1) log by default;

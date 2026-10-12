@@ -1,3 +1,4 @@
+import { optionParams, parseOptions, type UrlOptions, wholeFrom } from "@/agent/url-options";
 import type { Flow } from "@/game/flow";
 import type { Scenario } from "@/game/scenario";
 
@@ -12,46 +13,6 @@ export interface CellRequest {
 export type UrlTarget =
   | { screen: "picker"; character: string | null }
   | { screen: "cell"; cell: CellRequest };
-
-export interface UrlOptions {
-  bot: "kite" | null;
-  manual: boolean;
-  agent: boolean;
-  ui: boolean;
-  aim: "absolute" | "relative";
-  dpr: number | null;
-  telemetry: boolean | null;
-  hot: "restart" | "keep";
-}
-
-function wholeFrom(p: URLSearchParams, key: string, min: number, errors: string[]): number | null {
-  const raw = p.get(key);
-  if (raw === null) return null;
-  const n = Number(raw);
-  if (!/^\d+$/.test(raw) || n < min) {
-    errors.push(`${key}=${raw}: expected a whole number from ${min}`);
-    return null;
-  }
-  return n;
-}
-
-function oneOf<T extends string>(
-  p: URLSearchParams,
-  key: string,
-  allowed: readonly T[],
-  errors: string[],
-): T | null {
-  const raw = p.get(key);
-  if (raw === null) return null;
-  const hit = allowed.find((a) => a === raw);
-  if (hit === undefined) errors.push(`${key}=${raw}: expected ${allowed.join(" or ")}`);
-  return hit === undefined ? null : hit;
-}
-
-function flag(p: URLSearchParams, key: string, errors: string[]): boolean | null {
-  const v = oneOf(p, key, ["0", "1"], errors);
-  return v === null ? null : v === "1";
-}
 
 function required(p: URLSearchParams, key: string, errors: string[]): number | null {
   if (!p.has(key)) {
@@ -79,17 +40,7 @@ export function parseUrl(search: string): {
   if (cell && character === null) errors.push("char is missing");
   const buildTier = cell ? required(p, "build", errors) : null;
   const threatTier = cell ? required(p, "threat", errors) : null;
-  const seed = wholeFrom(p, "seed", 0, errors);
-  const options: UrlOptions = {
-    bot: oneOf(p, "bot", ["kite"], errors),
-    manual: flag(p, "manual", errors) === true,
-    agent: flag(p, "agent", errors) === true,
-    ui: flag(p, "ui", errors) !== false,
-    aim: oneOf(p, "aim", ["absolute", "relative"], errors) ?? "relative",
-    dpr: wholeFrom(p, "dpr", 1, errors),
-    telemetry: flag(p, "telemetry", errors),
-    hot: oneOf(p, "hot", ["keep"], errors) === "keep" ? "keep" : "restart",
-  };
+  const { seed, overrides, options } = parseOptions(p, errors);
   let target: UrlTarget | null = null;
   if (!cell) target = { screen: "picker", character };
   else if (character !== null && buildTier !== null && threatTier !== null)
@@ -97,7 +48,7 @@ export function parseUrl(search: string): {
   return {
     target: errors.length > 0 ? null : target,
     seed,
-    overrides: p.getAll("o"),
+    overrides,
     options,
     errors,
   };
@@ -133,20 +84,11 @@ export function urlFor(flow: Flow, search: string): string | null {
   return s === "" ? "/" : `/?${s}`;
 }
 
-/**
- * The address that replays a run: its cell, seed and overrides, and the options that change play
- * (aim, bot, manual…). Telemetry is left out: it records the run, it doesn't shape it.
- */
+/** The address that replays a run: its cell, seed and overrides, and the options that change play. */
 export function reproUrl(scenario: Scenario, options: UrlOptions): string {
   const q = new URLSearchParams(cellHead(scenario));
   q.append("seed", String(scenario.seed));
   for (const o of scenario.overrides) q.append("o", o);
-  q.append("aim", options.aim);
-  if (options.bot !== null) q.append("bot", options.bot);
-  if (options.manual) q.append("manual", "1");
-  if (options.agent) q.append("agent", "1");
-  if (!options.ui) q.append("ui", "0");
-  if (options.dpr !== null) q.append("dpr", String(options.dpr));
-  if (options.hot === "keep") q.append("hot", "keep");
+  for (const [k, v] of optionParams(options)) q.append(k, v);
   return `/?${q.toString()}`;
 }

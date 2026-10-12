@@ -1,7 +1,7 @@
 import type { PerfSummary } from "@/agent/perf";
+import type { UrlOptions } from "@/agent/url-options";
 import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
-import type { UrlOptions } from "@/game/url";
 import type { SkillTrace } from "@/input/skill-button";
 import type { SoundStatus } from "@/present/sound";
 

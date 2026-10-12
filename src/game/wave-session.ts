@@ -1,13 +1,13 @@
+import type { UrlOptions } from "@/agent/url-options";
 import { buildAim } from "@/app/aim";
 import { GameLoop } from "@/app/loop";
 import type { Content } from "@/content/types";
 import { TICK_HZ, tickSeconds } from "@/core/clock";
 import type { Vec } from "@/core/vec";
-import { kite } from "@/game/kite-bot";
+import { BOTS } from "@/game/bots";
 import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
 import { worldFor } from "@/game/setup";
-import type { UrlOptions } from "@/game/url";
 import { type ControlElements, type ControlState, Controls } from "@/input/controls";
 import type { SkillTrace } from "@/input/skill-button";
 import { ActorDraws } from "@/present/anim/actors";
@@ -71,7 +71,7 @@ export class WaveSession {
     this.loop = new GameLoop({
       world: this.world,
       manual: s.options.manual,
-      bot: s.options.bot === "kite" ? kite : null,
+      bot: s.options.bot === null ? null : BOTS[s.options.bot],
     });
     this.view = this.measure();
     s.scene.startWave(s.content, this.view);

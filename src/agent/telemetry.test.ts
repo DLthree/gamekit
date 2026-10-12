@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { Telemetry } from "@/agent/telemetry";
-import { parseUrl } from "@/game/url";
+import { parseOptions } from "@/agent/url-options";
 
-const { options } = parseUrl("");
+const { options } = parseOptions(new URLSearchParams(""), []);
 
 function setup() {
   const sent: { body: string; keepalive: boolean }[] = [];

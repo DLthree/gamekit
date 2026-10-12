@@ -1,12 +1,19 @@
+/** A button on the error panel that leads somewhere playable. */
+export interface ErrorExit {
+  id: string;
+  label: string;
+  onClick: () => void;
+}
+
 /**
- * The blocking error panel: a title and the lines naming file/field or scenario/tick. `onGrid`
- * adds a way back to the grid; it's null while content is invalid, which nothing may run on.
+ * The blocking error panel: a title and the lines naming file/field or scenario/tick. `exit`
+ * adds a way out; it's null while content is invalid, which nothing may run on.
  */
 export function showError(
   root: HTMLElement,
   title: string,
   lines: readonly string[],
-  onGrid: (() => void) | null,
+  exit: ErrorExit | null,
 ): void {
   const h = document.createElement("h1");
   h.textContent = title;
@@ -14,12 +21,12 @@ export function showError(
   pre.textContent = lines.join("\n");
   const box = document.createElement("div");
   box.append(h, pre);
-  if (onGrid !== null) {
-    const grid = document.createElement("button");
-    grid.id = "grid";
-    grid.textContent = "Grid";
-    grid.addEventListener("click", onGrid);
-    box.append(grid);
+  if (exit !== null) {
+    const button = document.createElement("button");
+    button.id = exit.id;
+    button.textContent = exit.label;
+    button.addEventListener("click", exit.onClick);
+    box.append(button);
   }
   root.replaceChildren(box);
   root.hidden = false;

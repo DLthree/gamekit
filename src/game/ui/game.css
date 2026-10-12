@@ -1,0 +1,140 @@
+#hud {
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top));
+  left: calc(12px + env(safe-area-inset-left));
+  right: calc(12px + env(safe-area-inset-right));
+  pointer-events: none;
+}
+
+#pause-button {
+  position: fixed;
+  top: calc(8px + env(safe-area-inset-top));
+  right: calc(12px + env(safe-area-inset-right));
+  width: 48px;
+  height: 48px;
+  border: 3px solid #1b1712;
+  border-radius: 12px;
+  background:
+    linear-gradient(#1b1712, #1b1712) 12px 11px / 6px 20px no-repeat,
+    linear-gradient(#1b1712, #1b1712) 24px 11px / 6px 20px no-repeat,
+    rgb(239 230 210 / 0.85);
+  cursor: pointer;
+}
+
+/* Controls and the pause button show only during a wave. */
+body.no-ui #hud,
+body.no-ui #pause-button,
+body:not([data-screen="wave"]) #pause-button,
+body:not([data-screen="wave"]) #skill-button {
+  display: none;
+}
+
+#hud .life {
+  height: 10px;
+  max-width: 220px;
+  border: 2px solid #1b1712;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+#hud .life > div {
+  height: 100%;
+  background: #b3261e;
+}
+
+#hud .stats {
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+#hud .countdown {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 96px;
+  font-weight: 800;
+}
+
+#result ul {
+  list-style: none;
+  padding: 0;
+}
+
+#result .repro {
+  max-width: 36em;
+  overflow-wrap: anywhere;
+  font:
+    13px / 1.4 ui-monospace,
+    monospace;
+}
+
+#resume,
+#retry,
+#grid {
+  font: inherit;
+  font-size: 22px;
+  padding: 12px 36px;
+  border: 3px solid #1b1712;
+  border-radius: 12px;
+  background: #efe6d2;
+  margin: 6px;
+}
+
+#picker .grid {
+  /* Desktop reads a roomy grid; clamp() shrinks it to still fit an iPhone 14 (390 CSS px). */
+  --cell: clamp(64px, 9vw, 120px);
+  display: grid;
+  grid-template-columns: max-content repeat(3, var(--cell));
+  grid-auto-rows: var(--cell);
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+#picker .col-head,
+#picker .row-head {
+  font-weight: 700;
+  text-align: center;
+}
+
+#picker .row-head {
+  text-align: right;
+  padding-right: 6px;
+}
+
+#picker button {
+  width: 100%;
+  height: 100%;
+  font: inherit;
+  font-weight: 700;
+  border: 3px solid #1b1712;
+  border-radius: 12px;
+  background: #efe6d2;
+}
+
+#picker button:enabled {
+  cursor: pointer;
+}
+
+#picker button:enabled:hover {
+  background: #e2d5b0;
+  border-color: #7a5c2e;
+}
+
+#picker button:focus-visible {
+  outline: 3px solid #2e6f9e;
+  outline-offset: 2px;
+}
+
+#picker button:disabled {
+  background: repeating-linear-gradient(45deg, #d8cfba, #d8cfba 8px, #cabfa6 8px, #cabfa6 16px);
+  border-style: dashed;
+  border-color: #9a8f78;
+  color: #9a8f78;
+}
+
+#picker button.last {
+  border-color: #b3261e;
+  box-shadow: 0 0 0 3px rgb(179 38 30 / 0.35);
+}

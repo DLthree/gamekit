@@ -1,4 +1,5 @@
 import "@/ui/page.css";
+import "@/game/ui/game.css";
 import { installHandle } from "@/agent/handle";
 import { PerfMeter } from "@/agent/perf";
 import { classifyChange, loadContent, onContentReload } from "@/app/hot";
@@ -78,8 +79,9 @@ function show(prev: Flow): void {
       commit: __COMMIT__,
     });
     const back = flow.scenario?.character ?? flow.picker?.character ?? null;
-    const onGrid = contentOk ? () => dispatch({ e: "showPicker", character: back }) : null;
-    showError(el("error"), flow.title, flow.lines, onGrid);
+    const toGrid = () => dispatch({ e: "showPicker", character: back });
+    const exit = contentOk ? { id: "grid", label: "Grid", onClick: toGrid } : null;
+    showError(el("error"), flow.title, flow.lines, exit);
     return;
   }
   hideError(el("error"));
