@@ -113,28 +113,28 @@ describe("Steam achievements", () => {
   it("a deed earned unlocks its achievement", async () => {
     const port = new FakeSteam();
     const { s, log } = session(port);
-    await s.unlockDeeds(["lion-tamer"]);
-    expect([...port.unlocked]).toEqual(["DEED_LION_TAMER"]);
-    expect(log).toEqual([{ kind: "steam", event: "unlocked", achievements: ["DEED_LION_TAMER"] }]);
+    await s.unlockDeeds(["beast-tamer"]);
+    expect([...port.unlocked]).toEqual(["DEED_BEAST_TAMER"]);
+    expect(log).toEqual([{ kind: "steam", event: "unlocked", achievements: ["DEED_BEAST_TAMER"] }]);
   });
 
   it("the start-up re-sync unlocks only what Steam doesn't have yet", async () => {
     const port = new FakeSteam();
     port.unlocked.add("DEED_WYRMSLAYER");
     const { s } = session(port);
-    await s.unlockDeeds(["wyrmslayer", "first-light", "lion-tamer"]);
-    expect(port.calls).toEqual(["unlock DEED_FIRST_LIGHT", "unlock DEED_LION_TAMER"]);
+    await s.unlockDeeds(["wyrmslayer", "first-light", "beast-tamer"]);
+    expect(port.calls).toEqual(["unlock DEED_FIRST_LIGHT", "unlock DEED_BEAST_TAMER"]);
     expect(port.unlocked.size).toBe(3);
   });
 
   it("an achievement Steam refuses goes in the log, and the rest still unlock", async () => {
     const port = new FakeSteam();
-    port.known = new Set(["DEED_LION_TAMER"]);
+    port.known = new Set(["DEED_BEAST_TAMER"]);
     const { s, log } = session(port);
-    await s.unlockDeeds(["first-light", "lion-tamer"]);
+    await s.unlockDeeds(["first-light", "beast-tamer"]);
     expect(log).toEqual([
       { kind: "steam", event: "refused", achievement: "DEED_FIRST_LIGHT" },
-      { kind: "steam", event: "unlocked", achievements: ["DEED_LION_TAMER"] },
+      { kind: "steam", event: "unlocked", achievements: ["DEED_BEAST_TAMER"] },
     ]);
   });
 });
