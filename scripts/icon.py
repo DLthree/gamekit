@@ -4,7 +4,7 @@
 # ///
 """The app icon: a sprite on a rounded page-coloured tile, 1024 px square.
 
-  uv run scripts/icon.py assets/creatures/wizard.png [-o ship/icon.png]
+  uv run scripts/icon.py assets/creatures/<hero>.png [-o ship/icon.png]
 
 The sprite is trimmed to its alpha box and fitted into 760 px, centred a little low.
 """

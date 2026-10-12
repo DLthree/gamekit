@@ -2,7 +2,7 @@ import { describe, recordsIn } from "@scripts/run-record-read";
 import { expect, describe as group, it } from "vitest";
 import { recordText } from "@/agent/record";
 
-const rec = { build: "abc", seed: 9, choices: ["char=wizard", "build=2", "threat=3"] };
+const rec = { build: "abc", seed: 9, choices: ["char=hero", "build=2", "threat=3"] };
 const text = recordText(rec);
 
 group("recordsIn", () => {
@@ -30,7 +30,7 @@ group("recordsIn", () => {
 group("describe", () => {
   it("writes the replay address and flags another build", () => {
     const lines = describe({ record: rec, ended: "died" }, "def", "http://h:5280");
-    expect(lines.at(-1)).toBe("replay   http://h:5280/?char=wizard&build=2&threat=3&seed=9");
+    expect(lines.at(-1)).toBe("replay   http://h:5280/?char=hero&build=2&threat=3&seed=9");
     expect(lines[0]).toContain("!! this checkout is def");
     expect(describe({ record: rec, ended: null }, "abc", "http://h")[0]).toBe("build    abc");
   });

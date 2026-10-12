@@ -25,8 +25,8 @@ def test_game_rows_size_a_candidate_by_height_and_installed_art_by_sidecar(monke
     im.paste((0, 0, 0, 255), (100, 100, 300, 300))
     im.save(cand)
     out = tmp_path / "game.png"
-    snail = str(sheet.REPO / "assets" / "creatures" / "snail.png")
-    run(monkeypatch, str(out), snail, str(cand), "--game", "--height", "30")
+    installed = str(sorted((sheet.REPO / "assets" / "creatures").glob("*.png"))[0])
+    run(monkeypatch, str(out), installed, str(cand), "--game", "--height", "30")
     assert Image.open(out).height > 2 * 220
 
 

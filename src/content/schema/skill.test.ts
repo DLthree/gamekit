@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { Skill } from "@/content/schema/skill";
 import { DMG_A, TAG_A, TAG_B } from "@/test/vocab";
 
-const fireball = {
+const bolt = {
   $schema: "../schema/skill.schema.json",
   tags: [TAG_A, TAG_B, DMG_A],
   activation: "manual",
@@ -22,15 +22,15 @@ const fireball = {
     multishot: "fan",
     impact: "trigger",
     radius: 8,
-    vfx: "fireball",
+    vfx: "bolt",
     onEnd: [{ do: "burst", shape: { kind: "circle" }, vfx: "explosion", hitStop: true }],
   },
 };
 
 describe("Skill schema", () => {
   it("parses a delivery tree and fills node defaults", () => {
-    const s = Skill.parse(fireball);
-    if (s.deliver.do !== "projectile") throw new Error("fireball's root is a projectile");
+    const s = Skill.parse(bolt);
+    if (s.deliver.do !== "projectile") throw new Error("bolt's root is a projectile");
     expect(s.deliver.damageScale).toBe(1);
     const burst = s.deliver.onEnd[0];
     expect(burst.do).toBe("burst");
@@ -42,7 +42,7 @@ describe("Skill schema", () => {
   });
 
   it("names the path of a bad nested field", () => {
-    const bad = structuredClone(fireball);
+    const bad = structuredClone(bolt);
     bad.deliver.onEnd[0].shape = { kind: "square" };
     const r = Skill.safeParse(bad);
     expect(r.success).toBe(false);
@@ -50,19 +50,19 @@ describe("Skill schema", () => {
   });
 
   it("requires impact and multishot on projectiles and halfAngleDeg on arcs", () => {
-    const noImpact = structuredClone(fireball) as Record<string, unknown>;
-    noImpact.deliver = { do: "projectile", multishot: "fan", radius: 8, vfx: "fireball" };
+    const noImpact = structuredClone(bolt) as Record<string, unknown>;
+    noImpact.deliver = { do: "projectile", multishot: "fan", radius: 8, vfx: "bolt" };
     expect(Skill.safeParse(noImpact).success).toBe(false);
-    const noMultishot = structuredClone(fireball) as Record<string, unknown>;
-    noMultishot.deliver = { do: "projectile", impact: "trigger", radius: 8, vfx: "fireball" };
+    const noMultishot = structuredClone(bolt) as Record<string, unknown>;
+    noMultishot.deliver = { do: "projectile", impact: "trigger", radius: 8, vfx: "bolt" };
     expect(Skill.safeParse(noMultishot).success).toBe(false);
-    const arc = structuredClone(fireball) as Record<string, unknown>;
+    const arc = structuredClone(bolt) as Record<string, unknown>;
     arc.deliver = { do: "burst", shape: { kind: "arc" }, vfx: "none" };
     expect(Skill.safeParse(arc).success).toBe(false);
   });
 
   it("rejects unknown keys and unknown tags", () => {
-    expect(Skill.safeParse({ ...fireball, colour: "red" }).success).toBe(false);
-    expect(Skill.safeParse({ ...fireball, tags: ["lightning"] }).success).toBe(false);
+    expect(Skill.safeParse({ ...bolt, colour: "red" }).success).toBe(false);
+    expect(Skill.safeParse({ ...bolt, tags: ["lightning"] }).success).toBe(false);
   });
 });

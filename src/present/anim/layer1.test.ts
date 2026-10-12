@@ -39,8 +39,8 @@ describe("layer 1", () => {
   });
 
   it("a flyer hovers and keeps flapping when idle", () => {
-    const bat: Gait = { ...waddle, kind: "flap", hover: 16 };
-    const p = bodyPose(bat, 20, 0.3, 0, newPose());
+    const flyer: Gait = { ...waddle, kind: "flap", hover: 16 };
+    const p = bodyPose(flyer, 20, 0.3, 0, newPose());
     expect(p.dy).toBeLessThan(-10);
     expect(p.sy).not.toBeCloseTo(1, 5);
   });

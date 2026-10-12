@@ -19,6 +19,6 @@ describe("devTerm", () => {
 describe("idWords", () => {
   it("turns a content id into words", () => {
     expect(idWords("fire-bolt")).toBe("Fire bolt");
-    expect(idWords("snail")).toBe("Snail");
+    expect(idWords("hero")).toBe("Hero");
   });
 });

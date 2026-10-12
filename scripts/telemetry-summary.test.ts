@@ -3,14 +3,14 @@ import { describe, expect, it } from "vitest";
 import { parseUrl } from "@/game/url";
 
 const SCENARIO = {
-  character: "wizard",
+  character: "hero",
   buildTier: 1,
   threatTier: 1,
   seed: 7,
   overrides: ["rules/feel.hitStopS=0"],
 };
 const OPTIONS = parseUrl("?aim=absolute").options;
-const REPRO = "/?char=wizard&build=1&threat=1&seed=7&o=rules%2Ffeel.hitStopS%3D0&aim=absolute";
+const REPRO = "/?char=hero&build=1&threat=1&seed=7&o=rules%2Ffeel.hitStopS%3D0&aim=absolute";
 
 const line = (o: object) =>
   JSON.stringify({
@@ -26,7 +26,7 @@ describe("summarizeTelemetry", () => {
     const text = [
       line({
         kind: "load",
-        url: "/?char=wizard&build=1&threat=1",
+        url: "/?char=hero&build=1&threat=1",
         userAgent: "iPhone",
         css: [390, 844],
         dpr: 3,
@@ -55,7 +55,7 @@ describe("summarizeTelemetry", () => {
       line({
         kind: "wave",
         scenario: SCENARIO,
-        report: { outcome: "died", kills: 41, ticks: 3000, causeOfDeath: "rabbit" },
+        report: { outcome: "died", kills: 41, ticks: 3000, causeOfDeath: "dummy" },
         sound: {
           played: 120,
           locked: 0,
@@ -70,7 +70,7 @@ describe("summarizeTelemetry", () => {
       line({
         kind: "error",
         title: "Crash",
-        lines: ["wizard build 1 × threat 1, seed 7", "tick 12", "boom"],
+        lines: ["hero build 1 × threat 1, seed 7", "tick 12", "boom"],
         scenario: SCENARIO,
         options: OPTIONS,
         commit: "a1b2c3d-dirty",
@@ -85,11 +85,11 @@ describe("summarizeTelemetry", () => {
       }),
     ].join("\n");
     expect(summarizeTelemetry(parseJsonl(text))).toEqual([
-      "session abcdef12 · 2026-09-26T10:00:00.000Z · /?char=wizard&build=1&threat=1 · 390×844 @3x",
-      "  wave died at 50.0 s, 41 kills, killed by rabbit",
+      "session abcdef12 · 2026-09-26T10:00:00.000Z · /?char=hero&build=1&threat=1 · 390×844 @3x",
+      "  wave died at 50.0 s, 41 kills, killed by dummy",
       "    sound played 120, locked 0, capped 4, gapped 30 · audio running, 1 unlock failures",
       `    seed 7 · ${REPRO} · a1b2c3d`,
-      "  error Crash: wizard build 1 × threat 1, seed 7 | tick 12 | boom",
+      "  error Crash: hero build 1 × threat 1, seed 7 | tick 12 | boom",
       `    seed 7 · ${REPRO} · a1b2c3d-dirty`,
       "  error Address: char is missing",
       "    no scenario · a1b2c3d",

@@ -73,19 +73,19 @@ def kie(monkeypatch):
 
 
 def test_sprite_preset_wraps_the_subject_in_the_house_style_with_the_anchor(kie, tmp_path):
-    out = tmp_path / "bat.png"
-    assert q.main(["a bat in flight", "-o", str(out), "--preset", "sprite", "--seed", "7"]) == 0
+    out = tmp_path / "moth.png"
+    assert q.main(["a moth in flight", "-o", str(out), "--preset", "sprite", "--seed", "7"]) == 0
     style = q.presets()["sprite"]
     (sent,) = kie.created()
     assert sent["model"] == q.KIE_I2I
-    assert sent["input"]["prompt"] == f"{style['pre']} a bat in flight {style['post']}"
+    assert sent["input"]["prompt"] == f"{style['pre']} a moth in flight {style['post']}"
     assert sent["input"]["background"] == "transparent"
     assert sent["input"]["enhance_prompt"] is False
     assert sent["input"]["seed"] == 7
     assert sent["input"]["image_urls"] == ["https://tmp/ref.png"]
     assert out.read_bytes() == PNG
     side = json.loads(out.with_suffix(".json").read_text())
-    assert side["subject"] == "a bat in flight"
+    assert side["subject"] == "a moth in flight"
     assert side["preset"] == "sprite"
     assert side["seed"] == 7
     assert side["references"] == ["assets/style/anchor.png"]

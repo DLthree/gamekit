@@ -5,8 +5,10 @@ import { describe, expect, it } from "vitest";
 const example = () => JSON.parse(readFileSync(MANIFEST, "utf8"));
 
 describe("the store media manifest", () => {
-  it("reads the example's", () => {
-    expect(parseManifest(JSON.stringify(example())).capsules[0].name).toBe("steam-header");
+  it("reads the game's", () => {
+    expect(parseManifest(JSON.stringify(example())).capsules[0].name).toBe(
+      example().capsules[0].name,
+    );
   });
 
   it("names a capsule without its screenshot and a gif past its beat", () => {
@@ -14,7 +16,7 @@ describe("the store media manifest", () => {
     m.capsules[0].shot = "nope";
     m.gifs[0].seconds = 99;
     expect(() => parseManifest(JSON.stringify(m))).toThrow(
-      "capsule steam-header: no screenshot nope; gif dragon: runs past its beat's 3 s",
+      `capsule ${m.capsules[0].name}: no screenshot nope; gif ${m.gifs[0].name}: runs past its beat's`,
     );
   });
 

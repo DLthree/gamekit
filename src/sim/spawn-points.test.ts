@@ -58,8 +58,7 @@ describe("ringPoints", () => {
   });
 
   it("nudges collapsed points apart near a corner, never closer than the enemy's diameter", () => {
-    // Real numbers (content/rules/arena.json, content/threats/tier-3.json, content/enemies/snail):
-    // a 900-half arena, a 10-enemy ring at radius 170, a 12-radius (24-diameter) enemy. The player
+    // A 900-half arena, a 10-enemy ring at radius 170, a 12-radius (24-diameter) enemy. The player
     // sits well into the corner (120 from each wall), close enough that most points mirror.
     const corner = { $schema: "x", halfWidth: 900, halfHeight: 900, spawnRadius: 660 };
     const diameter = 24;

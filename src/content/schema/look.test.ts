@@ -25,7 +25,7 @@ const kind = {
 
 describe("look schemas", () => {
   it("palette colours are lowercase #rrggbb under kebab-case names", () => {
-    expect(Palette.safeParse({ $schema: "x", colors: { "wizard-red": "#e52b0a" } }).success).toBe(
+    expect(Palette.safeParse({ $schema: "x", colors: { "hero-red": "#e52b0a" } }).success).toBe(
       true,
     );
     expect(Palette.safeParse({ $schema: "x", colors: { red: "red" } }).success).toBe(false);
