@@ -82,8 +82,12 @@ Gate: `pnpm sweep --seeds 5` prints a table; the film shows the bot doing what a
 ## 5. Art style, then sprites
 
 1. Concepts without a preset (`uv run scripts/qwen_image.py "..." -o ... --aspect 16:9`); pick
-   one as `assets/style/anchor.png`.
-2. Rewrite `assets/style/presets.json` (`sprite`, `fx`, `concept`) for the new style.
+   the look.
+2. Rewrite `assets/style/presets.json` (`sprite`, `fx`, `concept`) for the new style: the style
+   written in words (text-to-image, no references), or a *non-subject* swatch (a texture or
+   pattern, never a creature) as `assets/style/anchor.png`. Image-to-image edits its reference, so
+   a subject anchor appears in every image (the `art` skill). Generate one test image per preset
+   and check it before any batch.
 3. Generate, compare and install each creature and effect (the `art` skill), with its
    `content/look/creatures.json` and `content/look/fx.json` entries.
 4. `uv run scripts/icon.py assets/creatures/<hero>.png` for `ship/icon.png`.

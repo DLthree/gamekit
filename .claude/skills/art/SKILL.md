@@ -5,14 +5,28 @@ description: Make or replace game art. Use when a creature, prop, effect, icon o
 
 # Art
 
-Each creature is one still image; code animates it (docs/layout.md, "Creature art"). Python
-scripts carry their own deps: run them with `uv run`. Generation needs `KIE_API_KEY` (env or `.env`).
+`qwen_image.py` and `sheet.py` (grid) are core; installing sprites and effects into the atlas
+(`install_art.py`, `pnpm atlas`, `sheet.py --game`) is the real-time layer's, where each creature
+is one still image that code animates (docs/layout.md, "Creature art"). Python scripts carry
+their own deps: run them with `uv run`. Generation needs `KIE_API_KEY` (env or `.env`).
 
 ## Style
 
-`assets/style/presets.json` (game-owned): `sprite`, `fx`, `concept` prompt wrappers, each with
-`assets/style/anchor.png` as reference. A new game writes its own preset text and anchor first:
-generate concepts without a preset, pick one as the anchor, then write the presets around it.
+`assets/style/presets.json` (game-owned) holds the prompt wrappers (`pre`, `post`, `references`).
+A new game writes its own presets first: generate concepts without a preset, pick the look, then
+write the presets around it, one of two ways:
+
+- **Text-to-image, the style in words** (`references: []`): describe the line, fill, palette and
+  camera in `pre`/`post`. The safe default; it matched a house style well in trial 2.
+- **Image-to-image from a style swatch**: the anchor is a *non-subject* swatch, a texture, a
+  pattern, a strip of line work or an object far from anything you will draw. Never a creature or
+  character: image-to-image treats the reference as the picture to edit, whatever the prompt says,
+  so a subject anchor comes back in every image with the new subject pasted in front (12 of 14
+  sprites in trial 2). The example's anchor (`assets/style/anchor.png`, a snail) is such a subject;
+  don't copy that choice.
+
+Before any batch, generate **one test image per preset** and look at it (`sheet.py`); only batch a
+preset that has produced a usable image.
 
 ## Steps
 
@@ -48,7 +62,9 @@ install runs it for you.
 ## Pitfalls
 
 - `--role` is a role from `src/game/vocab.ts` (or `player`, `prop`); `--height` is world units.
-- Generations cost money; batch candidates with a few seeds rather than one at a time.
+- Generations cost money; batch candidates with a few seeds rather than one at a time, and only
+  after the preset's test image came back right.
+- A reference that is a subject leaks into every image (see Style); a swatch or words don't.
 - A creature also needs its `content/look/creatures.json` entry (sprite, gait, mesh, prop,
   optional `scale`). `scale` draws one sprite at several sizes (a rock large, medium, small); gait
   kind `rigid` is for objects (a ship, a rock): no gait, breath or bend.
