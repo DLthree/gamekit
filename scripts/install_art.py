@@ -5,14 +5,16 @@
 """Install picked generated candidates into assets/, then rebuild the atlas and check content.
 
   uv run scripts/install_art.py sprite ID CAND.png --role boss --height 120 [--flying]
-      [--pivot-x 0.45] [--grip X,Y] [--note TEXT]
+      [--pivot feet|center|X,Y] [--grip X,Y] [--own] [--note TEXT]
   uv run scripts/install_art.py fx ID CAND.png [CAND.png ...] --world-size 40 --atlas-px 192
       [--tintable] [--pivot X,Y] [--note TEXT]
 
-Each CAND.png needs its generation sidecar CAND.json (scripts/qwen_image.py writes it).
+Each CAND.png needs its generation sidecar CAND.json (scripts/qwen_image.py writes it), unless
+--own: hand-made art, recorded as such (generation: subject ID, model "own", --note).
 
 sprite -> assets/creatures/ID.png, cropped to its alpha box plus 8 px, pivot at the feet (the
-middle of the opaque columns in the bottom 6%, or --pivot-x), and assets/creatures/ID.json:
+middle of the opaque columns in the bottom 6%: a side view standing on the ground), or --pivot
+center (a top-down object turning about its middle) or X,Y, and assets/creatures/ID.json:
 placement, the candidate's seed and its generation sidecar (the provenance: subject, prompt,
 preset, references). --role is the sprite's ArtRole (player, prop, or a role in
 src/game/vocab.ts); --height its height in world units.
@@ -41,10 +43,14 @@ PAD = 8
 FEET_BAND = 0.06
 
 
-def generation(cand: Path) -> dict:
+def generation(cand: Path, own: bool = False, subject: str = "") -> dict:
+    """The candidate's generation sidecar, or for hand-made art (`own`) a record saying so."""
+    if own:
+        return {"subject": subject, "seed": None, "model": "own"}
     side = cand.with_suffix(".json")
     if not side.exists():
-        raise SystemExit(f"{side}: no generation sidecar (scripts/qwen_image.py writes it)")
+        raise SystemExit(f"{side}: no generation sidecar (scripts/qwen_image.py writes it; "
+                         "--own for hand-made art)")
     return json.loads(side.read_text())
 
 
@@ -74,21 +80,26 @@ def pair(text: str) -> list[float]:
     return [x, y]
 
 
+def pivot_arg(text: str) -> str | list[float]:
+    """--pivot: "feet", "center" or X,Y."""
+    return text if text in ("feet", "center") else pair(text)
+
+
 def install_sprite(assets: Path, id: str, cand: Path, role: str, height: int, flying: bool = False,
-                   pivot_x: float | None = None, grip: list[float] | None = None,
-                   note: str | None = None) -> dict:
-    gen = generation(cand)
+                   pivot: str | list[float] = "feet", grip: list[float] | None = None,
+                   note: str | None = None, own: bool = False) -> dict:
+    gen = generation(cand, own, id)
     if note:
         gen["note"] = note
     im = trimmed(cand)
-    px = feet_x(im) if pivot_x is None else pivot_x
+    at = {"feet": [feet_x(im), 0.99], "center": [0.5, 0.5]}[pivot] if isinstance(pivot, str) else pivot
     out = assets / "creatures" / f"{id}.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     im.save(out)
     side = {
         "id": id,
         "role": role,
-        "pivot": [round(px, 3), 0.99],
+        "pivot": [round(at[0], 3), round(at[1], 3)],
         "heightWorld": height,
         "flying": flying,
         "grip": grip,
@@ -140,8 +151,10 @@ def main() -> None:
     s.add_argument("--role", required=True)
     s.add_argument("--height", type=int, required=True, help="heightWorld")
     s.add_argument("--flying", action="store_true")
-    s.add_argument("--pivot-x", type=float, help="pivot x (0..1); default the feet")
+    s.add_argument("--pivot", type=pivot_arg, default="feet",
+                   help="feet (default: a side view on the ground), center (top-down), or X,Y (0..1)")
     s.add_argument("--grip", type=pair, help="a prop's grip point X,Y (0..1)")
+    s.add_argument("--own", action="store_true", help="hand-made art: no generation sidecar")
     s.add_argument("--note", help="generation.note")
     f = sub.add_parser("fx")
     f.add_argument("id", help="assets/fx/<id>/<n>.png")
@@ -154,8 +167,8 @@ def main() -> None:
     args = p.parse_args()
     assets = REPO / "assets"
     if args.kind == "sprite":
-        install_sprite(assets, args.id, args.cand, args.role, args.height, args.flying, args.pivot_x,
-                       args.grip, args.note)
+        install_sprite(assets, args.id, args.cand, args.role, args.height, args.flying, args.pivot,
+                       args.grip, args.note, args.own)
     else:
         install_fx(assets, args.id, args.cands, args.world_size, args.atlas_px, args.tintable,
                    args.pivot, args.note)

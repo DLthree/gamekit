@@ -28,9 +28,11 @@ uv run scripts/sheet.py scratchpad/art/game.png scratchpad/art/toad-2.png --game
 # 3. install the pick (trims, pivots at the feet, writes the sidecar, packs, checks)
 uv run scripts/install_art.py sprite toad scratchpad/art/toad-2.png --role fodder --height 28
 uv run scripts/install_art.py fx spark a.png b.png --world-size 40 --atlas-px 192 --tintable
+# hand-made art (no generation sidecar), top-down: pivot at the middle
+uv run scripts/install_art.py sprite ship scratchpad/art/ship.png --role player --height 30 --own --pivot center --note "drawn in draw.py"
 
 # app icon from a sprite
-uv run scripts/icon.py assets/creatures/wizard.png
+uv run scripts/icon.py assets/creatures/<hero>.png
 ```
 
 `--batch` jobs: a JSON list of `{"subject", "output", "preset"?, "seed"?, "image"?: [...]}`.

@@ -38,9 +38,9 @@ def test_sprite_is_trimmed_with_padding_and_pivoted_at_the_feet(tmp_path):
 
 def test_sprite_keeps_given_pivot_grip_and_note(tmp_path):
     cand = candidate(tmp_path, "c", (0, 0, 200, 200))
-    side = ia.install_sprite(tmp_path, "staff", cand, "prop", 20, pivot_x=0.3, grip=[0.4, 0.6],
+    side = ia.install_sprite(tmp_path, "staff", cand, "prop", 20, pivot=[0.3, 0.8], grip=[0.4, 0.6],
                              note="held")
-    assert side["pivot"] == [0.3, 0.99]
+    assert side["pivot"] == [0.3, 0.8]
     assert side["grip"] == [0.4, 0.6]
     assert side["generation"]["note"] == "held"
     assert Image.open(tmp_path / "creatures" / "staff.png").size == (200, 200)  # pad clamps
@@ -51,6 +51,21 @@ def test_needs_the_generation_sidecar(tmp_path):
     cand.with_suffix(".json").unlink()
     with pytest.raises(SystemExit, match="no generation sidecar"):
         ia.install_sprite(tmp_path, "x", cand, "fodder", 10)
+
+
+def test_own_art_needs_no_sidecar_and_pivots_at_its_centre(tmp_path):
+    cand = candidate(tmp_path, "c", (40, 40, 160, 120))
+    cand.with_suffix(".json").unlink()
+    side = ia.install_sprite(tmp_path, "rock", cand, "fodder", 30, pivot="center", note="pillow",
+                             own=True)
+    assert side["pivot"] == [0.5, 0.5]
+    assert side["candidate"] is None
+    assert side["generation"] == {"subject": "rock", "seed": None, "model": "own", "note": "pillow"}
+
+
+def test_pivot_arg_reads_names_and_points():
+    assert ia.pivot_arg("center") == "center"
+    assert ia.pivot_arg("0.2,0.7") == [0.2, 0.7]
 
 
 def test_rejects_a_fully_transparent_candidate(tmp_path):
