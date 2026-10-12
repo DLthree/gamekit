@@ -9,7 +9,9 @@ export function heroBuild(auto: string, cast: string): FilePatch {
 
 /**
  * The game's files in the kit's small test content (src/test/content.ts): the hero's zap and boom
- * in every build tier, and a quiet ten-second wave that spawns nothing.
+ * in every build tier, and a quiet ten-second wave that spawns nothing. Kit tests rely on the
+ * quiet wave's contract, whatever the game's win rule: it does not end in its first 10 s while
+ * the player lives (they step worlds for seconds), and it ends by itself within 10 minutes.
  */
 export const GAME_TEST_FILES: FilePatch = {
   ...heroBuild("zap", "boom"),

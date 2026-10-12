@@ -7,13 +7,14 @@ import type { SimContent } from "@/content/types";
 import { TICK_HZ } from "@/core/clock";
 import { kite } from "@/game/kite-bot";
 import { worldFor } from "@/game/setup";
+import type { Outcome } from "@/sim/events";
 import { step } from "@/sim/step";
 
 /** One played run. */
 export interface SweepRow {
   run: string;
   seed: number;
-  outcome: "survived" | "died";
+  outcome: Outcome;
   secs: number;
   kills: number;
   /** Damage taken as % of max life (regen-free, so ≥ 100 means dead). */
@@ -47,11 +48,12 @@ export function playRun(content: SimContent, run: string, seed: number): SweepRo
   // A wave always ends (its timer runs out), so this loop does too.
   while (world.phase !== "ended") step(world, kite(world));
   const r = world.report;
+  if (r.outcome === null) throw new Error(`sweep ${run} seed ${seed}: ended with no outcome`);
   const life = content.characters[m[1]].stats.life;
   return {
     run,
     seed,
-    outcome: r.outcome ?? "died",
+    outcome: r.outcome,
     secs: Math.round(r.ticks / TICK_HZ),
     kills: r.kills,
     lifeLost: Math.round((r.damageTaken / life) * 100),

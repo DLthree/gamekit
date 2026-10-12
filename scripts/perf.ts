@@ -6,7 +6,7 @@
  * Information, not a target (the device's telemetry is the real fps judge): it prints frame,
  * sim and render timings, the busiest moment's effects, and the game speed, so a change that's
  * obviously worse doesn't need a device round-trip to notice. The bot may die before the wave
- * ends; a died outcome still reaches the result screen and still prints.
+ * ends; a lost wave still reaches the result screen and still prints.
  *
  * `__game.perf()` (src/agent/perf.ts) is a ring buffer the game resets every 2 real seconds
  * (its telemetry cadence), so this polls it every POLL_MS while waiting for the result, keeps

@@ -61,7 +61,7 @@ seam modules listed below.
 | `deeds.ts` | Deeds: which a wave meets, the `deeds` save, `deedList` for the kit. |
 | `check.ts`, `check-builds.ts` | Cross-file checks for builds, modifiers and threats. |
 | `switches.ts` | The example's feature switches (`throwers`) and what each cuts when off. |
-| `vocab.ts` | Name lists: tags, damage types, enemy roles. |
+| `vocab.ts` | Name lists: tags, damage types, enemy roles, wave outcomes. |
 | `bots.ts`, `kite-bot.ts` | Bots `?bot=` can name. |
 | `picker.ts`, `ui/` | The 3×3 grid model and the HUD, pause, picker and result screens; `ui/pad-keys.ts` is their pad shortcuts. |
 | `headless.ts` | A query's world without the renderer, and the events `pnpm ticks` lists. |
@@ -78,7 +78,7 @@ The kit imports only these game modules. A new game provides the same exports.
 |--------|---------|---------|
 | `@/game/content` | content compile, kinds, types | `GAME_KINDS` |
 | `@/game/check` | `content/check.ts` | `checkGame`, `checkGameResolved` |
-| `@/game/vocab` | content schemas, stats | `TAGS`, `DAMAGE_TYPES`, `ROLES` |
+| `@/game/vocab` | content schemas, stats, events | `TAGS`, `DAMAGE_TYPES`, `ROLES`, `OUTCOMES` |
 | `@/game/scenario` | world, snapshot, telemetry | `Scenario` |
 | `@/game/report` | step, world, handle, telemetry | `WaveReport`, `recordEvents` |
 | `@/game/wave/director`, `@/game/wave/tick` | world, step | `WaveState`, `tickWave` |

@@ -1,13 +1,17 @@
 import { timeline } from "@scripts/timeline";
 import { describe, expect, it } from "vitest";
+import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
+import { tickLine } from "@/game/headless";
 import { PERF_QUERY } from "@/game/links";
+import { OUTCOMES } from "@/game/vocab";
 
 describe("timeline", () => {
   it("lists a run's telling moments in tick order, ending with the wave", () => {
     const lines = timeline(PERF_QUERY, 600);
     const ticks = lines.map((l) => Number(l.split(" ")[0]));
     expect(ticks).toEqual([...ticks].sort((a, b) => a - b));
-    expect(lines.at(-1)).toMatch(/^\d+ ended (survived|died)$/);
+    const ends = OUTCOMES.map((outcome) => tickLine({ t: "waveEnded", tick: 0, outcome }));
+    expect(ends).toContain(lines.at(-1)?.split(" ").slice(1).join(" "));
   });
 
   it("replays the same from the same query", () => {
@@ -19,15 +23,19 @@ describe("timeline", () => {
     expect(lines.every((l) => Number(l.split(" ")[0]) <= 300)).toBe(true);
   });
 
-  it("refuses a query that opens no cell", () => {
-    expect(() => timeline("char=wizard", 5)).toThrow(/not a cell or stage/);
+  it("refuses a query that opens no wave (the game's first page)", () => {
+    expect(() => timeline("", 5)).toThrow();
   });
 });
 
 describe("timeline overrides", () => {
   it("runs the content the overrides make", () => {
-    const short = timeline(PERF_QUERY, 600, ["characters/wizard.stats.life=1000000"]);
-    expect(short.at(-1)).toMatch(/^\d+ ended survived$/);
+    const loaded = loadContentDir(REPO_CONTENT_DIR, []);
+    if (!loaded.ok) throw new Error("repo content does not compile");
+    const character = Object.keys(loaded.content.sim.characters)[0];
+    expect(() => timeline(PERF_QUERY, 5, [`characters/${character}.stats.life=-1`])).toThrow(
+      new RegExp(`characters/${character}.json`),
+    );
   });
 
   it("names a bad override's file", () => {

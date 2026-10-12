@@ -1,10 +1,12 @@
 import type { Role } from "@/content/schema/vocab";
 import type { Id } from "@/core/ids";
+import type { OUTCOMES } from "@/game/vocab";
 
 export type Team = "player" | "enemy";
 export type VolumeKind = "projectile" | "burst" | "zone";
 export type VolumeShape = "circle" | "arc" | "lane";
-export type Outcome = "survived" | "died";
+/** How a wave ended: one of the game's OUTCOMES (src/game/vocab.ts). */
+export type Outcome = (typeof OUTCOMES)[number];
 
 /** Everything the sim tells the outside world, per tick. Ids, positions and content keys only. */
 export type SimEvent =

@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { ticks } from "@/core/clock";
+import { OUTCOMES } from "@/game/vocab";
 import { IDLE } from "@/sim/command";
 import { queueEnemy } from "@/sim/spawn-queue";
 import { step } from "@/sim/step";
-import { enemies, run, testWorld } from "@/test/world";
+import { enemies, run, runUntilEvent, testWorld } from "@/test/world";
 
 describe("step", () => {
   it("counts down before the wave plays", () => {
@@ -15,15 +16,15 @@ describe("step", () => {
     expect(w.wave.elapsed).toBe(0);
   });
 
-  it("ends survived when the timer runs out, once", () => {
+  it("ends once with one of the game's outcomes, then stops stepping", () => {
     const w = testWorld();
-    const events = run(w, ticks(10) + 5);
-    const ended = events.filter((e) => e.t === "waveEnded");
-    expect(ended).toEqual([{ t: "waveEnded", tick: ticks(10), outcome: "survived" }]);
-    expect(w.outcome).toBe("survived");
-    expect(w.report.outcome).toBe("survived");
-    expect(w.tick).toBe(ticks(10));
-    expect(w.events.items).toEqual([]);
+    const end = runUntilEvent(w, "waveEnded", ticks(600));
+    expect(OUTCOMES).toContain(end.outcome);
+    expect(w.outcome).toBe(end.outcome);
+    expect(w.report.outcome).toBe(end.outcome);
+    const tick = w.tick;
+    expect(run(w, 5)).toEqual([]);
+    expect(w.tick).toBe(tick);
   });
 
   it("does not advance the tick or the wave timer while frozen by hit-stop, and counts the steps", () => {

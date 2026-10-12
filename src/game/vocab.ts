@@ -21,5 +21,8 @@ export const DAMAGE_TYPES = [
   "fire",
 ] as const satisfies readonly (typeof TAGS)[number][];
 
+/** How a wave can end: `waveEnded` events, the report, the sweep table and deeds carry one. */
+export const OUTCOMES = ["survived", "died"] as const;
+
 /** Enemy roles: the report counts kills and spawns by role, and look rules key off them. */
 export const ROLES = ["fodder", "elite", "boss"] as const;

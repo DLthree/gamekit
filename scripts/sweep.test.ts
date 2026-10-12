@@ -17,11 +17,15 @@ describe("runSweep", () => {
     expect(parallel).toEqual(serial);
   }, 60_000);
 
-  it("plays the overrides and switches it is given", async () => {
-    const run = sweepRuns(sweepContent(SETUP))[0];
-    const setup = { overrides: [`characters/${run.split("-b")[0]}.stats.life=100000`], on: [] };
+  it("plays the overrides it is given", async () => {
+    const content = sweepContent(SETUP);
+    const run = sweepRuns(content)[0];
+    const overrides = Object.keys(content.characters).map((c) => `characters/${c}.stats.life=7`);
+    const setup = { overrides, on: [] };
     const [row] = await runSweep(setup, sweepJobs([run], 1), 1);
-    expect(row.outcome).toBe("survived");
+    expect(row).toEqual(playRun(sweepContent(setup), run, 1));
+    const bad = { overrides: ["characters/nobody.stats.life=7"], on: [] };
+    await expect(runSweep(bad, sweepJobs([run], 1), 1)).rejects.toThrow(/nobody/);
   }, 60_000);
 
   it("rejects when a worker's run throws", async () => {
