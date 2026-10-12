@@ -27,7 +27,7 @@ export interface Actor {
   moveSpeed: number;
   knockbackResist: number;
   skills: SkillInstance[];
-  /** Walk intent is ignored while tick < this (an owner-bound telegraph holds its caster, R2). */
+  /** Walk intent is ignored while tick < this (an owner-bound telegraph holds its caster). */
   holdUntilTick: number;
   /** Ticks left in a dash (the dash primitive); while > 0, `moveActors` walks it at dashV instead. */
   dashTicks: number;

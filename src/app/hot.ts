@@ -33,7 +33,7 @@ export function classifyChange(prev: Content, next: Content): ContentChange {
  * site: Vite finds HMR boundaries by scanning each module's own source text for that literal
  * pattern, not by tracing values at runtime, so `const hot = import.meta.hot; hot.accept(...)`
  * is invisible to it and every content save falls back to a full page reload (confirmed against
- * the real dev server; Vite 8 risk from the brief).
+ * the real dev server).
  */
 export function onContentReload(cb: (load: typeof LoadContent) => void): void {
   if (import.meta.hot === undefined) return;

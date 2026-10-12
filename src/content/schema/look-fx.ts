@@ -8,7 +8,7 @@ const unitInterval = z.number().min(0).max(1);
 
 /**
  * Long-lived ground pieces (burning grass, ground flames): a gentle rock and breathe, each
- * instance at its own rate and phase, and a slow swap through the texture's frames (spike 3).
+ * instance at its own rate and phase, and a slow swap through the texture's frames.
  */
 export const Sway = z.strictObject({
   amount: nonNegative,
@@ -21,7 +21,7 @@ export const Sway = z.strictObject({
 export type Sway = z.infer<typeof Sway>;
 
 /**
- * One effect kind: a texture animated by code (spike 3). `tint` is "build" (the owner's build
+ * One effect kind: a texture animated by code. `tint` is "build" (the owner's build
  * colour) or a palette name; ink kinds use "white", which a multiply tint leaves unchanged.
  */
 export const FxKind = z.strictObject({
@@ -97,7 +97,7 @@ export type ExplosionVfx = z.infer<typeof ExplosionVfx>;
 const SizeRange = z.tuple([nonNegative, nonNegative]);
 
 /**
- * A zone drawn as spike 3's burning field, for the zone's life: faint scorch stains, upright
+ * A zone drawn as a burning field, for the zone's life: faint scorch stains, upright
  * burning-grass strips and small flames that catch as the spread reaches them (inner first),
  * and embers drifting up. No ground disc.
  */

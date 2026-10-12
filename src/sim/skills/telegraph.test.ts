@@ -226,7 +226,7 @@ describe("warned bursts", () => {
     expect(runUntilEvent(w, "volumeStarted")).toMatchObject({ x: 100, y: 0, ox: 100, oy: 0 });
   });
 
-  it("M2 behaviour is unchanged when warn is 0", () => {
+  it("a volume with warn 0 has no telegraph and hits the next tick", () => {
     const w = testWorld(quietZap);
     const d = place(w, "dummy", 100, 0);
     const events = [...run(w, 1, castAt(1, 0)), ...run(w, 30)];

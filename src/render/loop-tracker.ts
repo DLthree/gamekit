@@ -10,7 +10,7 @@ export interface LoopSound {
 }
 
 /**
- * Tracks the loop sounds `AudioOut.play` starts (Ruling P10: the only looping sound is crackle,
+ * Tracks the loop sounds `AudioOut.play` starts: the only looping sound is crackle,
  * for a burning zone's lifetime). Stopping is driven by presentation time rather than a real
  * timer: the wave already advances that clock every tick, so `update(t)` just compares against
  * it — no wall-clock waits, so it's deterministic under test. Kept free of any Phaser import so

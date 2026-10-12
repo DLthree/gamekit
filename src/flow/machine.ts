@@ -1,7 +1,7 @@
 import type { WaveReport } from "@/sim/report";
 import type { Scenario } from "@/sim/scenario";
 
-/** Every screen the app can be on. M2 adds the grid; settings arrive in M5. */
+/** Every screen the app can be on. */
 export type Flow =
   | { screen: "boot" }
   | { screen: "picker"; character: string | null }

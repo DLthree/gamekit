@@ -32,7 +32,7 @@ export interface HitResult {
   ky: number;
 }
 
-/** MVP damage is the sum of the amounts: no armour, no resistances (their seam is here). */
+/** Damage is the sum of the amounts: no armour, no resistances (their seam is here). */
 export function resolveHit(packet: DamagePacket, target: HitTarget): HitResult {
   const damage = packet.amounts.fire + packet.amounts.physical;
   const k = knockbackImpulse(

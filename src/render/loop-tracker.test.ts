@@ -2,12 +2,12 @@ import { describe, expect, it, vi } from "vitest";
 import { LoopTracker } from "@/render/loop-tracker";
 
 /**
- * `AudioOut.play`'s loop path (Ruling P10) delegates the start/stop bookkeeping to LoopTracker so
+ * `AudioOut.play`'s loop path delegates the start/stop bookkeeping to LoopTracker so
  * it's testable without a real AudioContext: `add` mirrors `manager.add(...).play()`, `update`
  * mirrors the wave's per-tick presentation time driving the destroy (Review I1: destroy, not
  * stop, or the sound and its audio nodes leak in the manager's `sounds` list).
  */
-describe("LoopTracker (Ruling P10)", () => {
+describe("LoopTracker", () => {
   it("leaves a loop running before its end time, then destroys it once time reaches it", () => {
     const tracker = new LoopTracker();
     const sound = { destroy: vi.fn() };

@@ -14,7 +14,7 @@ describe("GameLoop", () => {
     expect(loop.world.tick).toBe(6);
   });
 
-  it("does not fast-forward after the page was hidden (Review Focus 3)", () => {
+  it("does not fast-forward after the page was hidden", () => {
     const loop = new GameLoop({ world: testWorld(), manual: false, bot: null });
     loop.frame(0, 0, 0);
     loop.frame(FRAME, 0, 0);
@@ -42,7 +42,7 @@ describe("GameLoop", () => {
     );
   });
 
-  it("keeps a cast requested during a hit-stop freeze until the first playing tick (R7)", () => {
+  it("keeps a cast requested during a hit-stop freeze until the first playing tick", () => {
     const w = testWorld();
     place(w, "dummy", 300, 0);
     const loop = new GameLoop({ world: w, manual: false, bot: null });
@@ -56,7 +56,7 @@ describe("GameLoop", () => {
     expect(events.some((e) => e.t === "cast" && e.skill === "boom")).toBe(true);
   });
 
-  it("keeps a cast requested during the countdown until the first playing tick (R7)", () => {
+  it("keeps a cast requested during the countdown until the first playing tick", () => {
     const w = testWorld({ "rules/feel.json": { hitStopS: 0, countdownS: 2 / 60 } });
     place(w, "dummy", 300, 0);
     const loop = new GameLoop({ world: w, manual: false, bot: null });

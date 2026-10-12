@@ -7,7 +7,7 @@ export interface SoundPlay {
   rate: number;
   volume: number;
   /**
-   * Looping sounds only (Ruling P10): the sim time this play should stop at, so Task 10's output
+   * Looping sounds only: the sim time this play should stop at, so the audio output
    * can loop the clip and stop it then. Absent for one-shot sounds.
    */
   untilT?: number;
@@ -24,10 +24,10 @@ export interface SoundCounts {
 export type SoundStatus = SoundCounts & { state: string; unlockFailures: number };
 
 /**
- * Which sounds play, on sim time (architecture 06). A request is dropped and counted, never
+ * Which sounds play, on sim time. A request is dropped and counted, never
  * queued: while audio is locked (so unlocking never releases a backlog), within the sound's
  * minGapS of its last play, or while `cap` copies are still playing. Pitch varies per play from
- * presentation's sound generator. A looping sound (Ruling P10, e.g. a burning zone's crackle)
+ * presentation's sound generator. A looping sound (e.g. a burning zone's crackle)
  * takes an end time instead of relying on the clip's own length; the cap and min-gap still apply,
  * so a flood of zones can't stack unbounded loops.
  */

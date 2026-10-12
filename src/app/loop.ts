@@ -15,9 +15,8 @@ export interface LoopOptions {
 /**
  * Real time in, ticks out; a latched cast survives frames that run no tick.
  *
- * R7 deviation from the brief: the brief clears the latch after every step, including
- * hit-stop freezes and countdown ticks — neither of which runs skills, so that would
- * drop a tap. The latch is only cleared for a tick that was actually playing and
+ * The latch is not cleared after every step: hit-stop freezes and countdown ticks run no
+ * skills, so clearing it there would drop a tap. The latch is only cleared for a tick that was actually playing and
  * unfrozen (checked on `world.phase` / `world.freezeTicks` *before* calling `step`,
  * since a step can transition phase or decrement freezeTicks without consuming a cast).
  */

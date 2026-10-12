@@ -28,7 +28,7 @@ export const BuildTier = z.strictObject({
 });
 export type BuildTier = z.infer<typeof BuildTier>;
 
-/** Exactly three build tiers per character (roadmap ruling 4): the rows of the picker's grid. */
+/** Exactly three build tiers per character: the rows of the picker's grid. */
 export const Build = z.strictObject({
   $schema: SchemaRef,
   character: ContentId,

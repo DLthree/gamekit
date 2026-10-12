@@ -34,7 +34,7 @@ export interface Delivery {
   y: number;
   dirX: number;
   dirY: number;
-  /** The target point (R3): the target, `range` along the aim, or a parent volume's end. */
+  /** The target point: the target, `range` along the aim, or a parent volume's end. */
   tx: number;
   ty: number;
 }

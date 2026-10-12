@@ -14,7 +14,7 @@ function plan(minGapS = 0.05) {
   return p;
 }
 
-/** A plan with a looping sound ("crackle") alongside the one-shot "tick", for Ruling P10. */
+/** A plan with a looping sound ("crackle") alongside the one-shot "tick" (loops). */
 function loopPlan(cap = 1, minGapS = 0) {
   const sounds = structuredClone(testFiles()["look/sounds.json"]) as {
     sounds: Record<string, unknown>;
@@ -34,7 +34,7 @@ function loopPlan(cap = 1, minGapS = 0) {
 }
 
 describe("SoundPlan", () => {
-  it("drops requests while audio is locked and never plays them later (Review Focus 2)", () => {
+  it("drops requests while audio is locked and never plays them later", () => {
     const p = plan();
     p.running = false;
     for (let i = 0; i < 50; i++) p.request("tick", i);
@@ -78,7 +78,7 @@ describe("SoundPlan", () => {
     expect(() => plan().request("boing", 0)).toThrow("no sound boing in look/sounds.json");
   });
 
-  it("carries a loop's end time through to its play, and frees its cap slot only at that time (Ruling P10)", () => {
+  it("carries a loop's end time through to its play, and frees its cap slot only at that time", () => {
     const p = loopPlan(1, 0);
     p.request("crackle", 0, 4);
     const [play] = p.take();

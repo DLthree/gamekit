@@ -5,7 +5,7 @@ import { ContentId, SchemaRef, StatMod, Tag } from "@/content/schema/vocab";
 /** An action a modifier adds under every node of one primitive kind in its skill's tree. */
 export const Attach = z.strictObject({
   to: PrimitiveKind,
-  /** M2 has one hook: the action runs where the node ended. */
+  /** One hook: the action runs where the node ended. */
   hook: z.enum(["onEnd"]),
   action: DeliveryNode,
   /** Each time the hook fires, the action runs with this chance (world RNG); absent, always. */

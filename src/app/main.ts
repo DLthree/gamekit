@@ -357,7 +357,7 @@ onContentReload((load) => {
     return;
   }
   // Adopt the compiled content before any crash below, so a broken scenario doesn't leave the
-  // Grid button (and a hot-reloaded picker) showing stale content (Minor m1).
+  // Grid button (and a hot-reloaded picker) showing stale content.
   content = compiled.content;
   contentOk = true;
   if (change === "sim" && scenario !== null) {

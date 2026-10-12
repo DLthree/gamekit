@@ -1,5 +1,5 @@
 /**
- * Uniform-grid spatial hash over slot indices with fixed memory (spike 1). Per tick:
+ * Uniform-grid spatial hash over slot indices with fixed memory. Per tick:
  * reset() → insert() each item → build() → query any number of times. Cells hash into a
  * power-of-two bucket table and build() counting-sorts items by bucket, so nothing allocates.
  * Distinct cells colliding in one bucket only add candidates; queries filter by exact distance.

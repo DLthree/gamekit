@@ -27,7 +27,7 @@ function castsBy(events: SimEvent[], def: string): boolean {
   return only(events, "cast").some((e) => e.casterDef === def);
 }
 
-describe("threat enemies (M3)", () => {
+describe("threat enemies", () => {
   it("the elite lion casts, and its charge resolves then dashes at the player", () => {
     const w = worldWithShippedContent();
     const lion = place(w, "elite-lion", 100, 0);

@@ -1,5 +1,5 @@
 /**
- * Layer 3: rigid props posed by code (spike 3). A pose is the prop's angle from upright
+ * Layer 3: rigid props posed by code. A pose is the prop's angle from upright
  * (positive tips its head forward) and its grip's offset from the hand, in the owner's frame
  * (facing right, +x forward, +y down). Attacks read through these poses, never body frames.
  */

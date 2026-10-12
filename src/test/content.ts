@@ -371,7 +371,7 @@ export const quietZap: FilePatch = {
   },
 };
 
-/** builds/hero.json with one loadout as all three tiers (the tuple M2 requires). */
+/** builds/hero.json with one loadout as all three tiers (the schema requires three). */
 export function heroBuild(auto: string, cast: string): FilePatch {
   const tier = { loadout: { auto: { skill: auto }, cast: { skill: cast } } };
   return { "builds/hero.json": { character: "hero", tiers: [tier, tier, tier] } };

@@ -285,7 +285,7 @@ describe("applyEvents", () => {
     expect(p.sound.take()).toEqual([]);
   });
 
-  it("loops a ground vfx's sound for the zone's whole life (Ruling P10)", () => {
+  it("loops a ground vfx's sound for the zone's whole life", () => {
     const sounds = structuredClone(testFiles()["look/sounds.json"]) as {
       sounds: Record<string, unknown>;
     };
@@ -348,7 +348,7 @@ describe("applyEvents", () => {
     expect(play.untilT).toBeCloseTo(t + tickSeconds(lifeTicks));
   });
 
-  it("rate-limits hit ink and hit sounds per target (Review Focus 1)", () => {
+  it("rate-limits hit ink and hit sounds per target", () => {
     const p = presentation();
     const hit = (tick: number) =>
       ({

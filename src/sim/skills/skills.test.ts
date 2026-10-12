@@ -56,7 +56,7 @@ function twin() {
 }
 
 /** A fast, short-range bolt: its per-tick step (20) is bigger than any contact reach (14), so
- *  contact and hitting max range coincide on the exact same tick — Review Focus for issue 3. */
+ *  contact and hitting max range coincide on the exact same tick (both resolve in one tick). */
 function spike() {
   return {
     "skills/spike.json": {
@@ -202,7 +202,7 @@ describe("volume hits", () => {
   });
 });
 
-describe("quick-cast and zero aim (Review Focus 5)", () => {
+describe("quick-cast and zero aim", () => {
   function projectileStart(events: SimEvent[]) {
     const v = only(events, "volumeStarted").find((e) => e.kind === "projectile");
     if (v === undefined) throw new Error("no projectile");

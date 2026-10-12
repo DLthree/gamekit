@@ -151,7 +151,7 @@ describe("groundFire", () => {
     }
   });
 
-  it("evict kinds keep a flood of patches bounded (Review Focus 5)", () => {
+  it("evict kinds keep a flood of patches bounded", () => {
     const { em, vfx } = burn();
     for (let k = 0; k < 3; k++) groundFire(em, vfx, 0, 0, 50, 4, k, null);
     expect(em.pool.counts().kinds.grass).toBe(5);

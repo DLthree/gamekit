@@ -13,7 +13,7 @@ export interface PickerCell {
 
 export interface PickerGrid {
   character: string;
-  /** Row by row: build tiers down, threat tiers across (spec 05, ruling P8). */
+  /** Row by row: build tiers down, threat tiers across. */
   cells: PickerCell[];
 }
 

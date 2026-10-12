@@ -48,7 +48,7 @@ export class AudioOut {
 
   /**
    * A one-shot plays and destroys itself when it ends (Phaser's `manager.play`). A play with
-   * `untilT` (Ruling P10) loops instead: `manager.add` + `.play()` so we keep the handle, and the
+   * `untilT` loops instead: `manager.add` + `.play()` so we keep the handle, and the
    * wave's presentation time stops it later via `update`.
    */
   play(p: SoundPlay): void {

@@ -8,10 +8,9 @@ export interface LastCell {
 }
 
 /**
- * The grid: per character, build tiers down the rows and threat tiers across the columns (spec
- * 05, ruling P8), with a "threat N" head per column and a "build N" label per row. Cells the
+ * The grid: per character, build tiers down the rows and threat tiers across the columns, with a "threat N" head per column and a "build N" label per row. Cells the
  * content can't play are shown disabled, so the grid's shape stays the same as tiers get
- * authored. There is one character in M2, so no character tabs; the last-played cell gets a
+ * authored. With one character there are no character tabs; the last-played cell gets a
  * highlight.
  */
 export function showPicker(

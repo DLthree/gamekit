@@ -1,7 +1,7 @@
 import { expect, open, test } from "@e2e/fixtures";
 
 for (const build of [1, 2, 3]) {
-  test(`wizard build ${build} × threat 1 plays a whole wave in the browser, dropping nothing (Review Focus 1)`, async ({
+  test(`wizard build ${build} × threat 1 plays a whole wave in the browser, dropping nothing`, async ({
     page,
   }) => {
     await open(page, `char=wizard&build=${build}&threat=1&manual=1&bot=kite&agent=1`);

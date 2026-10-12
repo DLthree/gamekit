@@ -23,7 +23,7 @@ function cleanup(world: World): void {
   }
 }
 
-/** One tick. The phase order is a design decision (architecture 01); keep it readable here. */
+/** One tick. The phase order is a design decision; keep it readable here. */
 export function step(world: World, command: Command): void {
   world.events.clear();
   if (world.phase === "ended") return;
@@ -53,7 +53,7 @@ export function step(world: World, command: Command): void {
   // 7. resolve
   applyHits(world);
   endVolumes(world);
-  // 8. triggers: reserved; nothing in the MVP reacts to this tick's events inside the sim
+  // 8. triggers: reserved; nothing reacts to this tick's events inside the sim
   // 9. wave
   tickDirector(world);
   world.wave.elapsed += 1;

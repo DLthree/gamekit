@@ -4,7 +4,7 @@ import { setGridUV } from "@/present/anim/layer2";
 import type { MeshDraw } from "@/present/anim/mesh-pose";
 import { depthFor } from "@/present/layers";
 
-/** Mesh2D has `tint` and `tintMode` at runtime (spike 3 flashes with them); 4.2.1's typings omit them. */
+/** Mesh2D has `tint` and `tintMode` at runtime (hit flashes use them); 4.2.1's typings omit them. */
 interface Tintable {
   tint: number;
   tintMode: number;

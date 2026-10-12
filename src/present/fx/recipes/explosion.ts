@@ -4,7 +4,7 @@ import { type Emitter, emit, jitter } from "@/present/fx/emit";
 const TAU = Math.PI * 2;
 
 /**
- * A burst marked in ink (spike 3's verdict): a black shock ring sized from the burst radius, an
+ * A burst marked in ink: a black shock ring sized from the burst radius, an
  * optional faint scorch, and delayed smoke. Returns the shake to start, if any.
  */
 export function explosion(

@@ -29,9 +29,7 @@ test("absolute aim casts from the player toward the finger", async ({ page, erro
   expect(errors).toEqual([]);
 });
 
-test("the skill button and knobs take their sizes from look/controls.json (R14)", async ({
-  page,
-}) => {
+test("the skill button and knobs take their sizes from look/controls.json", async ({ page }) => {
   await open(
     page,
     `${REAL}&aim=relative&o=look/controls.buttonRadius=60&o=look/controls.knobRadius=25`,
@@ -87,7 +85,7 @@ test("dragging back onto the button cancels", async ({ page }) => {
   expect(casts).toBe(0);
 });
 
-test("two thumbs: the stick moves the player while the other thumb aims and casts (Review Focus 2)", async ({
+test("two thumbs: the stick moves the player while the other thumb aims and casts", async ({
   page,
 }) => {
   await open(page, `${REAL}&aim=absolute`);
@@ -110,7 +108,7 @@ test("two thumbs: the stick moves the player while the other thumb aims and cast
   await touch(page, 1, "pointerup", 160, b.y - 40);
 });
 
-test("rotating mid-wave resizes the canvas and absolute aim still follows the finger (Review Focus 1)", async ({
+test("rotating mid-wave resizes the canvas and absolute aim still follows the finger", async ({
   page,
 }) => {
   await open(page, `${REAL}&aim=absolute`);

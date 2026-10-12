@@ -13,7 +13,7 @@ function context(state: string) {
 
 const flush = () => new Promise((done) => setTimeout(done, 0));
 
-describe("AudioUnlock (Review Focus 2)", () => {
+describe("AudioUnlock", () => {
   it("resumes a suspended context on the first touch, then leaves it alone", async () => {
     const target = new EventTarget();
     const ctx = context("suspended");

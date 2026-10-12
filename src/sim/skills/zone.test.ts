@@ -63,7 +63,7 @@ describe("zone", () => {
     expect(hitsOn(events, near.id).map((e) => e.amount)).toEqual([2]);
   });
 
-  it("stacks: two patches pulse on their own clocks (Review Focus 5)", () => {
+  it("stacks: two patches pulse on their own clocks", () => {
     const w = testWorld(pool());
     const d = place(w, "dummy", 35, 0);
     const events = [...run(w, 40, castAt(1, 0)), ...run(w, 80)];

@@ -48,7 +48,7 @@ export function playerSkills(
 
 /**
  * Projectiles are hit-tested at the end of each tick's step, so a step longer than twice their
- * reach (own radius + the smallest enemy's) can skip a body. Stop instead of sweeping: no M2
+ * reach (own radius + the smallest enemy's) can skip a body. Stop instead of sweeping: no shipped
  * skill is near this; swept collision waits until one is. Returns the first skill over the
  * bound, described, or null. The content check runs it for every build tier × threat; world
  * creation asserts it.

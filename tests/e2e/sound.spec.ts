@@ -16,7 +16,7 @@ async function castFireball(page: Page): Promise<void> {
   );
 }
 
-test("audio waits for the first touch, drops what it couldn't play, then plays (Review Focus 2)", async ({
+test("audio waits for the first touch, drops what it couldn't play, then plays", async ({
   page,
 }) => {
   await open(page, `${CELL}&manual=1`);

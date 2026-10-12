@@ -19,7 +19,7 @@ export const LookCharacters = z.strictObject({
 });
 export type LookCharacters = z.infer<typeof LookCharacters>;
 
-/** Layer-1 whole-sprite motion (spike 2): amplitudes are fractions of body height or degrees. */
+/** Layer-1 whole-sprite motion: amplitudes are fractions of body height or degrees. */
 export const Gait = z.strictObject({
   kind: z.enum(["waddle", "hop", "slide", "flap"]),
   hz: positive,
@@ -34,7 +34,7 @@ export const Gait = z.strictObject({
 export type Gait = z.infer<typeof Gait>;
 
 /**
- * Layer-2 bend amounts (spike 2): fractions of body height (lean, sway, stride, breath) and
+ * Layer-2 bend amounts: fractions of body height (lean, sway, stride, breath) and
  * width (spread); `hip` is where the legs start, as a fraction of the image height.
  */
 export const MeshBend = z.strictObject({
@@ -49,7 +49,7 @@ export type MeshBend = z.infer<typeof MeshBend>;
 
 const Unit2 = z.tuple([unitInterval, unitInterval]);
 
-/** Layer-3 prop held at the bent hand (spike 3): the wizard's staff. */
+/** Layer-3 prop held at the bent hand: the wizard's staff. */
 export const Prop = z.strictObject({
   sprite: ContentId,
   /** The hand in the body image (0..1), where the prop's grip sits. */
@@ -74,7 +74,7 @@ export const LookCreatures = z.strictObject({
   $schema: SchemaRef,
   /** Per-instance animation speed spread (±), so a horde never moves in lockstep. */
   speedJitter: unitInterval,
-  /** Cells of the layer-2 grid across and down the image (spike 3: 4 × 6). */
+  /** Cells of the layer-2 grid across and down the image (4 × 6). */
   meshGrid: z.strictObject({ cols: z.number().int().min(1), rows: z.number().int().min(1) }),
   creatures: z.record(ContentId, Creature),
 });
@@ -169,7 +169,7 @@ export const Controls = z.strictObject({
   $schema: SchemaRef,
   stickRadius: positive,
   stickDeadZone: nonNegative,
-  /** The skill button's radius in CSS px (M1's 96 px button is 48). */
+  /** The skill button's radius in CSS px. */
   buttonRadius: positive,
   /** The skill knob and stick knob radius in CSS px. */
   knobRadius: positive,

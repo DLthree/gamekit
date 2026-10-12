@@ -5,7 +5,7 @@ async function screen(page: Page, s: string): Promise<void> {
   await page.waitForFunction((want) => window.__game?.flow().screen === want, s);
 }
 
-test("/ shows the grid; only cells with a build tier and threat file are tappable (Review Focus 3)", async ({
+test("/ shows the grid; only cells with a build tier and threat file are tappable", async ({
   page,
 }) => {
   await open(page, "", "picker");
@@ -48,7 +48,7 @@ test("the result's Grid button returns to the wizard's grid, and a reload stays 
   await expect(page.locator("#picker h1")).toHaveText("wizard");
 });
 
-test("an unknown character in the URL shows the error panel (Review Focus 3)", async ({ page }) => {
+test("an unknown character in the URL shows the error panel", async ({ page }) => {
   await open(page, "char=nobody", "error");
   await expect(page.locator("#error")).toContainText(
     "no character nobody; content/characters has wizard",
@@ -79,7 +79,7 @@ test("a content error has no Grid button", async ({ page }) => {
 
 // Unrun this session: the machine is overloaded, no browser/e2e runs allowed (see report,
 // "Fix round 1"). The coordinator will run this after the restart.
-test("the last-played cell is highlighted on return to the grid (P9)", async ({ page }) => {
+test("the last-played cell is highlighted on return to the grid", async ({ page }) => {
   await open(page, `${CELL}&manual=1&bot=kite`);
   await page.evaluate(() => window.__game?.step(20_000));
   await screen(page, "result");

@@ -19,7 +19,7 @@ export interface WaveReport {
   peakAlive: number;
   droppedSpawns: number;
   droppedVolumes: number;
-  /** Enemy warned volumes: started, then dodged or taken on resolve, or cancelled (R5). */
+  /** Enemy warned volumes: started, then dodged or taken on resolve, or cancelled. */
   telegraphs: { started: number; dodged: number; taken: number; cancelled: number };
 }
 

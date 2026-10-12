@@ -9,7 +9,7 @@ export const SoundTuning = z.strictObject({
   volume: z.number().min(0).max(1),
   /** Random pitch per play, ± semitones. */
   pitch: z.number().nonnegative().max(12),
-  /** Whether this sound loops for a requested end time (Ruling P10), e.g. a burning zone's life. */
+  /** Whether this sound loops for a requested end time, e.g. a burning zone's life. */
   loop: z.boolean(),
 });
 export type SoundTuning = z.infer<typeof SoundTuning>;

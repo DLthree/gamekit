@@ -159,7 +159,7 @@ export class WaveSession {
     );
   }
 
-  /** Rotation and resizes take effect the frame they happen (Review Focus 1). */
+  /** Rotation and resizes take effect the frame they happen. */
   private resizeIfNeeded(): void {
     if (window.innerWidth === this.view.cssWidth && window.innerHeight === this.view.cssHeight)
       return;

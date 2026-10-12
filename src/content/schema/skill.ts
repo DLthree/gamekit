@@ -40,9 +40,9 @@ const burstShape = {
   hitStop: z.boolean().default(false),
   /** Seconds the burst warns (harmless, drawn as a telegraph) before its one sweep. */
   warn: z.number().nonnegative().default(0),
-  /** Owner-bound: cancelled if the caster dies while warning; the caster holds still (R2). */
+  /** Owner-bound: cancelled if the caster dies while warning; the caster holds still. */
   cancelOnOwnerDeath: z.boolean().default(false),
-  /** "self": at the delivery point; "target": at the delivery's target point (R3). */
+  /** "self": at the delivery point; "target": at the delivery's target point. */
   at: z.enum(["self", "target"]).default("self"),
   count: z.number().int().positive().default(1),
   /** count > 1: marks after the first land uniformly within this radius of the target. */
@@ -62,13 +62,13 @@ export type LookKind = z.infer<typeof LookKind>;
 const zoneShape = {
   do: z.literal("zone"),
   vfx: z.string().min(1),
-  /** Where the zone goes while it lives. M2 zones stay put; follow and wander come later. */
+  /** Where the zone goes while it lives. Zones stay put. */
   motion: z.enum(["static"]),
   areaScale: z.number().positive().default(1),
   damageScale: z.number().positive().default(1),
 };
 
-/** Reads the skill's range and duration to move its owner in a straight line. `during` is M4. */
+/** Reads the skill's range and duration to move its owner in a straight line. */
 const dashShape = {
   do: z.literal("dash"),
 };

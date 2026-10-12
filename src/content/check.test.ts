@@ -398,7 +398,7 @@ describe("checkContent", () => {
   });
 });
 
-describe("loadout modifiers (Review Focus 4)", () => {
+describe("loadout modifiers", () => {
   const lingering = {
     requires: ["area"],
     addTags: ["duration"],

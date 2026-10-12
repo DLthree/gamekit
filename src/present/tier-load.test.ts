@@ -17,7 +17,7 @@ function load(overrides: string[]) {
 const UNKILLABLE = "characters/wizard.stats.life=1000000";
 
 /**
- * Review Focus 1 and 5: each shipped wizard tier plays a whole wave with the kite bot through
+ * Each shipped wizard tier plays a whole wave with the kite bot through
  * the sim and the presentation (as src/app/wave.ts runs them each tick), and nothing is
  * dropped. Evict kinds replace their oldest instance at their cap, which is not a drop, and the
  * caps sum below the pool's capacity, so any drop is a tuning error to fix here.

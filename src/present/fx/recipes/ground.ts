@@ -13,7 +13,7 @@ function spot(em: Emitter, vfx: GroundVfx, x: number, y: number, r: number, u: n
 }
 
 /**
- * A burning patch of radius r at (x, y) lasting lifeS from sim time t (spike 3, recipe
+ * A burning patch of radius r at (x, y) lasting lifeS from sim time t (recipe
  * `burningGround`): scorch stains, grass strips and flames that catch as the spread reaches them,
  * embers rising over its life. Swaying and frame swaps come from the kinds (FxKind.sway).
  */

@@ -2,9 +2,7 @@ import { CELL, editContent, expect, hotUpdated, open, restoreContent, test } fro
 
 test.afterEach(() => restoreContent());
 
-test("@content a half-saved JSON file stops the game and names the file (Review Focus 4)", async ({
-  page,
-}) => {
+test("@content a half-saved JSON file stops the game and names the file", async ({ page }) => {
   await open(page, CELL);
   await editContent("skills/fireball.json", (t) => t.slice(0, Math.floor(t.length / 2)));
   await page.waitForFunction(() => window.__game?.flow().screen === "error");

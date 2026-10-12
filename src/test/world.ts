@@ -15,7 +15,7 @@ export const TEST_SCENARIO: Scenario = {
   overrides: [],
 };
 
-/** A world on the small test content (Task 6), optionally patched. */
+/** A world on the small test content, optionally patched. */
 export function testWorld(patch: FilePatch = {}, scenario: Partial<Scenario> = {}): World {
   return createWorld({ ...TEST_SCENARIO, ...scenario }, testContent(patch).sim);
 }

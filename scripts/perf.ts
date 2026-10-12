@@ -2,7 +2,7 @@
  * pnpm perf — a fixed check: the wizard, build 3, threat 3, the kite bot, seed 7. Information
  * only (the phone's telemetry is the real fps judge): it prints frame timings, fx and telegraph
  * counts so a change that's obviously worse doesn't need a phone round-trip to notice. The kite
- * bot may die before the wave ends (Task 6: ~74.5 s); a died outcome still reaches the result
+ * bot may die before the wave ends; a died outcome still reaches the result
  * screen and still prints, same as a survived one.
  *
  * `__game.perf()` (src/agent/perf.ts) is a ring buffer that src/app/main.ts resets every 2 real
