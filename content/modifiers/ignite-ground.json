@@ -1,0 +1,23 @@
+{
+  "$schema": "../schema/modifier.schema.json",
+  "requires": ["projectile"],
+  "addTags": ["duration"],
+  "stats": [
+    { "stat": "duration", "op": "flat", "value": 3 },
+    { "stat": "pulse", "op": "flat", "value": 0.4 }
+  ],
+  "attach": [
+    {
+      "to": "burst",
+      "hook": "onEnd",
+      "chance": 0.25,
+      "action": {
+        "do": "zone",
+        "motion": "static",
+        "areaScale": 0.4,
+        "damageScale": 0.17,
+        "vfx": "burning-grass"
+      }
+    }
+  ]
+}

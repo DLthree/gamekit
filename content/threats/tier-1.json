@@ -1,0 +1,74 @@
+{
+  "$schema": "../schema/threat.schema.json",
+  "durationS": 60,
+  "maxAlive": 120,
+  "enemyMods": [],
+  "spawns": [
+    {
+      "enemy": "snail",
+      "at": 0,
+      "count": 8,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "snail",
+      "at": 12,
+      "count": 4,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "snail",
+      "at": 24,
+      "count": 4,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "snail",
+      "at": 36,
+      "count": 4,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "snail",
+      "at": 48,
+      "count": 4,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "snail",
+      "from": 0,
+      "to": 60,
+      "rate": [0.8, 1.6],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "rabbit",
+      "from": 20,
+      "to": 60,
+      "rate": [0.4, 1.2],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "bat",
+      "from": 35,
+      "to": 60,
+      "rate": [0.3, 1.0],
+      "pattern": "edge"
+    }
+  ]
+}

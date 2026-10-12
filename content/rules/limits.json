@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/rules-limits.schema.json",
+  "actors": 512,
+  "volumes": 1024,
+  "events": 4096,
+  "hits": 4096,
+  "hashCellSize": 32
+}

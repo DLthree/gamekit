@@ -1,0 +1,22 @@
+{
+  "$schema": "../schema/modifier.schema.json",
+  "requires": ["area"],
+  "addTags": ["duration"],
+  "stats": [
+    { "stat": "duration", "op": "flat", "value": 4.5 },
+    { "stat": "pulse", "op": "flat", "value": 0.4 }
+  ],
+  "attach": [
+    {
+      "to": "burst",
+      "hook": "onEnd",
+      "action": {
+        "do": "zone",
+        "motion": "static",
+        "areaScale": 0.5,
+        "damageScale": 0.17,
+        "vfx": "burning-grass"
+      }
+    }
+  ]
+}

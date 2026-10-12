@@ -1,0 +1,9 @@
+{
+  "$schema": "../schema/look-controls.schema.json",
+  "stickRadius": 56,
+  "stickDeadZone": 8,
+  "buttonRadius": 48,
+  "knobRadius": 22,
+  "cancelColor": "cancel-red",
+  "aim": { "color": "ink", "cooldownColor": "smoke", "alpha": 0.55, "width": 3 }
+}

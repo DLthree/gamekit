@@ -1,0 +1,41 @@
+{
+  "id": "wizard-staff",
+  "role": "prop",
+  "pivot": [
+    0.502,
+    0.553
+  ],
+  "heightWorld": 56,
+  "flying": false,
+  "grip": [
+    0.502,
+    0.553
+  ],
+  "owner": "wizard",
+  "facing": "right",
+  "source": "prototypes/2-art-animation/assets/wizard-staff/chosen.png",
+  "candidate": 3,
+  "generation": {
+    "prompt": "The reference image is a style and camera reference only. Match its ink line weight, woodcut hatching, cream parchment fill, three-quarter top-down camera angle, and sprite scale exactly, but draw a completely different subject; do not copy the reference creature. Subject: a wizard's staff: a long gnarled wooden staff with a knotted head cradling a round glowing gem. Style: a medieval manuscript marginalia drollery drawn as a bold woodcut print. Thick, confident black ink outlines, simplified chunky shapes, a little bold black hatching for shadow only, no fine cross-hatching. Palette strictly black ink on warm cream parchment fills, plus flat solid vermilion red on the gem only; no other colors. Camera: a single isolated game prop object, drawn upright and perfectly vertical, top end at the top of the image, handle end at the bottom, full length visible with empty margin on all sides, centered. No hands, no character, no ground, no cast shadow, no text, no frame, transparent background.",
+    "seed": 6003,
+    "model": "qwen2-1/image-to-image",
+    "references": [
+      "assets/style/anchor.png"
+    ],
+    "inputs": {
+      "aspect_ratio": "9:16",
+      "resolution": "1K",
+      "background": "transparent",
+      "output_format": "png",
+      "enhance_prompt": false,
+      "seed": 6003
+    },
+    "seconds": 149.6,
+    "task_id": "4aec83fcfea26c02d25332c28ac6d2a5",
+    "cost_credits": 4.0,
+    "cost_usd": 0.02,
+    "kie_cost_seconds": 145,
+    "strategy": "c",
+    "item": "wizard-staff"
+  }
+}

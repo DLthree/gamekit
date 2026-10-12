@@ -1,0 +1,11 @@
+{
+  "$schema": "../schema/modifier.schema.json",
+  "requires": ["projectile"],
+  "stats": [
+    { "stat": "projectileCount", "op": "flat", "value": 2 },
+    { "stat": "spread", "op": "flat", "value": 10 },
+    { "stat": "area", "op": "increased", "value": 0.3 },
+    { "stat": "range", "op": "flat", "value": 70 },
+    { "stat": "projectileSpeed", "op": "increased", "value": 0.07 }
+  ]
+}

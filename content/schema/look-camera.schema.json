@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "shortSideSpan": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "maxAspect": {
+      "type": "number",
+      "minimum": 1
+    },
+    "dprCap": {
+      "type": "number",
+      "minimum": 1
+    },
+    "focusOffsetY": {
+      "type": "number"
+    },
+    "lead": {
+      "type": "number",
+      "minimum": 0
+    },
+    "leadSmoothS": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "background": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "clearing": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "alpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "alpha",
+        "color"
+      ],
+      "additionalProperties": false
+    },
+    "edge": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "alpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "color",
+        "width",
+        "alpha"
+      ],
+      "additionalProperties": false
+    },
+    "floor": {
+      "type": "object",
+      "properties": {
+        "density": {
+          "type": "number",
+          "minimum": 0
+        },
+        "alpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        }
+      },
+      "required": [
+        "density",
+        "alpha",
+        "color"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "$schema",
+    "shortSideSpan",
+    "maxAspect",
+    "dprCap",
+    "focusOffsetY",
+    "lead",
+    "leadSmoothS",
+    "background",
+    "clearing",
+    "edge",
+    "floor"
+  ],
+  "additionalProperties": false
+}

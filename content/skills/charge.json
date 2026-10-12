@@ -1,0 +1,22 @@
+{
+  "$schema": "../schema/skill.schema.json",
+  "tags": ["attack", "melee", "physical"],
+  "activation": "auto",
+  "target": "player",
+  "stats": {
+    "damage": { "physical": 6 },
+    "rate": 0.25,
+    "range": 220,
+    "area": 16,
+    "duration": 0.35,
+    "knockback": 260
+  },
+  "deliver": {
+    "do": "burst",
+    "shape": { "kind": "lane" },
+    "warn": 0.9,
+    "cancelOnOwnerDeath": true,
+    "vfx": "charge-lane",
+    "onEnd": [{ "do": "dash" }]
+  }
+}

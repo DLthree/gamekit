@@ -1,0 +1,71 @@
+{
+  "id": "slash",
+  "frames": [
+    "0.png",
+    "1.png"
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "tintable": true,
+  "worldSize": 70,
+  "atlasPx": 256,
+  "note": "axe arc smear; both bulge toward +y (down), so rotate by aim - 90 deg. c1 dropped: bulges sideways; c4 is a closed ring",
+  "sources": [
+    "prototypes/3-color-flood-vfx/assets/fx/slash/chosen-1.png",
+    "prototypes/3-color-flood-vfx/assets/fx/slash/chosen-2.png"
+  ],
+  "candidates": [
+    3,
+    2
+  ],
+  "generation": [
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: an axe slash smear: one single bold crescent-shaped brush stroke sweeping in a wide half-circle arc, thick in the middle and tapering to sharp points at both ends, with dry-brush speed streaks trailing along its inner edge, like a motion smear in a woodcut print; the inside of the arc is empty. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 23003,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 23003
+      },
+      "seconds": 21.0,
+      "task_id": "feea7f7a115efaf8ae52919a6aafa922",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 17,
+      "item": "slash",
+      "palette": "palette_grey"
+    },
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: an axe slash smear: one single bold crescent-shaped brush stroke sweeping in a wide half-circle arc, thick in the middle and tapering to sharp points at both ends, with dry-brush speed streaks trailing along its inner edge, like a motion smear in a woodcut print; the inside of the arc is empty. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 23002,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 23002
+      },
+      "seconds": 61.8,
+      "task_id": "34ae5dab33a0266dd87f209a9540c267",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 58,
+      "item": "slash",
+      "palette": "palette_grey"
+    }
+  ]
+}

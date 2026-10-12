@@ -1,0 +1,5 @@
+{
+  "$schema": "../schema/modifier.schema.json",
+  "requires": ["area"],
+  "stats": [{ "stat": "area", "op": "more", "value": 0.22 }]
+}

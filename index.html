@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>inc-poe-game</title>
+  </head>
+  <body data-screen="boot">
+    <div id="game"></div>
+    <div id="touch-zone"></div>
+    <div id="stick-base"><div id="stick-knob"></div></div>
+    <div id="skill-button"><div id="skill-knob"></div></div>
+    <div id="hud"></div>
+    <button id="pause-button" type="button" aria-label="Pause"></button>
+    <div id="pause" hidden></div>
+    <div id="picker" hidden></div>
+    <div id="result" hidden></div>
+    <div id="error" hidden></div>
+    <script type="module" src="/src/app/main.ts"></script>
+  </body>
+</html>

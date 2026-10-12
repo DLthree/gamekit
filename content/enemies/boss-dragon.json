@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/enemy.schema.json",
+  "role": "boss",
+  "stats": { "life": 420, "moveSpeed": 22, "radius": 34, "knockbackResist": 0.9 },
+  "behavior": { "kind": "chase" },
+  "skills": ["slam"],
+  "look": "boss"
+}

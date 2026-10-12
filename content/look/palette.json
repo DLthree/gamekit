@@ -1,0 +1,12 @@
+{
+  "$schema": "../schema/look-palette.schema.json",
+  "colors": {
+    "ink": "#231d17",
+    "parchment": "#efe4c8",
+    "floor": "#c9b58a",
+    "smoke": "#9a8e7c",
+    "white": "#ffffff",
+    "wizard-red": "#e52b0a",
+    "cancel-red": "#b3261e"
+  }
+}

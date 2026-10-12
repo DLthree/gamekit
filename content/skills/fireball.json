@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema/skill.schema.json",
+  "tags": ["spell", "projectile", "area", "fire"],
+  "activation": "manual",
+  "target": "aim",
+  "stats": {
+    "damage": { "fire": 6 },
+    "cooldown": 2.5,
+    "range": 380,
+    "area": 60,
+    "projectileSpeed": 300,
+    "projectileCount": 1,
+    "spread": 0,
+    "knockback": 520
+  },
+  "deliver": {
+    "do": "projectile",
+    "multishot": "fan",
+    "impact": "trigger",
+    "radius": 8,
+    "vfx": "fireball",
+    "onEnd": [{ "do": "burst", "shape": { "kind": "circle" }, "vfx": "explosion", "hitStop": true }]
+  }
+}

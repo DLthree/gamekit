@@ -1,0 +1,41 @@
+{
+  "id": "barbarian-axe",
+  "role": "prop",
+  "pivot": [
+    0.414,
+    0.927
+  ],
+  "heightWorld": 38,
+  "flying": false,
+  "grip": [
+    0.414,
+    0.927
+  ],
+  "owner": "barbarian",
+  "facing": "right",
+  "source": "prototypes/2-art-animation/assets/barbarian-axe/chosen.png",
+  "candidate": 4,
+  "generation": {
+    "prompt": "The reference image is a style and camera reference only. Match its ink line weight, woodcut hatching, cream parchment fill, three-quarter top-down camera angle, and sprite scale exactly, but draw a completely different subject; do not copy the reference creature. Subject: a barbarian's battle axe: a thick wooden haft wrapped with leather at the bottom, a single broad crescent iron axe blade at the top. Style: a medieval manuscript marginalia drollery drawn as a bold woodcut print. Thick, confident black ink outlines, simplified chunky shapes, a little bold black hatching for shadow only, no fine cross-hatching. Palette strictly black ink on warm cream parchment fills; no other colors. Camera: a single isolated game prop object, drawn upright and perfectly vertical, top end at the top of the image, handle end at the bottom, full length visible with empty margin on all sides, centered. No hands, no character, no ground, no cast shadow, no text, no frame, transparent background.",
+    "seed": 7004,
+    "model": "qwen2-1/image-to-image",
+    "references": [
+      "assets/style/anchor.png"
+    ],
+    "inputs": {
+      "aspect_ratio": "9:16",
+      "resolution": "1K",
+      "background": "transparent",
+      "output_format": "png",
+      "enhance_prompt": false,
+      "seed": 7004
+    },
+    "seconds": 155.9,
+    "task_id": "1d829b5e2af0192a51da83577f3cbecc",
+    "cost_credits": 4.0,
+    "cost_usd": 0.02,
+    "kie_cost_seconds": 152,
+    "strategy": "c",
+    "item": "barbarian-axe"
+  }
+}

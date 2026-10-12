@@ -1,0 +1,97 @@
+{
+  "id": "flame",
+  "frames": [
+    "0.png",
+    "1.png",
+    "2.png"
+  ],
+  "pivot": [
+    0.5,
+    0.989
+  ],
+  "tintable": true,
+  "worldSize": 40,
+  "atlasPx": 192,
+  "note": "chosen-1/2 = flame tongues, chosen-3 = teardrop (fireball body / bolt head)",
+  "sources": [
+    "prototypes/3-color-flood-vfx/assets/fx/flame/chosen-1.png",
+    "prototypes/3-color-flood-vfx/assets/fx/flame/chosen-2.png",
+    "prototypes/3-color-flood-vfx/assets/fx/flame/chosen-3.png"
+  ],
+  "candidates": [
+    4,
+    1,
+    2
+  ],
+  "generation": [
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a brush-stroke flame: a cluster of four tall curling tongues of fire rising from one base, each drawn as a bold calligraphic brush stroke with a pointed tip curling upward, like the flames of a medieval manuscript hell scene. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 12004,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 12004
+      },
+      "seconds": 33.5,
+      "task_id": "a03835cd4c7657e14513ede29ee34328",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 30,
+      "item": "flame",
+      "palette": "palette_grey"
+    },
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a brush-stroke flame: a cluster of four tall curling tongues of fire rising from one base, each drawn as a bold calligraphic brush stroke with a pointed tip curling upward, like the flames of a medieval manuscript hell scene. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 12001,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 12001
+      },
+      "seconds": 84.0,
+      "task_id": "2da335a1da1ba68910a6d8e6fd4960a0",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 79,
+      "item": "flame",
+      "palette": "palette_grey"
+    },
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a brush-stroke flame: a cluster of four tall curling tongues of fire rising from one base, each drawn as a bold calligraphic brush stroke with a pointed tip curling upward, like the flames of a medieval manuscript hell scene. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 12002,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 12002
+      },
+      "seconds": 20.7,
+      "task_id": "346622f18102796fcf7cfc8d843a2436",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 16,
+      "item": "flame",
+      "palette": "palette_grey"
+    }
+  ]
+}

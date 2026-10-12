@@ -1,0 +1,71 @@
+{
+  "id": "cyclone",
+  "frames": [
+    "0.png",
+    "1.png"
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "tintable": true,
+  "worldSize": 110,
+  "atlasPx": 256,
+  "note": "chosen-1 = flat spiral (ground ring, rotate), chosen-2 = upright tornado (side-view cut-out)",
+  "sources": [
+    "prototypes/3-color-flood-vfx/assets/fx/cyclone/chosen-1.png",
+    "prototypes/3-color-flood-vfx/assets/fx/cyclone/chosen-2.png"
+  ],
+  "candidates": [
+    1,
+    3
+  ],
+  "generation": [
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a whirlwind: a spiral of three or four bold sweeping brush strokes of wind curling around an empty center, each stroke tapering to a dry-brush tail with streaks, like a woodcut whirlwind; open circular composition. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 16001,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 16001
+      },
+      "seconds": 54.9,
+      "task_id": "b9c5e3422489ca6b48dcb52fca64fba9",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 51,
+      "item": "cyclone",
+      "palette": "palette_grey"
+    },
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a whirlwind: a spiral of three or four bold sweeping brush strokes of wind curling around an empty center, each stroke tapering to a dry-brush tail with streaks, like a woodcut whirlwind; open circular composition. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 16003,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 16003
+      },
+      "seconds": 61.1,
+      "task_id": "c88b9176f81d68e721ac6ac4b436d2c6",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 56,
+      "item": "cyclone",
+      "palette": "palette_grey"
+    }
+  ]
+}

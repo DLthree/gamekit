@@ -1,0 +1,44 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!node_modules",
+      "!dist",
+      "!prototypes",
+      "!design",
+      "!scratchpad",
+      "!assets",
+      "!public/atlas",
+      "!content/schema",
+      "!content/look/generated",
+      "!telemetry",
+      "!shots",
+      "!test-results",
+      "!playwright-report",
+      "!.e2e",
+      "!.phone",
+      "!.superpowers",
+      "!.ruff_cache"
+    ]
+  },
+  "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2, "lineWidth": 100 },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "style": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "patterns": [
+              { "group": ["./*", "../*"], "message": "Use absolute imports via the @/ alias." }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "javascript": { "formatter": { "quoteStyle": "double" } },
+  "assist": { "enabled": true, "actions": { "source": { "organizeImports": "on" } } }
+}

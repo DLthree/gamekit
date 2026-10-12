@@ -1,0 +1,97 @@
+{
+  "id": "gold",
+  "frames": [
+    "0.png",
+    "1.png",
+    "2.png"
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "tintable": false,
+  "worldSize": 12,
+  "atlasPx": 72,
+  "note": null,
+  "sources": [
+    "prototypes/3-color-flood-vfx/assets/fx/gold/chosen-1.png",
+    "prototypes/3-color-flood-vfx/assets/fx/gold/chosen-2.png",
+    "prototypes/3-color-flood-vfx/assets/fx/gold/chosen-3.png"
+  ],
+  "candidates": [
+    1,
+    2,
+    3
+  ],
+  "generation": [
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a single small flake of gold leaf: a crumpled, torn, irregular fragment of burnished gold leaf with a few creases and one small glint, bold black ink outline. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette black ink outlines with burnished gold leaf fill; no other colors. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 18001,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 18001
+      },
+      "seconds": 83.3,
+      "task_id": "f24cf181edeabf2bceb11dea59e8489d",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 79,
+      "item": "gold",
+      "palette": "palette_gold"
+    },
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a single small flake of gold leaf: a crumpled, torn, irregular fragment of burnished gold leaf with a few creases and one small glint, bold black ink outline. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette black ink outlines with burnished gold leaf fill; no other colors. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 18002,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 18002
+      },
+      "seconds": 55.0,
+      "task_id": "7f8a4ebee738f2e97c5564a5d7f3f46c",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 51,
+      "item": "gold",
+      "palette": "palette_gold"
+    },
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a single small flake of gold leaf: a crumpled, torn, irregular fragment of burnished gold leaf with a few creases and one small glint, bold black ink outline. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette black ink outlines with burnished gold leaf fill; no other colors. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 18003,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 18003
+      },
+      "seconds": 61.2,
+      "task_id": "3406d9cd79bc725e6d46e0212cd3d395",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 58,
+      "item": "gold",
+      "palette": "palette_gold"
+    }
+  ]
+}

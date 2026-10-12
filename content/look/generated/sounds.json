@@ -1,0 +1,65 @@
+{
+  "$schema": "../../schema/look-generated-sounds.schema.json",
+  "sounds": [
+    {
+      "id": "bolt",
+      "file": "sounds/bolt.wav",
+      "lengthS": 0.4
+    },
+    {
+      "id": "charge",
+      "file": "sounds/charge.wav",
+      "lengthS": 0.29
+    },
+    {
+      "id": "crackle",
+      "file": "sounds/crackle.wav",
+      "lengthS": 4
+    },
+    {
+      "id": "gold",
+      "file": "sounds/gold.wav",
+      "lengthS": 0.6
+    },
+    {
+      "id": "hit",
+      "file": "sounds/hit.wav",
+      "lengthS": 0.144
+    },
+    {
+      "id": "hurt",
+      "file": "sounds/hurt.wav",
+      "lengthS": 0.35
+    },
+    {
+      "id": "pop",
+      "file": "sounds/pop.wav",
+      "lengthS": 0.288
+    },
+    {
+      "id": "puff",
+      "file": "sounds/puff.wav",
+      "lengthS": 0.3
+    },
+    {
+      "id": "slam",
+      "file": "sounds/slam.wav",
+      "lengthS": 0.527
+    },
+    {
+      "id": "stone",
+      "file": "sounds/stone.wav",
+      "lengthS": 0.103
+    },
+    {
+      "id": "thump",
+      "file": "sounds/thump.wav",
+      "lengthS": 0.998
+    },
+    {
+      "id": "whoosh",
+      "file": "sounds/whoosh.wav",
+      "lengthS": 0.9
+    }
+  ]
+}

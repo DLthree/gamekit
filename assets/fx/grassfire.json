@@ -1,0 +1,97 @@
+{
+  "id": "grassfire",
+  "frames": [
+    "0.png",
+    "1.png",
+    "2.png"
+  ],
+  "pivot": [
+    0.5,
+    0.983
+  ],
+  "tintable": true,
+  "worldSize": 44,
+  "atlasPx": 256,
+  "note": "wide low burning-grass strips for the T3 burning ground",
+  "sources": [
+    "prototypes/3-color-flood-vfx/assets/fx/grassfire/chosen-1.png",
+    "prototypes/3-color-flood-vfx/assets/fx/grassfire/chosen-2.png",
+    "prototypes/3-color-flood-vfx/assets/fx/grassfire/chosen-3.png"
+  ],
+  "candidates": [
+    1,
+    4,
+    3
+  ],
+  "generation": [
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a low strip of burning grass: a ragged tuft of grass along the bottom with a row of five to seven short curling flame tongues of different heights rising from it, the whole shape much wider than tall, like the fires in a medieval manuscript hell scene. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 22001,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 22001
+      },
+      "seconds": 39.6,
+      "task_id": "3c763cfb7b3393dfc283167f7ecfbbdc",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 36,
+      "item": "grassfire",
+      "palette": "palette_grey"
+    },
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a low strip of burning grass: a ragged tuft of grass along the bottom with a row of five to seven short curling flame tongues of different heights rising from it, the whole shape much wider than tall, like the fires in a medieval manuscript hell scene. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 22004,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 22004
+      },
+      "seconds": 45.7,
+      "task_id": "da782602754ec2c8bbb52f89572d30d2",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 43,
+      "item": "grassfire",
+      "palette": "palette_grey"
+    },
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a low strip of burning grass: a ragged tuft of grass along the bottom with a row of five to seven short curling flame tongues of different heights rising from it, the whole shape much wider than tall, like the fires in a medieval manuscript hell scene. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly black ink plus one flat solid pure white fill. The white fill covers most of the shape, including its arms, tongues and droplets; black ink is used only for the outlines and a few bold hatch strokes. No other colors, no grey, no cream, no yellow, no parchment tone. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 22003,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 22003
+      },
+      "seconds": 61.6,
+      "task_id": "a5c457453033975dc8c55b2b67516f0a",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 59,
+      "item": "grassfire",
+      "palette": "palette_grey"
+    }
+  ]
+}

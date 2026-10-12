@@ -1,0 +1,16 @@
+{
+  "$schema": "../schema/look-layers.schema.json",
+  "bands": [
+    "floor",
+    "ground",
+    "blast",
+    "clearing",
+    "shadows",
+    "actors",
+    "fx",
+    "telegraphs",
+    "player",
+    "aim"
+  ],
+  "ySorted": ["actors"]
+}

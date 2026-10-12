@@ -1,0 +1,38 @@
+{
+  "id": "barbarian",
+  "role": "player",
+  "pivot": [
+    0.469,
+    0.991
+  ],
+  "heightWorld": 50,
+  "flying": false,
+  "grip": null,
+  "owner": null,
+  "facing": "right",
+  "source": "prototypes/2-art-animation/assets/barbarian/chosen.png",
+  "candidate": 1,
+  "generation": {
+    "prompt": "The reference image is a style and camera reference only. Match its ink line weight, woodcut hatching, cream parchment fill, three-quarter top-down camera angle, and sprite scale exactly, but draw a completely different subject; do not copy the reference creature. Subject: a stocky barbarian warrior with a bare muscular chest, a horned helmet, a big beard, fur boots, a cloth sash and a short cape; hands empty, the front hand held out in a loose fist ready to grip a separate axe; no axe, no weapon. Style: a medieval manuscript marginalia drollery drawn as a bold woodcut print. Thick, confident black ink outlines, simplified chunky shapes, a little bold black hatching for shadow only, no fine cross-hatching. Palette strictly black ink on warm cream parchment fills, plus one flat solid bright cyan-teal on the sash and cape only (the build color); no other colors. Camera: a single isolated game sprite seen in three-quarter top-down view, camera above and in front looking down at 45 degrees. Whole body fully visible with empty margin on all sides, centered, facing right, in profile-three-quarter. No ground, no cast shadow, no text, no frame, transparent background.",
+    "seed": 5001,
+    "model": "qwen2-1/image-to-image",
+    "references": [
+      "assets/style/anchor.png"
+    ],
+    "inputs": {
+      "aspect_ratio": "auto",
+      "resolution": "1K",
+      "background": "transparent",
+      "output_format": "png",
+      "enhance_prompt": false,
+      "seed": 5001
+    },
+    "seconds": 95.4,
+    "task_id": "0729293cd6505ac396905489c6936f53",
+    "cost_credits": 4.0,
+    "cost_usd": 0.02,
+    "kie_cost_seconds": 90,
+    "strategy": "c",
+    "item": "barbarian"
+  }
+}

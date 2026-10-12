@@ -1,0 +1,13 @@
+{
+  "$schema": "../schema/look-camera.schema.json",
+  "shortSideSpan": 520,
+  "maxAspect": 2.17,
+  "dprCap": 3,
+  "focusOffsetY": -20,
+  "lead": 24,
+  "leadSmoothS": 0.35,
+  "background": "floor",
+  "clearing": { "width": 70, "height": 30, "alpha": 0.55, "color": "parchment" },
+  "edge": { "color": "ink", "width": 6, "alpha": 0.8 },
+  "floor": { "density": 4, "alpha": 0.25, "color": "ink" }
+}

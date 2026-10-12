@@ -1,0 +1,22 @@
+{
+  "$schema": "../schema/skill.schema.json",
+  "tags": ["attack", "physical", "area"],
+  "activation": "auto",
+  "target": "player",
+  "stats": {
+    "damage": { "physical": 3 },
+    "rate": 0.35,
+    "range": 240,
+    "area": 14,
+    "knockback": 60
+  },
+  "deliver": {
+    "do": "burst",
+    "shape": { "kind": "circle" },
+    "at": "target",
+    "count": 3,
+    "scatter": 44,
+    "warn": 0.8,
+    "vfx": "stone-mark"
+  }
+}

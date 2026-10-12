@@ -1,0 +1,86 @@
+import { execFileSync } from "node:child_process";
+import { appendFileSync, mkdirSync } from "node:fs";
+import { join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import type { Connect, Plugin } from "vite";
+import { defineConfig } from "vitest/config";
+
+const src = fileURLToPath(new URL("./src", import.meta.url));
+const scripts = fileURLToPath(new URL("./scripts", import.meta.url));
+
+const root = fileURLToPath(new URL(".", import.meta.url));
+/** The content folder the browser loads: the repo's, or the e2e server's scratch copy. */
+const contentDir = resolve(root, process.env.INCPOE_CONTENT_DIR ?? "content");
+/**
+ * The tree being built or served (this config's own checkout: `pnpm phone` builds in `.phone/`,
+ * so it reports the ref the phone runs). Throws outside a git checkout (fail fast).
+ */
+const commit = execFileSync("git", ["describe", "--always", "--dirty", "--exclude=*"], {
+  cwd: root,
+})
+  .toString()
+  .trim();
+
+/** POST /__telemetry: a JSON array of records, appended one per line with the server's receipt time. */
+function telemetry(dir: string): Plugin {
+  const handle: Connect.NextHandleFunction = (req, res, next) => {
+    if (req.url !== "/__telemetry" || req.method !== "POST") {
+      next();
+      return;
+    }
+    let body = "";
+    req.setEncoding("utf8");
+    req.on("data", (chunk: string) => {
+      body += chunk;
+    });
+    req.on("end", () => {
+      const receivedAt = new Date().toISOString();
+      let records: unknown;
+      try {
+        records = JSON.parse(body);
+      } catch (e) {
+        res.statusCode = 400;
+        res.end(`telemetry body is not JSON: ${e instanceof Error ? e.message : String(e)}`);
+        return;
+      }
+      if (!Array.isArray(records)) {
+        res.statusCode = 400;
+        res.end("telemetry body must be a JSON array");
+        return;
+      }
+      if (records.length > 0) {
+        mkdirSync(dir, { recursive: true });
+        const lines = records.map((r) => JSON.stringify({ ...r, receivedAt })).join("\n");
+        appendFileSync(join(dir, `${receivedAt.slice(0, 10)}.jsonl`), `${lines}\n`);
+      }
+      res.statusCode = 204;
+      res.end();
+    });
+  };
+  return {
+    name: "incpoe-telemetry",
+    configureServer: (server) => {
+      server.middlewares.use(handle);
+    },
+    configurePreviewServer: (server) => {
+      server.middlewares.use(handle);
+    },
+  };
+}
+
+export default defineConfig({
+  define: { __COMMIT__: JSON.stringify(commit) },
+  resolve: {
+    alias: [
+      { find: "@content", replacement: contentDir },
+      { find: "@scripts", replacement: scripts },
+      { find: "@", replacement: src },
+    ],
+  },
+  server: { host: "0.0.0.0", port: 5180, strictPort: true },
+  // The app with Phaser is one ~1.7 MB chunk (~430 kB gzipped) and the game can't start without
+  // Phaser, so splitting it buys nothing; the limit sits just above it to catch real growth.
+  build: { chunkSizeWarningLimit: 1800 },
+  plugins: [telemetry(resolve(root, process.env.INCPOE_TELEMETRY_DIR ?? "telemetry"))],
+  test: { include: ["src/**/*.test.ts", "scripts/**/*.test.ts"] },
+});

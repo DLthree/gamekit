@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/enemy.schema.json",
+  "role": "fodder",
+  "stats": { "life": 5, "moveSpeed": 30, "radius": 11, "knockbackResist": 0 },
+  "behavior": { "kind": "keepDistance", "distance": 180 },
+  "skills": ["stone-volley"],
+  "look": "thrower"
+}

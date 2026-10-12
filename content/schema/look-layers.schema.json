@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bands": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "floor",
+          "ground",
+          "blast",
+          "clearing",
+          "shadows",
+          "actors",
+          "fx",
+          "telegraphs",
+          "player",
+          "aim"
+        ]
+      }
+    },
+    "ySorted": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "floor",
+          "ground",
+          "blast",
+          "clearing",
+          "shadows",
+          "actors",
+          "fx",
+          "telegraphs",
+          "player",
+          "aim"
+        ]
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "bands",
+    "ySorted"
+  ],
+  "additionalProperties": false
+}

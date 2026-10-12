@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "atlas": {
+      "type": "object",
+      "properties": {
+        "png": {
+          "type": "string",
+          "minLength": 1
+        },
+        "json": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "png",
+        "json"
+      ],
+      "additionalProperties": false
+    },
+    "pxPerWorldUnit": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "sprites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "player",
+              "prop",
+              "fodder",
+              "elite",
+              "boss"
+            ]
+          },
+          "frame": {
+            "type": "string",
+            "minLength": 1
+          },
+          "px": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "world": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "pivot": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "flying": {
+            "type": "boolean"
+          },
+          "grip": {
+            "anyOf": [
+              {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "maxItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "frame",
+          "px",
+          "world",
+          "pivot",
+          "flying",
+          "grip",
+          "owner"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "fx": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "frames": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "px": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "pivot": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "worldSize": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "tintable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "frames",
+          "px",
+          "pivot",
+          "worldSize",
+          "tintable"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "atlas",
+    "pxPerWorldUnit",
+    "sprites",
+    "fx"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,376 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "character": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "tiers": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "object",
+          "properties": {
+            "loadout": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "cast"
+                ]
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "skill": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "modifiers": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                    }
+                  }
+                },
+                "required": [
+                  "skill"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "stats": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "stat": {
+                    "type": "string",
+                    "enum": [
+                      "life",
+                      "moveSpeed",
+                      "radius",
+                      "knockbackResist",
+                      "damage",
+                      "cooldown",
+                      "rate",
+                      "range",
+                      "area",
+                      "duration",
+                      "pulse",
+                      "projectileSpeed",
+                      "projectileCount",
+                      "spread",
+                      "pierce",
+                      "knockback"
+                    ]
+                  },
+                  "op": {
+                    "type": "string",
+                    "enum": [
+                      "flat",
+                      "increased",
+                      "more"
+                    ]
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "if": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "attack",
+                        "spell",
+                        "melee",
+                        "projectile",
+                        "area",
+                        "duration",
+                        "fire",
+                        "physical"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "stat",
+                  "op",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "look": {
+              "default": {},
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*\\.(projectile|burst|zone)$"
+              },
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+              }
+            }
+          },
+          "required": [
+            "loadout"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "loadout": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "cast"
+                ]
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "skill": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "modifiers": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                    }
+                  }
+                },
+                "required": [
+                  "skill"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "stats": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "stat": {
+                    "type": "string",
+                    "enum": [
+                      "life",
+                      "moveSpeed",
+                      "radius",
+                      "knockbackResist",
+                      "damage",
+                      "cooldown",
+                      "rate",
+                      "range",
+                      "area",
+                      "duration",
+                      "pulse",
+                      "projectileSpeed",
+                      "projectileCount",
+                      "spread",
+                      "pierce",
+                      "knockback"
+                    ]
+                  },
+                  "op": {
+                    "type": "string",
+                    "enum": [
+                      "flat",
+                      "increased",
+                      "more"
+                    ]
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "if": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "attack",
+                        "spell",
+                        "melee",
+                        "projectile",
+                        "area",
+                        "duration",
+                        "fire",
+                        "physical"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "stat",
+                  "op",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "look": {
+              "default": {},
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*\\.(projectile|burst|zone)$"
+              },
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+              }
+            }
+          },
+          "required": [
+            "loadout"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "loadout": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "cast"
+                ]
+              },
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "skill": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "modifiers": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                    }
+                  }
+                },
+                "required": [
+                  "skill"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "stats": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "stat": {
+                    "type": "string",
+                    "enum": [
+                      "life",
+                      "moveSpeed",
+                      "radius",
+                      "knockbackResist",
+                      "damage",
+                      "cooldown",
+                      "rate",
+                      "range",
+                      "area",
+                      "duration",
+                      "pulse",
+                      "projectileSpeed",
+                      "projectileCount",
+                      "spread",
+                      "pierce",
+                      "knockback"
+                    ]
+                  },
+                  "op": {
+                    "type": "string",
+                    "enum": [
+                      "flat",
+                      "increased",
+                      "more"
+                    ]
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "if": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "attack",
+                        "spell",
+                        "melee",
+                        "projectile",
+                        "area",
+                        "duration",
+                        "fire",
+                        "physical"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "stat",
+                  "op",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "look": {
+              "default": {},
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*\\.(projectile|burst|zone)$"
+              },
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+              }
+            }
+          },
+          "required": [
+            "loadout"
+          ],
+          "additionalProperties": false
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    }
+  },
+  "required": [
+    "$schema",
+    "character",
+    "tiers"
+  ],
+  "additionalProperties": false
+}

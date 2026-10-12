@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "halfWidth": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "halfHeight": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "spawnRadius": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    }
+  },
+  "required": [
+    "$schema",
+    "halfWidth",
+    "halfHeight",
+    "spawnRadius"
+  ],
+  "additionalProperties": false
+}

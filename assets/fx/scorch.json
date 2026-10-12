@@ -1,0 +1,45 @@
+{
+  "id": "scorch",
+  "frames": [
+    "0.png"
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "tintable": false,
+  "worldSize": 50,
+  "atlasPx": 192,
+  "note": "solid black; use at low alpha (~0.3) as soot, black competes with threat telegraphs",
+  "sources": [
+    "prototypes/3-color-flood-vfx/assets/fx/scorch/chosen.png"
+  ],
+  "candidates": [
+    2
+  ],
+  "generation": [
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a scorched burn mark on the ground: an irregular roughly round charred blotch, solid black soot center breaking up toward the edge into bold hatch strokes, broken speckles and short radiating cracks. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly solid black ink only; no other colors, no cream, no white fill. Camera: a single isolated ground decal seen from directly above, flat, centered, fully visible with empty margin on all sides. No objects, no text, no frame, transparent background around it.",
+      "seed": 15002,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 15002
+      },
+      "seconds": 23.9,
+      "task_id": "cf74c1a4735c779a12e9ebcf3b61df2b",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 20,
+      "item": "scorch",
+      "palette": "palette_ink"
+    }
+  ]
+}

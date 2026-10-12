@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "durationS": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "maxAlive": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "enemyMods": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stat": {
+            "type": "string",
+            "enum": [
+              "life",
+              "moveSpeed",
+              "radius",
+              "knockbackResist",
+              "damage",
+              "cooldown",
+              "rate",
+              "range",
+              "area",
+              "duration",
+              "pulse",
+              "projectileSpeed",
+              "projectileCount",
+              "spread",
+              "pierce",
+              "knockback"
+            ]
+          },
+          "op": {
+            "type": "string",
+            "enum": [
+              "flat",
+              "increased",
+              "more"
+            ]
+          },
+          "value": {
+            "type": "number"
+          },
+          "if": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "attack",
+                "spell",
+                "melee",
+                "projectile",
+                "area",
+                "duration",
+                "fire",
+                "physical"
+              ]
+            }
+          }
+        },
+        "required": [
+          "stat",
+          "op",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "spawns": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "enemy": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+              },
+              "from": {
+                "type": "number",
+                "minimum": 0
+              },
+              "to": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "rate": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                ],
+                "items": false,
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "pattern": {
+                "type": "string",
+                "const": "edge"
+              }
+            },
+            "required": [
+              "enemy",
+              "from",
+              "to",
+              "rate",
+              "pattern"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "enemy": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "at": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "count": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "pattern": {
+                    "type": "string",
+                    "const": "edge"
+                  }
+                },
+                "required": [
+                  "enemy",
+                  "at",
+                  "count",
+                  "pattern"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "enemy": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "at": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "count": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "pattern": {
+                    "type": "string",
+                    "const": "ring"
+                  },
+                  "radius": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "enemy",
+                  "at",
+                  "count",
+                  "pattern",
+                  "radius"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "enemy": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "at": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "count": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "pattern": {
+                    "type": "string",
+                    "const": "field"
+                  },
+                  "minDistance": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "maxDistance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "warnS": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "enemy",
+                  "at",
+                  "count",
+                  "pattern",
+                  "minDistance",
+                  "maxDistance",
+                  "warnS"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "durationS",
+    "maxAlive",
+    "spawns"
+  ],
+  "additionalProperties": false
+}

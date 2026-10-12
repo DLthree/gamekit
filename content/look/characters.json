@@ -1,0 +1,4 @@
+{
+  "$schema": "../schema/look-characters.schema.json",
+  "characters": { "wizard": { "creature": "wizard", "buildColor": "wizard-red" } }
+}

@@ -1,0 +1,90 @@
+{
+  "$schema": "../schema/look-sounds.schema.json",
+  "volume": 0.7,
+  "sounds": {
+    "bolt": {
+      "cap": 4,
+      "minGapS": 0.05,
+      "volume": 0.6,
+      "pitch": 1.5,
+      "loop": false
+    },
+    "whoosh": {
+      "cap": 2,
+      "minGapS": 0.1,
+      "volume": 0.65,
+      "pitch": 1,
+      "loop": false
+    },
+    "thump": {
+      "cap": 3,
+      "minGapS": 0.06,
+      "volume": 1,
+      "pitch": 1,
+      "loop": false
+    },
+    "puff": {
+      "cap": 4,
+      "minGapS": 0.04,
+      "volume": 0.25,
+      "pitch": 2,
+      "loop": false
+    },
+    "hit": {
+      "cap": 4,
+      "minGapS": 0.03,
+      "volume": 0.35,
+      "pitch": 2,
+      "loop": false
+    },
+    "pop": {
+      "cap": 4,
+      "minGapS": 0.04,
+      "volume": 0.4,
+      "pitch": 2,
+      "loop": false
+    },
+    "hurt": {
+      "cap": 1,
+      "minGapS": 0.2,
+      "volume": 1,
+      "pitch": 0.5,
+      "loop": false
+    },
+    "crackle": {
+      "cap": 2,
+      "minGapS": 0.3,
+      "volume": 0.25,
+      "pitch": 1,
+      "loop": true
+    },
+    "slam": {
+      "cap": 1,
+      "minGapS": 0.2,
+      "volume": 1,
+      "pitch": 1,
+      "loop": false
+    },
+    "stone": {
+      "cap": 4,
+      "minGapS": 0.04,
+      "volume": 0.45,
+      "pitch": 1,
+      "loop": false
+    },
+    "charge": {
+      "cap": 2,
+      "minGapS": 0.1,
+      "volume": 0.5,
+      "pitch": 0.85,
+      "loop": false
+    },
+    "gold": {
+      "cap": 2,
+      "minGapS": 0.1,
+      "volume": 0.9,
+      "pitch": 1,
+      "loop": false
+    }
+  }
+}

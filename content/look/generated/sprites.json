@@ -1,0 +1,496 @@
+{
+  "$schema": "../../schema/look-generated-sprites.schema.json",
+  "atlas": {
+    "png": "atlas/game.png",
+    "json": "atlas/game.json"
+  },
+  "pxPerWorldUnit": 4.5,
+  "sprites": [
+    {
+      "id": "barbarian-axe",
+      "role": "prop",
+      "frame": "creature/barbarian-axe",
+      "px": [
+        58,
+        171
+      ],
+      "world": [
+        12.89,
+        38.0
+      ],
+      "pivot": [
+        0.414,
+        0.927
+      ],
+      "flying": false,
+      "grip": [
+        0.414,
+        0.927
+      ],
+      "owner": "barbarian"
+    },
+    {
+      "id": "barbarian",
+      "role": "player",
+      "frame": "creature/barbarian",
+      "px": [
+        139,
+        225
+      ],
+      "world": [
+        30.89,
+        50.0
+      ],
+      "pivot": [
+        0.469,
+        0.991
+      ],
+      "flying": false,
+      "grip": null,
+      "owner": null
+    },
+    {
+      "id": "bat",
+      "role": "fodder",
+      "frame": "creature/bat",
+      "px": [
+        194,
+        99
+      ],
+      "world": [
+        43.11,
+        22.0
+      ],
+      "pivot": [
+        0.434,
+        0.983
+      ],
+      "flying": true,
+      "grip": null,
+      "owner": null
+    },
+    {
+      "id": "boss",
+      "role": "boss",
+      "frame": "creature/boss",
+      "px": [
+        337,
+        585
+      ],
+      "world": [
+        74.89,
+        130.0
+      ],
+      "pivot": [
+        0.546,
+        0.992
+      ],
+      "flying": false,
+      "grip": null,
+      "owner": null
+    },
+    {
+      "id": "elite",
+      "role": "elite",
+      "frame": "creature/elite",
+      "px": [
+        275,
+        198
+      ],
+      "world": [
+        61.11,
+        44.0
+      ],
+      "pivot": [
+        0.653,
+        0.985
+      ],
+      "flying": false,
+      "grip": null,
+      "owner": null
+    },
+    {
+      "id": "rabbit",
+      "role": "fodder",
+      "frame": "creature/rabbit",
+      "px": [
+        95,
+        162
+      ],
+      "world": [
+        21.11,
+        36.0
+      ],
+      "pivot": [
+        0.385,
+        0.988
+      ],
+      "flying": false,
+      "grip": null,
+      "owner": null
+    },
+    {
+      "id": "snail",
+      "role": "fodder",
+      "frame": "creature/snail",
+      "px": [
+        147,
+        126
+      ],
+      "world": [
+        32.67,
+        28.0
+      ],
+      "pivot": [
+        0.533,
+        0.984
+      ],
+      "flying": false,
+      "grip": null,
+      "owner": null
+    },
+    {
+      "id": "thrower",
+      "role": "fodder",
+      "frame": "creature/thrower",
+      "px": [
+        135,
+        135
+      ],
+      "world": [
+        30.0,
+        30.0
+      ],
+      "pivot": [
+        0.507,
+        0.832
+      ],
+      "flying": false,
+      "grip": null,
+      "owner": null
+    },
+    {
+      "id": "wizard-staff",
+      "role": "prop",
+      "frame": "creature/wizard-staff",
+      "px": [
+        60,
+        252
+      ],
+      "world": [
+        13.33,
+        56.0
+      ],
+      "pivot": [
+        0.502,
+        0.553
+      ],
+      "flying": false,
+      "grip": [
+        0.502,
+        0.553
+      ],
+      "owner": "wizard"
+    },
+    {
+      "id": "wizard",
+      "role": "player",
+      "frame": "creature/wizard",
+      "px": [
+        177,
+        216
+      ],
+      "world": [
+        39.33,
+        48.0
+      ],
+      "pivot": [
+        0.556,
+        0.986
+      ],
+      "flying": false,
+      "grip": null,
+      "owner": null
+    }
+  ],
+  "fx": [
+    {
+      "id": "cyclone",
+      "frames": [
+        "fx/cyclone/0",
+        "fx/cyclone/1"
+      ],
+      "px": [
+        [
+          256,
+          237
+        ],
+        [
+          242,
+          256
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "worldSize": 110,
+      "tintable": true
+    },
+    {
+      "id": "flame",
+      "frames": [
+        "fx/flame/0",
+        "fx/flame/1",
+        "fx/flame/2"
+      ],
+      "px": [
+        [
+          133,
+          192
+        ],
+        [
+          122,
+          192
+        ],
+        [
+          132,
+          192
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.989
+      ],
+      "worldSize": 40,
+      "tintable": true
+    },
+    {
+      "id": "gold",
+      "frames": [
+        "fx/gold/0",
+        "fx/gold/1",
+        "fx/gold/2"
+      ],
+      "px": [
+        [
+          57,
+          72
+        ],
+        [
+          72,
+          72
+        ],
+        [
+          68,
+          72
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "worldSize": 12,
+      "tintable": false
+    },
+    {
+      "id": "grassfire",
+      "frames": [
+        "fx/grassfire/0",
+        "fx/grassfire/1",
+        "fx/grassfire/2"
+      ],
+      "px": [
+        [
+          256,
+          140
+        ],
+        [
+          256,
+          136
+        ],
+        [
+          256,
+          120
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.983
+      ],
+      "worldSize": 44,
+      "tintable": true
+    },
+    {
+      "id": "scorch",
+      "frames": [
+        "fx/scorch/0"
+      ],
+      "px": [
+        [
+          192,
+          169
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "worldSize": 50,
+      "tintable": false
+    },
+    {
+      "id": "shockring",
+      "frames": [
+        "fx/shockring/0",
+        "fx/shockring/1"
+      ],
+      "px": [
+        [
+          256,
+          250
+        ],
+        [
+          256,
+          253
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "worldSize": 70,
+      "tintable": false
+    },
+    {
+      "id": "slash",
+      "frames": [
+        "fx/slash/0",
+        "fx/slash/1"
+      ],
+      "px": [
+        [
+          256,
+          195
+        ],
+        [
+          256,
+          204
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "worldSize": 70,
+      "tintable": true
+    },
+    {
+      "id": "smoke",
+      "frames": [
+        "fx/smoke/0",
+        "fx/smoke/1",
+        "fx/smoke/2"
+      ],
+      "px": [
+        [
+          192,
+          151
+        ],
+        [
+          145,
+          192
+        ],
+        [
+          192,
+          169
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "worldSize": 36,
+      "tintable": true
+    },
+    {
+      "id": "spark",
+      "frames": [
+        "fx/spark/0",
+        "fx/spark/1",
+        "fx/spark/2",
+        "fx/spark/3"
+      ],
+      "px": [
+        [
+          69,
+          72
+        ],
+        [
+          67,
+          72
+        ],
+        [
+          72,
+          67
+        ],
+        [
+          60,
+          72
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "worldSize": 8,
+      "tintable": true
+    },
+    {
+      "id": "splatter",
+      "frames": [
+        "fx/splatter/0"
+      ],
+      "px": [
+        [
+          160,
+          151
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "worldSize": 30,
+      "tintable": false
+    },
+    {
+      "id": "tuft",
+      "frames": [
+        "fx/tuft/0",
+        "fx/tuft/1",
+        "fx/tuft/2"
+      ],
+      "px": [
+        [
+          72,
+          52
+        ],
+        [
+          72,
+          59
+        ],
+        [
+          67,
+          72
+        ]
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "worldSize": 14,
+      "tintable": true
+    }
+  ]
+}

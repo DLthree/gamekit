@@ -1,0 +1,9 @@
+{
+  "name": "inc-poe-game",
+  "short_name": "inc-poe",
+  "display": "fullscreen",
+  "orientation": "any",
+  "start_url": "/?char=wizard&build=1&threat=1",
+  "background_color": "#efe6d2",
+  "theme_color": "#efe6d2"
+}

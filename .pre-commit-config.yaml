@@ -1,0 +1,15 @@
+repos:
+  - repo: local
+    hooks:
+      - id: check
+        name: pnpm check
+        entry: pnpm check
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+      - id: verify
+        name: pnpm verify
+        entry: pnpm verify
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

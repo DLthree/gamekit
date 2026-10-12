@@ -1,0 +1,37 @@
+{
+  "$schema": "../schema/look-feedback.schema.json",
+  "hitFlash": { "durationS": 0.09, "color": "white" },
+  "hitSpring": { "amount": 0.2, "hz": 6.37, "decayS": 0.12 },
+  "hitRecoil": { "distance": 0.12, "decayS": 0.12 },
+  "castSpring": { "amount": 0.12, "hz": 5, "decayS": 0.1 },
+  "castRecoil": { "distance": 0.06, "decayS": 0.08 },
+  "hitLimitS": 0.1,
+  "lunge": { "durationS": 0.4, "reach": 0.35, "leanDeg": 14 },
+  "death": { "durationS": 0.34, "pop": 0.35, "spinDeg": 28 },
+  "shadow": { "alpha": 0.2, "width": 0.62, "height": 0.16 },
+  "shake": {
+    "explosion": { "durationS": 0.16, "intensity": 0.012 },
+    "hurt": { "durationS": 0.09, "intensity": 0.004 },
+    "slam": { "durationS": 0.25, "intensity": 0.02 },
+    "big-death": { "durationS": 0.22, "intensity": 0.014 }
+  },
+  "playerHurtShake": "hurt",
+  "bigDeathShake": "big-death",
+  "sounds": {
+    "hit": "hit",
+    "death": "pop",
+    "playerHurt": "hurt",
+    "cast": "whoosh",
+    "bigDeath": "gold"
+  },
+  "goldFlakes": { "kind": "gold-flake", "count": 14, "size": 5, "pop": 60 },
+  "spawnWarning": {
+    "color": "ink",
+    "alpha": 0.6,
+    "fillAlpha": 0.3,
+    "width": 2,
+    "scale": 1,
+    "pulse": 0.12,
+    "pulseHz": 3
+  }
+}

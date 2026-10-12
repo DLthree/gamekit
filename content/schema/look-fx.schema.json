@@ -1,0 +1,856 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capacity": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "kinds": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "texture": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "variants": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cap": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "evict": {
+            "type": "boolean"
+          },
+          "band": {
+            "type": "string",
+            "enum": [
+              "floor",
+              "ground",
+              "blast",
+              "clearing",
+              "shadows",
+              "actors",
+              "fx",
+              "telegraphs",
+              "player",
+              "aim"
+            ]
+          },
+          "tint": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "life": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "growS": {
+            "type": "number",
+            "minimum": 0
+          },
+          "scaleFrom": {
+            "type": "number",
+            "minimum": 0
+          },
+          "scaleTo": {
+            "type": "number",
+            "minimum": 0
+          },
+          "popS": {
+            "type": "number",
+            "minimum": 0
+          },
+          "fadeFrom": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "alpha": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "drag": {
+            "type": "number",
+            "minimum": 0
+          },
+          "rise": {
+            "type": "number"
+          },
+          "flicker": {
+            "type": "number",
+            "minimum": 0
+          },
+          "flickerHz": {
+            "type": "number",
+            "minimum": 0
+          },
+          "sway": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "hz": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "breathe": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "breatheHz": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "swapS": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "amount",
+                  "hz",
+                  "breathe",
+                  "breatheHz",
+                  "swapS"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "texture",
+          "variants",
+          "cap",
+          "evict",
+          "band",
+          "tint",
+          "life",
+          "growS",
+          "scaleFrom",
+          "scaleTo",
+          "popS",
+          "fadeFrom",
+          "alpha",
+          "drag",
+          "rise",
+          "flicker",
+          "flickerHz",
+          "sway"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "vfx": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "recipe": {
+                "type": "string",
+                "const": "projectile"
+              },
+              "head": {
+                "type": "object",
+                "properties": {
+                  "texture": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "frame": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "size": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "spinHz": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "pulse": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "pulseHz": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "tint": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  }
+                },
+                "required": [
+                  "texture",
+                  "frame",
+                  "size",
+                  "spinHz",
+                  "pulse",
+                  "pulseHz",
+                  "tint"
+                ],
+                "additionalProperties": false
+              },
+              "trail": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "everyS": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "size": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "jitter": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "drift": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "flame": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                          },
+                          "scale": {
+                            "type": "number",
+                            "exclusiveMinimum": 0
+                          },
+                          "lifeS": {
+                            "type": "number",
+                            "exclusiveMinimum": 0
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "scale",
+                          "lifeS"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "everyS",
+                  "size",
+                  "jitter",
+                  "drift",
+                  "flame"
+                ],
+                "additionalProperties": false
+              },
+              "sound": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "recipe",
+              "head",
+              "trail",
+              "sound"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "recipe": {
+                "type": "string",
+                "const": "explosion"
+              },
+              "ring": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "scale": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "kind",
+                  "scale"
+                ],
+                "additionalProperties": false
+              },
+              "smoke": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "size": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "delayS": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "everyS": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "kind",
+                  "count",
+                  "size",
+                  "delayS",
+                  "everyS"
+                ],
+                "additionalProperties": false
+              },
+              "shake": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "scorch": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                      },
+                      "scale": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "scale"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "sound": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "recipe",
+              "ring",
+              "smoke",
+              "shake",
+              "scorch",
+              "sound"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "recipe": {
+                "type": "string",
+                "const": "ground"
+              },
+              "stains": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "alpha": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "size": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                },
+                "required": [
+                  "kind",
+                  "count",
+                  "alpha",
+                  "size"
+                ],
+                "additionalProperties": false
+              },
+              "grass": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "size": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                },
+                "required": [
+                  "kind",
+                  "count",
+                  "size"
+                ],
+                "additionalProperties": false
+              },
+              "flames": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "size": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                },
+                "required": [
+                  "kind",
+                  "count",
+                  "size"
+                ],
+                "additionalProperties": false
+              },
+              "embers": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "size": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "kind",
+                  "count",
+                  "size"
+                ],
+                "additionalProperties": false
+              },
+              "spreadS": {
+                "type": "number",
+                "minimum": 0
+              },
+              "flat": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1
+              },
+              "sound": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "recipe",
+              "stains",
+              "grass",
+              "flames",
+              "embers",
+              "spreadS",
+              "flat",
+              "sound"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "recipe": {
+                "type": "string",
+                "const": "telegraph"
+              },
+              "hatch": {
+                "type": "object",
+                "properties": {
+                  "spacing": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "width": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "angleDeg": {
+                    "type": "number"
+                  },
+                  "alpha": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                },
+                "required": [
+                  "spacing",
+                  "width",
+                  "angleDeg",
+                  "alpha"
+                ],
+                "additionalProperties": false
+              },
+              "halo": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "alpha": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                },
+                "required": [
+                  "width",
+                  "alpha"
+                ],
+                "additionalProperties": false
+              },
+              "outline": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "alpha": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                },
+                "required": [
+                  "width",
+                  "alpha"
+                ],
+                "additionalProperties": false
+              },
+              "fill": {
+                "type": "string",
+                "enum": [
+                  "grow",
+                  "full"
+                ]
+              },
+              "lob": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "size": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "arc": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "size",
+                      "arc"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "resolve": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "scale": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "shake": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "sound": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "scale",
+                  "shake",
+                  "sound"
+                ],
+                "additionalProperties": false
+              },
+              "sound": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "recipe",
+              "hatch",
+              "halo",
+              "outline",
+              "fill",
+              "lob",
+              "resolve",
+              "sound"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "recipe": {
+                "type": "string",
+                "const": "none"
+              }
+            },
+            "required": [
+              "recipe"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "hit": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "size": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "kind",
+        "size"
+      ],
+      "additionalProperties": false
+    },
+    "death": {
+      "type": "object",
+      "properties": {
+        "splatter": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "splatterSize": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "puff": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "puffSize": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "splatter",
+        "splatterSize",
+        "puff",
+        "puffSize"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "$schema",
+    "capacity",
+    "kinds",
+    "vfx",
+    "hit",
+    "death"
+  ],
+  "additionalProperties": false
+}

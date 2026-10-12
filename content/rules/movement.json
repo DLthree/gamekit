@@ -1,0 +1,7 @@
+{
+  "$schema": "../schema/rules-movement.schema.json",
+  "separationRadius": 20,
+  "separationStrength": 70,
+  "knockbackDamping": 9,
+  "facingDeadZone": 4
+}

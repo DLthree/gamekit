@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/enemy.schema.json",
+  "role": "elite",
+  "stats": { "life": 40, "moveSpeed": 34, "radius": 18, "knockbackResist": 0.6 },
+  "behavior": { "kind": "chase" },
+  "skills": ["maul", "charge"],
+  "look": "elite"
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/skill.schema.json",
+  "tags": ["attack", "melee", "physical"],
+  "activation": "auto",
+  "target": "player",
+  "stats": { "damage": { "physical": 4 }, "rate": 0.7, "range": 16, "area": 30, "knockback": 0 },
+  "deliver": { "do": "burst", "shape": { "kind": "arc", "halfAngleDeg": 70 }, "vfx": "none" }
+}

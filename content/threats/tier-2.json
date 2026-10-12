@@ -1,0 +1,86 @@
+{
+  "$schema": "../schema/threat.schema.json",
+  "durationS": 75,
+  "maxAlive": 160,
+  "enemyMods": [
+    {
+      "stat": "life",
+      "op": "more",
+      "value": 0.5
+    },
+    {
+      "stat": "moveSpeed",
+      "op": "increased",
+      "value": 0.1
+    }
+  ],
+  "spawns": [
+    {
+      "enemy": "snail",
+      "at": 0,
+      "count": 10,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "snail",
+      "at": 12,
+      "count": 6,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "rabbit",
+      "at": 36,
+      "count": 6,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "snail",
+      "from": 0,
+      "to": 75,
+      "rate": [1.0, 2.2],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "rabbit",
+      "from": 15,
+      "to": 75,
+      "rate": [0.5, 1.6],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "bat",
+      "from": 30,
+      "to": 75,
+      "rate": [0.4, 1.4],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "thrower",
+      "from": 30,
+      "to": 75,
+      "rate": [0.1, 0.25],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "elite-lion",
+      "at": 25,
+      "count": 1,
+      "pattern": "edge"
+    },
+    {
+      "enemy": "elite-lion",
+      "at": 50,
+      "count": 1,
+      "pattern": "edge"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "life": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "moveSpeed": {
+          "type": "number",
+          "minimum": 0
+        },
+        "radius": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "knockbackResist": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "life",
+        "moveSpeed",
+        "radius",
+        "knockbackResist"
+      ],
+      "additionalProperties": false
+    },
+    "slots": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "cast"
+            ]
+          },
+          "activation": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "manual"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "activation"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "stats",
+    "slots"
+  ],
+  "additionalProperties": false
+}

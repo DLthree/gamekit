@@ -1,0 +1,43 @@
+{
+  "$schema": "../schema/build.schema.json",
+  "character": "wizard",
+  "tiers": [
+    {
+      "loadout": { "auto": { "skill": "fire-bolt" }, "cast": { "skill": "fireball" } },
+      "stats": []
+    },
+    {
+      "loadout": {
+        "auto": { "skill": "fire-bolt", "modifiers": ["twin-bolt"] },
+        "cast": { "skill": "fireball", "modifiers": ["wide-blast"] }
+      },
+      "stats": [
+        { "stat": "damage", "op": "increased", "value": 0.2, "if": ["fire"] },
+        { "stat": "rate", "op": "increased", "value": 0.2 },
+        { "stat": "area", "op": "increased", "value": 0.3, "if": ["area"] }
+      ],
+      "look": {
+        "fire-bolt.projectile": "bolt-flame",
+        "fire-bolt.burst": "bolt-blast-2",
+        "fireball.burst": "explosion-2"
+      }
+    },
+    {
+      "loadout": {
+        "auto": { "skill": "fire-bolt", "modifiers": ["twin-bolt", "volley", "ignite-ground"] },
+        "cast": { "skill": "fireball", "modifiers": ["wide-blast", "burning-ground", "barrage"] }
+      },
+      "stats": [
+        { "stat": "damage", "op": "increased", "value": 0.5, "if": ["fire"] },
+        { "stat": "damage", "op": "more", "value": 0.34, "if": ["fire"] },
+        { "stat": "rate", "op": "increased", "value": 0.33 },
+        { "stat": "area", "op": "increased", "value": 0.91, "if": ["area"] }
+      ],
+      "look": {
+        "fire-bolt.projectile": "bolt-flame-3",
+        "fire-bolt.burst": "bolt-blast-3",
+        "fireball.burst": "explosion-3"
+      }
+    }
+  ]
+}

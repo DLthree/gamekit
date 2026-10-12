@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema/skill.schema.json",
+  "tags": ["spell", "projectile", "area", "fire"],
+  "activation": "auto",
+  "target": "nearest",
+  "stats": {
+    "damage": { "fire": 2 },
+    "rate": 1.0,
+    "range": 160,
+    "area": 22,
+    "projectileSpeed": 300,
+    "projectileCount": 1,
+    "spread": 0,
+    "knockback": 40
+  },
+  "deliver": {
+    "do": "projectile",
+    "multishot": "nearest",
+    "impact": "trigger",
+    "radius": 4,
+    "vfx": "bolt-spark",
+    "onEnd": [{ "do": "burst", "shape": { "kind": "circle" }, "vfx": "bolt-blast" }]
+  }
+}

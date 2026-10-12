@@ -1,0 +1,102 @@
+{
+  "$schema": "../schema/threat.schema.json",
+  "durationS": 90,
+  "maxAlive": 200,
+  "enemyMods": [
+    {
+      "stat": "life",
+      "op": "more",
+      "value": 1.0
+    },
+    {
+      "stat": "moveSpeed",
+      "op": "increased",
+      "value": 0.2
+    }
+  ],
+  "spawns": [
+    {
+      "enemy": "snail",
+      "at": 0,
+      "count": 12,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "rabbit",
+      "at": 10,
+      "count": 8,
+      "pattern": "field",
+      "minDistance": 140,
+      "maxDistance": 240,
+      "warnS": 2
+    },
+    {
+      "enemy": "bat",
+      "at": 35,
+      "count": 10,
+      "pattern": "ring",
+      "radius": 170
+    },
+    {
+      "enemy": "snail",
+      "from": 0,
+      "to": 90,
+      "rate": [1.2, 3.0],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "rabbit",
+      "from": 10,
+      "to": 90,
+      "rate": [0.6, 2.2],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "bat",
+      "from": 20,
+      "to": 90,
+      "rate": [0.5, 2.0],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "thrower",
+      "from": 20,
+      "to": 90,
+      "rate": [0.15, 0.35],
+      "pattern": "edge"
+    },
+    {
+      "enemy": "elite-lion",
+      "at": 20,
+      "count": 1,
+      "pattern": "edge"
+    },
+    {
+      "enemy": "elite-lion",
+      "at": 40,
+      "count": 1,
+      "pattern": "edge"
+    },
+    {
+      "enemy": "elite-lion",
+      "at": 65,
+      "count": 1,
+      "pattern": "edge"
+    },
+    {
+      "enemy": "elite-lion",
+      "at": 78,
+      "count": 1,
+      "pattern": "edge"
+    },
+    {
+      "enemy": "boss-dragon",
+      "at": 50,
+      "count": 1,
+      "pattern": "edge"
+    }
+  ]
+}

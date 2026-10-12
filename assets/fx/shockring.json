@@ -1,0 +1,71 @@
+{
+  "id": "shockring",
+  "frames": [
+    "0.png",
+    "1.png"
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "tintable": false,
+  "worldSize": 70,
+  "atlasPx": 256,
+  "note": "brief black-ink shock ring on T2/T3 impacts",
+  "sources": [
+    "prototypes/3-color-flood-vfx/assets/fx/shockring/chosen-1.png",
+    "prototypes/3-color-flood-vfx/assets/fx/shockring/chosen-2.png"
+  ],
+  "candidates": [
+    1,
+    3
+  ],
+  "generation": [
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a shockwave ring: one single thin circular ring drawn as a quick dry-brush ink stroke, broken in two or three places, with a few short straight speed lines radiating outward from the ring; the inside of the ring is completely empty. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly solid black ink only; no other colors, no cream, no white fill. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 21001,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 21001
+      },
+      "seconds": 40.2,
+      "task_id": "c70c80a7955ff515f76b10dbafc13a4b",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 34,
+      "item": "shockring",
+      "palette": "palette_ink"
+    },
+    {
+      "prompt": "The reference image is a style reference only. Match its bold black woodcut ink line weight, chunky brush texture and sparse bold hatching exactly, but draw a completely different subject: a flat game visual-effect graphic. Do not draw the reference creature, no creature, no character, no face, no eyes. Subject: a shockwave ring: one single thin circular ring drawn as a quick dry-brush ink stroke, broken in two or three places, with a few short straight speed lines radiating outward from the ring; the inside of the ring is completely empty. Style: a medieval manuscript marginalia ornament drawn as a bold woodcut print. Thick, confident black ink outlines and calligraphic brush strokes, simplified chunky shapes, a little bold black hatching for shading only, no fine cross-hatching, no gradients, no airbrush, no glow. Palette strictly solid black ink only; no other colors, no cream, no white fill. Camera: a single isolated game effect sprite, flat graphic seen straight on, centered, fully visible with empty margin on all sides. No ground, no cast shadow, no text, no frame, transparent background.",
+      "seed": 21003,
+      "model": "qwen2-1/image-to-image",
+      "references": [
+        "ref/snail-anchor.png"
+      ],
+      "inputs": {
+        "aspect_ratio": "auto",
+        "resolution": "1K",
+        "background": "transparent",
+        "output_format": "png",
+        "enhance_prompt": false,
+        "seed": 21003
+      },
+      "seconds": 57.0,
+      "task_id": "86ceeda909856cbc4f250d404b7ce648",
+      "cost_credits": 4.0,
+      "cost_usd": 0.02,
+      "kie_cost_seconds": 52,
+      "item": "shockring",
+      "palette": "palette_ink"
+    }
+  ]
+}

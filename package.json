@@ -1,0 +1,39 @@
+{
+  "name": "inc-poe-game",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.6.0",
+  "engines": {
+    "node": ">=26.10.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "biome check --error-on-warnings .",
+    "format": "biome check --write .",
+    "test": "vitest run",
+    "content:check": "node --import ./scripts/node-alias.ts scripts/content-check.ts",
+    "content:schema": "node --import ./scripts/node-alias.ts scripts/content-check.ts --write-schemas",
+    "telemetry": "node --import ./scripts/node-alias.ts scripts/telemetry.ts",
+    "shot": "node --import ./scripts/node-alias.ts scripts/shot.ts",
+    "phone": "node --import ./scripts/node-alias.ts scripts/phone.ts",
+    "perf": "node --import ./scripts/node-alias.ts scripts/perf.ts",
+    "check": "pnpm typecheck && pnpm lint && pnpm content:check && pnpm test",
+    "atlas": "uv run scripts/build_atlas.py",
+    "sounds": "node --import ./scripts/node-alias.ts scripts/sound-manifest.ts",
+    "e2e": "node --import ./scripts/node-alias.ts scripts/e2e.ts",
+    "verify": "pnpm check && pnpm e2e"
+  },
+  "dependencies": {
+    "phaser": "4.2.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.14",
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.3",
+    "typescript": "7.0.2",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "../schema/rules-arena.schema.json",
+  "halfWidth": 900,
+  "halfHeight": 900,
+  "spawnRadius": 660
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "fodder",
+        "elite",
+        "boss"
+      ]
+    },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "life": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "moveSpeed": {
+          "type": "number",
+          "minimum": 0
+        },
+        "radius": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "knockbackResist": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "life",
+        "moveSpeed",
+        "radius",
+        "knockbackResist"
+      ],
+      "additionalProperties": false
+    },
+    "behavior": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "chase"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "keepDistance"
+            },
+            "distance": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "kind",
+            "distance"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "skills": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      }
+    },
+    "look": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    }
+  },
+  "required": [
+    "$schema",
+    "role",
+    "stats",
+    "behavior",
+    "skills",
+    "look"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,23 @@
+{
+  "id": "splatter",
+  "frames": [
+    "0.png"
+  ],
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "tintable": false,
+  "worldSize": 30,
+  "atlasPx": 160,
+  "note": "hit splatter, untinted black ink",
+  "sources": [
+    "prototypes/3-color-flood-vfx/assets/fx/splatter/chosen.png"
+  ],
+  "candidates": [
+    1
+  ],
+  "generation": [
+    null
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/enemy.schema.json",
+  "role": "fodder",
+  "stats": { "life": 2, "moveSpeed": 38, "radius": 9, "knockbackResist": 0 },
+  "behavior": { "kind": "chase" },
+  "skills": ["bite"],
+  "look": "rabbit"
+}

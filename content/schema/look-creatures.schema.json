@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "speedJitter": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "meshGrid": {
+      "type": "object",
+      "properties": {
+        "cols": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "rows": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "cols",
+        "rows"
+      ],
+      "additionalProperties": false
+    },
+    "creatures": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "sprite": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "gait": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "waddle",
+                  "hop",
+                  "slide",
+                  "flap"
+                ]
+              },
+              "hz": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "bob": {
+                "type": "number",
+                "minimum": 0
+              },
+              "squash": {
+                "type": "number",
+                "minimum": 0
+              },
+              "rock": {
+                "type": "number",
+                "minimum": 0
+              },
+              "lean": {
+                "type": "number"
+              },
+              "breath": {
+                "type": "number",
+                "minimum": 0
+              },
+              "breathHz": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "hover": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "kind",
+              "hz",
+              "bob",
+              "squash",
+              "rock",
+              "lean",
+              "breath",
+              "breathHz",
+              "hover"
+            ],
+            "additionalProperties": false
+          },
+          "mesh": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "lean": {
+                    "type": "number"
+                  },
+                  "sway": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "stride": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "spread": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "breath": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "hip": {
+                    "type": "number",
+                    "exclusiveMinimum": 0.1,
+                    "exclusiveMaximum": 1
+                  }
+                },
+                "required": [
+                  "lean",
+                  "sway",
+                  "stride",
+                  "spread",
+                  "breath",
+                  "hip"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "prop": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "sprite": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                  },
+                  "hand": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "restDeg": {
+                    "type": "number"
+                  },
+                  "scale": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "thrustS": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "sprite",
+                  "hand",
+                  "restDeg",
+                  "scale",
+                  "thrustS"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "sprite",
+          "gait",
+          "mesh",
+          "prop"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "speedJitter",
+    "meshGrid",
+    "creatures"
+  ],
+  "additionalProperties": false
+}

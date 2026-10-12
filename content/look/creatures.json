@@ -1,0 +1,146 @@
+{
+  "$schema": "../schema/look-creatures.schema.json",
+  "speedJitter": 0.12,
+  "meshGrid": { "cols": 4, "rows": 6 },
+  "creatures": {
+    "wizard": {
+      "sprite": "wizard",
+      "gait": {
+        "kind": "waddle",
+        "hz": 1.7,
+        "bob": 0.035,
+        "squash": 0.035,
+        "rock": 3.5,
+        "lean": 3,
+        "breath": 0.02,
+        "breathHz": 0.5,
+        "hover": 0
+      },
+      "mesh": {
+        "lean": 0.05,
+        "sway": 0.03,
+        "stride": 0.05,
+        "spread": 0.1,
+        "breath": 0.035,
+        "hip": 0.55
+      },
+      "prop": {
+        "sprite": "wizard-staff",
+        "hand": [0.92, 0.53],
+        "restDeg": 12,
+        "scale": 1,
+        "thrustS": 0.42
+      }
+    },
+    "snail": {
+      "sprite": "snail",
+      "gait": {
+        "kind": "slide",
+        "hz": 1.1,
+        "bob": 0,
+        "squash": 0.09,
+        "rock": 2,
+        "lean": 0,
+        "breath": 0.025,
+        "breathHz": 0.7,
+        "hover": 0
+      },
+      "mesh": null,
+      "prop": null
+    },
+    "rabbit": {
+      "sprite": "rabbit",
+      "gait": {
+        "kind": "hop",
+        "hz": 2.3,
+        "bob": 0.22,
+        "squash": 0.14,
+        "rock": 5,
+        "lean": 5,
+        "breath": 0.03,
+        "breathHz": 1.6,
+        "hover": 0
+      },
+      "mesh": null,
+      "prop": null
+    },
+    "bat": {
+      "sprite": "bat",
+      "gait": {
+        "kind": "flap",
+        "hz": 3,
+        "bob": 0.07,
+        "squash": 0.13,
+        "rock": 4,
+        "lean": 0,
+        "breath": 0,
+        "breathHz": 1,
+        "hover": 16
+      },
+      "mesh": null,
+      "prop": null
+    },
+    "elite": {
+      "sprite": "elite",
+      "gait": {
+        "kind": "waddle",
+        "hz": 1.7,
+        "bob": 0.035,
+        "squash": 0.035,
+        "rock": 3.5,
+        "lean": 3,
+        "breath": 0.02,
+        "breathHz": 0.5,
+        "hover": 0
+      },
+      "mesh": {
+        "lean": 0.04,
+        "sway": 0.03,
+        "stride": 0.05,
+        "spread": 0.08,
+        "breath": 0.03,
+        "hip": 0.55
+      },
+      "prop": null
+    },
+    "boss": {
+      "sprite": "boss",
+      "gait": {
+        "kind": "waddle",
+        "hz": 1.7,
+        "bob": 0.035,
+        "squash": 0.035,
+        "rock": 3.5,
+        "lean": 3,
+        "breath": 0.02,
+        "breathHz": 0.5,
+        "hover": 0
+      },
+      "mesh": {
+        "lean": 0.04,
+        "sway": 0.03,
+        "stride": 0.05,
+        "spread": 0.08,
+        "breath": 0.03,
+        "hip": 0.55
+      },
+      "prop": null
+    },
+    "thrower": {
+      "sprite": "thrower",
+      "gait": {
+        "kind": "hop",
+        "hz": 2.3,
+        "bob": 0.08,
+        "squash": 0.06,
+        "rock": 3,
+        "lean": 3,
+        "breath": 0.03,
+        "breathHz": 1.6,
+        "hover": 0
+      },
+      "mesh": null,
+      "prop": null
+    }
+  }
+}

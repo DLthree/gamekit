@@ -1,0 +1,342 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hitFlash": {
+      "type": "object",
+      "properties": {
+        "durationS": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        }
+      },
+      "required": [
+        "durationS",
+        "color"
+      ],
+      "additionalProperties": false
+    },
+    "hitSpring": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "hz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "decayS": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "amount",
+        "hz",
+        "decayS"
+      ],
+      "additionalProperties": false
+    },
+    "hitRecoil": {
+      "type": "object",
+      "properties": {
+        "distance": {
+          "type": "number",
+          "minimum": 0
+        },
+        "decayS": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "distance",
+        "decayS"
+      ],
+      "additionalProperties": false
+    },
+    "castSpring": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "hz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "decayS": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "amount",
+        "hz",
+        "decayS"
+      ],
+      "additionalProperties": false
+    },
+    "castRecoil": {
+      "type": "object",
+      "properties": {
+        "distance": {
+          "type": "number",
+          "minimum": 0
+        },
+        "decayS": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "distance",
+        "decayS"
+      ],
+      "additionalProperties": false
+    },
+    "hitLimitS": {
+      "type": "number",
+      "minimum": 0
+    },
+    "lunge": {
+      "type": "object",
+      "properties": {
+        "durationS": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "reach": {
+          "type": "number",
+          "minimum": 0
+        },
+        "leanDeg": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "durationS",
+        "reach",
+        "leanDeg"
+      ],
+      "additionalProperties": false
+    },
+    "death": {
+      "type": "object",
+      "properties": {
+        "durationS": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "pop": {
+          "type": "number",
+          "minimum": 0
+        },
+        "spinDeg": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "durationS",
+        "pop",
+        "spinDeg"
+      ],
+      "additionalProperties": false
+    },
+    "shadow": {
+      "type": "object",
+      "properties": {
+        "alpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "alpha",
+        "width",
+        "height"
+      ],
+      "additionalProperties": false
+    },
+    "shake": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "durationS": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "intensity": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "durationS",
+          "intensity"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "playerHurtShake": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "bigDeathShake": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "sounds": {
+      "type": "object",
+      "properties": {
+        "hit": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "death": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "playerHurt": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "cast": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "bigDeath": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        }
+      },
+      "required": [
+        "hit",
+        "death",
+        "playerHurt",
+        "cast",
+        "bigDeath"
+      ],
+      "additionalProperties": false
+    },
+    "goldFlakes": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "count": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "size": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "pop": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "kind",
+        "count",
+        "size",
+        "pop"
+      ],
+      "additionalProperties": false
+    },
+    "spawnWarning": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "alpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "fillAlpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "scale": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "pulse": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pulseHz": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "color",
+        "alpha",
+        "fillAlpha",
+        "width",
+        "scale",
+        "pulse",
+        "pulseHz"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "$schema",
+    "hitFlash",
+    "hitSpring",
+    "hitRecoil",
+    "castSpring",
+    "castRecoil",
+    "hitLimitS",
+    "lunge",
+    "death",
+    "shadow",
+    "shake",
+    "playerHurtShake",
+    "bigDeathShake",
+    "sounds",
+    "goldFlakes",
+    "spawnWarning"
+  ],
+  "additionalProperties": false
+}

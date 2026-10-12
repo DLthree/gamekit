@@ -1,0 +1,9 @@
+{
+  "$schema": "../schema/modifier.schema.json",
+  "requires": ["projectile"],
+  "stats": [
+    { "stat": "projectileCount", "op": "flat", "value": 1 },
+    { "stat": "spread", "op": "flat", "value": 16 },
+    { "stat": "area", "op": "increased", "value": 0.52 }
+  ]
+}

@@ -1,0 +1,430 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requires": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "attack",
+          "spell",
+          "melee",
+          "projectile",
+          "area",
+          "duration",
+          "fire",
+          "physical"
+        ]
+      }
+    },
+    "addTags": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "attack",
+          "spell",
+          "melee",
+          "projectile",
+          "area",
+          "duration",
+          "fire",
+          "physical"
+        ]
+      }
+    },
+    "removeTags": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "attack",
+          "spell",
+          "melee",
+          "projectile",
+          "area",
+          "duration",
+          "fire",
+          "physical"
+        ]
+      }
+    },
+    "stats": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stat": {
+            "type": "string",
+            "enum": [
+              "life",
+              "moveSpeed",
+              "radius",
+              "knockbackResist",
+              "damage",
+              "cooldown",
+              "rate",
+              "range",
+              "area",
+              "duration",
+              "pulse",
+              "projectileSpeed",
+              "projectileCount",
+              "spread",
+              "pierce",
+              "knockback"
+            ]
+          },
+          "op": {
+            "type": "string",
+            "enum": [
+              "flat",
+              "increased",
+              "more"
+            ]
+          },
+          "value": {
+            "type": "number"
+          },
+          "if": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "attack",
+                "spell",
+                "melee",
+                "projectile",
+                "area",
+                "duration",
+                "fire",
+                "physical"
+              ]
+            }
+          }
+        },
+        "required": [
+          "stat",
+          "op",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "attach": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "enum": [
+              "projectile",
+              "burst",
+              "zone",
+              "dash"
+            ]
+          },
+          "hook": {
+            "type": "string",
+            "enum": [
+              "onEnd"
+            ]
+          },
+          "action": {
+            "$ref": "#/$defs/__schema0"
+          },
+          "chance": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "to",
+          "hook",
+          "action"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "multishot": {
+      "type": "string",
+      "enum": [
+        "fan",
+        "nearest",
+        "nova",
+        "scatter"
+      ]
+    },
+    "look": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "enum": [
+          "projectile",
+          "burst",
+          "zone"
+        ]
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      }
+    }
+  },
+  "required": [
+    "$schema"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "__schema0": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "do": {
+              "type": "string",
+              "const": "projectile"
+            },
+            "multishot": {
+              "type": "string",
+              "enum": [
+                "fan",
+                "nearest",
+                "nova",
+                "scatter"
+              ]
+            },
+            "vfx": {
+              "type": "string",
+              "minLength": 1
+            },
+            "radius": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "impact": {
+              "type": "string",
+              "enum": [
+                "damage",
+                "trigger"
+              ]
+            },
+            "damageScale": {
+              "default": 1,
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "onEnd": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/__schema0"
+              }
+            }
+          },
+          "required": [
+            "do",
+            "multishot",
+            "vfx",
+            "radius",
+            "impact"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "do": {
+              "type": "string",
+              "const": "burst"
+            },
+            "vfx": {
+              "type": "string",
+              "minLength": 1
+            },
+            "shape": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "circle"
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "arc"
+                    },
+                    "halfAngleDeg": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 180
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "halfAngleDeg"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "lane"
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "areaScale": {
+              "default": 1,
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "damageScale": {
+              "default": 1,
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "hitStop": {
+              "default": false,
+              "type": "boolean"
+            },
+            "warn": {
+              "default": 0,
+              "type": "number",
+              "minimum": 0
+            },
+            "cancelOnOwnerDeath": {
+              "default": false,
+              "type": "boolean"
+            },
+            "at": {
+              "default": "self",
+              "type": "string",
+              "enum": [
+                "self",
+                "target"
+              ]
+            },
+            "count": {
+              "default": 1,
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            },
+            "scatter": {
+              "default": 0,
+              "type": "number",
+              "minimum": 0
+            },
+            "onEnd": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/__schema0"
+              }
+            }
+          },
+          "required": [
+            "do",
+            "vfx",
+            "shape"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "do": {
+              "type": "string",
+              "const": "zone"
+            },
+            "vfx": {
+              "type": "string",
+              "minLength": 1
+            },
+            "motion": {
+              "type": "string",
+              "enum": [
+                "static"
+              ]
+            },
+            "areaScale": {
+              "default": 1,
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "damageScale": {
+              "default": 1,
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "onEnd": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/__schema0"
+              }
+            }
+          },
+          "required": [
+            "do",
+            "vfx",
+            "motion"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "do": {
+              "type": "string",
+              "const": "dash"
+            },
+            "onEnd": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/__schema0"
+              }
+            }
+          },
+          "required": [
+            "do"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

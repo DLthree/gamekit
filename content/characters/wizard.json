@@ -1,0 +1,5 @@
+{
+  "$schema": "../schema/character.schema.json",
+  "stats": { "life": 20, "moveSpeed": 110, "radius": 12, "knockbackResist": 0 },
+  "slots": [{ "id": "auto", "activation": "auto" }, { "id": "cast", "activation": "manual" }]
+}
