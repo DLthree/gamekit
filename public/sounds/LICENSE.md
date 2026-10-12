@@ -2,8 +2,9 @@
 
 Placeholder sounds, all CC0 1.0 (public domain dedication,
 https://creativecommons.org/publicdomain/zero/1.0/). No attribution required; credited anyway.
-Each file is cut from the source below (trimmed, mono 44.1 kHz 16-bit WAV,
-peak -1 dBFS); `pnpm sounds` then rewrites the manifest.
+Each source page's license was checked on 2026-10-11. `pnpm sounds` (scripts/build-sounds.sh)
+downloads the sources, cuts each file below from them (trimmed, mono 44.1 kHz 16-bit WAV,
+-16 LUFS, peaks at -1 dBFS) and rewrites the manifest. Add only CC0 sounds, one row each.
 
 | file | source | original file | license |
 |------|--------|---------------|---------|

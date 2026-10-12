@@ -1,7 +1,8 @@
 /**
- * pnpm sounds: writes content/look/generated/sounds.json from the WAV files in public/sounds/
- * (id = file name, lengthS read from the header). The files are trimmed CC0
- * recordings; sources and licenses are in public/sounds/LICENSE.md.
+ * pnpm sounds:manifest: writes content/look/generated/sounds.json from the WAV files in
+ * public/sounds/ (id = file name, lengthS read from the header). `pnpm sounds`
+ * (scripts/build-sounds.sh) builds the files from CC0 recordings and runs this last; sources and
+ * licenses are in public/sounds/LICENSE.md.
  */
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";

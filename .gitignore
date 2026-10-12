@@ -11,3 +11,5 @@ test-results/
 playwright-report/
 .e2e/
 .phone/
+scratchpad/sounds/
+scratchpad/sound-sheet/
