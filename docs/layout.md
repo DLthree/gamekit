@@ -79,7 +79,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | Module | Used by | Exports |
 |--------|---------|---------|
 | `@/game/content` | content compile, kinds, types | `GAME_KINDS` |
-| `@/game/check` | `content/check.ts` | `checkGame`, `checkGameResolved` |
+| `@/game/check` | `src/content/check.ts` | `checkGame`, `checkGameResolved` |
 | `@/game/vocab` | content schemas, stats, events | `TAGS`, `DAMAGE_TYPES`, `ROLES`, `OUTCOMES` |
 | `@/game/scenario` | world, snapshot, telemetry | `Scenario` |
 | `@/game/report` | step, world, handle, telemetry | `WaveReport`, `recordEvents` |
@@ -87,7 +87,7 @@ The kit imports only these game modules. A new game provides the same exports.
 | `@/game/flow` | agent handle | `Flow` |
 | `@/game/bots` | URL options | `BOTS` |
 | `@/game/behaviors` | AI (step phase 2), content check | `BEHAVIORS` (may be `{}`) |
-| `@/game/switches` | `content/switches.ts` | `SWITCHES` |
+| `@/game/switches` | `src/content/switches.ts` | `SWITCHES` |
 | `@/game/url` | `scripts/telemetry-summary.ts` | `reproUrl` |
 | `@/game/links` | `perf`, `phone`, `shot`, `film`, `ticks`, `screens`, e2e specs | `CELL`, `PERF_QUERY`, `PHONE_QUERIES`, `SCREENS` |
 | `@/game/headless` | `scripts/timeline.ts` | `worldForQuery`, `tickLine` |
