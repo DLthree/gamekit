@@ -1,5 +1,6 @@
 import type { DamageType, Tag } from "@/content/schema/vocab";
 import type { Id } from "@/core/ids";
+import { DAMAGE_TYPES } from "@/game/vocab";
 import { knockbackImpulse } from "@/sim/combat/knockback";
 
 /** Snapshotted when the volume was born; applied by one pure function. */
@@ -34,7 +35,8 @@ export interface HitResult {
 
 /** Damage is the sum of the amounts: no armour, no resistances (their seam is here). */
 export function resolveHit(packet: DamagePacket, target: HitTarget): HitResult {
-  const damage = packet.amounts.fire + packet.amounts.physical;
+  let damage = 0;
+  for (const type of DAMAGE_TYPES) damage += packet.amounts[type];
   const k = knockbackImpulse(
     packet.originX,
     packet.originY,

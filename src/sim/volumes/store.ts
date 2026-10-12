@@ -1,6 +1,7 @@
 import type { DeliveryNode } from "@/content/schema/skill";
 import type { DamageType } from "@/content/schema/vocab";
 import { type Id, idGeneration, idIndex, nextGeneration, packId } from "@/core/ids";
+import { DAMAGE_TYPES } from "@/game/vocab";
 import type { Team, VolumeKind, VolumeShape } from "@/sim/events";
 import type { ResolvedSkill } from "@/sim/skills/instance";
 
@@ -99,6 +100,12 @@ export interface VolumeStore {
 /** pierce is clamped to 15 (src/sim/stats/ids.ts), so a projectile hits at most 16 bodies. */
 export const MAX_HITS = 16;
 
+function zeroDamage(): Record<DamageType, number> {
+  const d = {} as Record<DamageType, number>;
+  for (const type of DAMAGE_TYPES) d[type] = 0;
+  return d;
+}
+
 function fresh(slot: number, init: VolumeInit): Volume {
   const { damageScale: _, ...fields } = init;
   return {
@@ -110,7 +117,7 @@ function fresh(slot: number, init: VolumeInit): Volume {
     travelled: 0,
     bornTick: 0,
     nextPulseTick: 0,
-    damage: { fire: 0, physical: 0 },
+    damage: zeroDamage(),
     hitIds: new Float64Array(MAX_HITS),
     hitCount: 0,
     ended: false,
@@ -155,8 +162,7 @@ export function spawnVolume(store: VolumeStore, init: VolumeInit, tick: number):
   v.shape = init.shape;
   v.length = init.length;
   v.halfAngle = init.halfAngle;
-  v.damage.fire = init.skill.damage.fire * init.damageScale;
-  v.damage.physical = init.skill.damage.physical * init.damageScale;
+  for (const type of DAMAGE_TYPES) v.damage[type] = init.skill.damage[type] * init.damageScale;
   v.knockback = init.knockback;
   v.hitStop = init.hitStop;
   v.lifeTicks = init.lifeTicks;

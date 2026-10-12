@@ -3,6 +3,7 @@ import type { DeliveryNode, Skill } from "@/content/schema/skill";
 import type { DamageType, SlotId, SourcedMod, Tag } from "@/content/schema/vocab";
 import { hasSkillStat, SKILL_STAT_IDS, type SkillStatId } from "@/content/skill-stats";
 import { ticks } from "@/core/clock";
+import { DAMAGE_TYPES } from "@/game/vocab";
 import { type Resolved, resolveDamage, resolveStat } from "@/sim/stats/resolve";
 
 /** A skill's numbers for one wave: resolved once at world creation, snapshotted into volumes. */
@@ -14,7 +15,7 @@ export interface ResolvedSkill {
   deliver: DeliveryNode;
   damage: Record<DamageType, number>;
   stats: Partial<Record<SkillStatId, number>>;
-  /** Keyed "area", "damage.fire", …: the lines behind each number. */
+  /** Keyed "area", "damage.<type>", …: the lines behind each number. */
   breakdown: Record<string, Resolved>;
   /** Ticks between activations: 1/rate for auto skills, the cooldown for manual ones. */
   intervalTicks: number;
@@ -42,9 +43,11 @@ export function resolveSkill(merged: MergedSkill, mods: readonly SourcedMod[]): 
     stats[stat] = r.value;
   }
   const resolvedDamage = resolveDamage(def.stats.damage, all, tags);
-  const damage = { fire: resolvedDamage.fire.value, physical: resolvedDamage.physical.value };
-  breakdown["damage.fire"] = resolvedDamage.fire;
-  breakdown["damage.physical"] = resolvedDamage.physical;
+  const damage = {} as Record<DamageType, number>;
+  for (const type of DAMAGE_TYPES) {
+    damage[type] = resolvedDamage[type].value;
+    breakdown[`damage.${type}`] = resolvedDamage[type];
+  }
   const skill: ResolvedSkill = {
     id,
     def,
