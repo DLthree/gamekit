@@ -20,8 +20,20 @@
       "@/*": ["./src/*"],
       "@content/*": ["./content/*"],
       "@e2e/*": ["./tests/e2e/*"],
-      "@scripts/*": ["./scripts/*"]
+      "@scripts/*": ["./scripts/*"],
+      "@desktop/*": ["./desktop/*"],
+      "@deck/*": ["./tests/deck/*"]
     }
   },
-  "include": ["src", "scripts", "tests", "vite.config.ts", "playwright.config.ts"]
+  "include": [
+    "src",
+    "scripts",
+    "tests",
+    "desktop",
+    "vite.config.ts",
+    "playwright.config.ts",
+    "playwright.desktop.config.ts",
+    "playwright.deck.config.ts"
+  ],
+  "exclude": ["desktop/dist"]
 }

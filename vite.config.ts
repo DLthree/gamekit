@@ -7,6 +7,7 @@ import { defineConfig } from "vitest/config";
 
 const src = fileURLToPath(new URL("./src", import.meta.url));
 const scripts = fileURLToPath(new URL("./scripts", import.meta.url));
+const desktop = fileURLToPath(new URL("./desktop", import.meta.url));
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 /** The content folder the browser loads: the repo's, or the e2e server's scratch copy. */
@@ -83,6 +84,7 @@ export default defineConfig(({ mode }) => {
       alias: [
         { find: "@content", replacement: contentDir },
         { find: "@scripts", replacement: scripts },
+        { find: "@desktop", replacement: desktop },
         { find: "@", replacement: src },
       ],
     },
@@ -94,6 +96,6 @@ export default defineConfig(({ mode }) => {
     plugins: release
       ? []
       : [telemetry(resolve(root, process.env.GAMEKIT_TELEMETRY_DIR ?? "telemetry"))],
-    test: { include: ["src/**/*.test.ts", "scripts/**/*.test.ts"] },
+    test: { include: ["src/**/*.test.ts", "scripts/**/*.test.ts", "desktop/**/*.test.ts"] },
   };
 });

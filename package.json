@@ -1,5 +1,7 @@
 {
   "name": "gamekit",
+  "version": "0.1.0",
+  "main": "desktop/dist/main.cjs",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@12.6.0",
@@ -10,6 +12,11 @@
     "dev": "vite",
     "build": "vite build --mode release",
     "preview": "vite preview --mode release",
+    "desktop:compile": "node --import ./scripts/node-alias.ts scripts/desktop-build.ts compile",
+    "desktop": "pnpm build && pnpm desktop:compile --itch && electron .",
+    "desktop:steam": "pnpm build && pnpm desktop:compile --steam && electron .",
+    "desktop:dist": "pnpm build && node --import ./scripts/node-alias.ts scripts/desktop-build.ts dist",
+    "desktop:smoke": "pnpm build && pnpm desktop:compile --itch && pnpm e2e --config playwright.desktop.config.ts",
     "typecheck": "tsc -p tsconfig.json",
     "lint": "biome check --error-on-warnings .",
     "format": "biome check --write .",
@@ -37,12 +44,16 @@
   },
   "dependencies": {
     "phaser": "4.2.1",
+    "steamworks-ffi-node": "0.11.3",
     "zod": "4.6.5"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
     "@playwright/test": "1.63.0",
     "@types/node": "26.6.3",
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3",
+    "esbuild": "0.28.2",
     "typescript": "7.0.2",
     "vite": "8.3.1",
     "vitest": "5.0.2"

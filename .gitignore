@@ -14,3 +14,5 @@ playwright-report/
 scratchpad/sounds/
 scratchpad/sound-sheet/
 release/
+desktop/dist/
+vendor/

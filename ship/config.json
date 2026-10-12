@@ -1,0 +1,14 @@
+{
+  "productName": "Gamekit Example",
+  "appId": "com.example.gamekit",
+  "executableName": "gamekit-example",
+  "steam": {
+    "appId": "TODO: the Steam App ID (Steamworks partner site)",
+    "depots": {
+      "win": "TODO: the Windows depot ID (SteamPipe → Depots)",
+      "mac": "TODO: the macOS depot ID",
+      "linux": "TODO: the Linux depot ID"
+    }
+  },
+  "itch": { "target": "TODO-itch-user/TODO-itch-game" }
+}

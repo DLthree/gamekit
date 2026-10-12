@@ -1,12 +1,13 @@
 /**
  * Lets Node run the repo's TypeScript natively (type stripping) with the tsconfig aliases:
- * "@/x" → src/x.ts, "@scripts/x" → scripts/x.ts. Use as `node --import ./scripts/node-alias.ts`.
+ * "@/x" → src/x.ts, "@scripts/x" → scripts/x.ts, "@desktop/x" → desktop/x.ts. Use as `node --import ./scripts/node-alias.ts`.
  */
 import { registerHooks } from "node:module";
 
 const ALIASES: readonly (readonly [string, URL])[] = [
   ["@/", new URL("../src/", import.meta.url)],
   ["@scripts/", new URL("./", import.meta.url)],
+  ["@desktop/", new URL("../desktop/", import.meta.url)],
 ];
 
 registerHooks({

@@ -1,2 +1,15 @@
+allowBuilds:
+  electron-winstaller: false
+  esbuild: true
+  # steamworks-ffi-node's FFI layer (the Steam build only).
+  koffi: true
+  # Its postinstall only prints SDK setup hints.
+  steamworks-ffi-node: false
 minimumReleaseAgeExclude:
   - '@types/node@26.6.3'
+# Fetch koffi's binaries for the other OSes too, so the Steam build packages the universal
+# mac app, the Windows app and the Linux (Deck) app from one Mac.
+supportedArchitectures:
+  os: [current, linux, win32]
+  cpu: [current, x64]
+  libc: [glibc]
