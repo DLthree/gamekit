@@ -7,9 +7,9 @@ import { parseOptions } from "@/agent/url-options";
 import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
 import { switchOn } from "@/content/switches";
-import { ticks } from "@/core/clock";
 import { BOT_IDS, BOTS } from "@/game/bots";
 import { tickLine, worldForQuery } from "@/game/headless";
+import { ticks } from "@/realtime/core/clock";
 import { IDLE } from "@/realtime/sim/command";
 import { step } from "@/realtime/sim/step";
 

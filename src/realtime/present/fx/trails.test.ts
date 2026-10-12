@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { tickSeconds } from "@/core/clock";
 import { createRng } from "@/core/rng";
+import { tickSeconds } from "@/realtime/core/clock";
 import { FxPool } from "@/realtime/present/fx/pool";
 import type { HeadDraw } from "@/realtime/present/fx/recipes/projectile";
 import { ProjectileTracker } from "@/realtime/present/fx/trails";

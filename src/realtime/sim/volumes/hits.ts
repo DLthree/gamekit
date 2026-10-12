@@ -1,5 +1,5 @@
-import { ticks } from "@/core/clock";
 import { nextFloat } from "@/core/rng";
+import { ticks } from "@/realtime/core/clock";
 import type { Actor } from "@/realtime/sim/actors/store";
 import { resolveHit } from "@/realtime/sim/combat/damage";
 import { inArc, inCircle, inLane } from "@/realtime/sim/combat/shapes";

@@ -1,5 +1,5 @@
-import { ticks } from "@/core/clock";
 import type { ZoneNode } from "@/realtime/content/schema/skill";
+import { ticks } from "@/realtime/core/clock";
 import { skillStat } from "@/realtime/sim/skills/instance";
 import { queueVolume } from "@/realtime/sim/spawn-queue";
 import type { Delivery, World } from "@/realtime/sim/world";

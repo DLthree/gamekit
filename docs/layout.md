@@ -36,7 +36,7 @@ Tools by layer:
 
 | Path | Layer | What it does |
 |------|-------|--------------|
-| `src/core/` | core | The kit frame clock (`frames.ts`: the display drives it, or a tool steps it with `manual=1`), fixed-tick clock, seeded RNG, vectors. |
+| `src/core/` | core | The kit frame clock (`frames.ts`: the display drives it, or a tool steps it with `manual=1`), seeded RNG, vectors. |
 | `src/content/` | core | Content pipeline: load (browser and Node), overrides, compile, cross-file checks, errors. |
 | `src/content/kind.ts`, `kinds.ts` | core | A kind (folder or file → schema), `Compiled<…>` types; the kit's kinds (sounds) beside the game's `GAME_KINDS` (`{ sim, look }`). |
 | `src/content/switches.ts` | core | Feature switches: `on=a,b` parsing (unknown ids fail) and `switchOn`, which cuts the off systems from a frozen copy. |
@@ -54,7 +54,7 @@ Tools by layer:
 | `src/realtime/app/` | realtime | The fixed-tick loop (kit-clock frames in, ticks out; stepped, one tick a frame), aim. |
 | `src/realtime/content/` | realtime | `REALTIME_KINDS` (characters, skills, modifiers, enemies, stages, rules, look, sprites), their schemas and vocab, `checkRealtime`, loadouts, the atlas frame check. |
 | `src/realtime/agent/` | realtime | Perf meter; perf and gesture telemetry records and their summary lines. |
-| `src/realtime/core/` | realtime | Packed ids, spatial hash. |
+| `src/realtime/core/` | realtime | The sim's fixed tick (`clock.ts`: `TICK_HZ`, `ticks()`, the accumulator), packed ids, spatial hash. |
 | `src/realtime/test/` | realtime | The real-time tests' small content (`content.ts`: the kit's and the game's `GAME_TEST_FILES`), test files for the real-time kinds, worlds built through the game's setup, `vocab.ts` (the game's `TEST_NAMES`, never the example's words). |
 | `src/realtime/arena.css` | realtime | The canvas host, touch zone, stick and skill button styles, on the theme variables. |
 | `desktop/` | core | The Electron shell: `main.ts` (app:// on dist/, window mode, single instance), `preload.ts` (`window.gameDesktop`), atomic saves and telemetry files (`files.ts`), `ship.ts` (reads and checks `ship/config.json`), Steam (`steam*.ts`, the Steam flavour only). |

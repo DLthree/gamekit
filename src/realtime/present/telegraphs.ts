@@ -1,6 +1,6 @@
 import type { LookContent } from "@/content/types";
-import { tickSeconds } from "@/core/clock";
 import type { TelegraphVfx } from "@/realtime/content/schema/look-fx";
+import { tickSeconds } from "@/realtime/core/clock";
 import type { Id } from "@/realtime/core/ids";
 import type { SimEvent } from "@/realtime/sim/events";
 

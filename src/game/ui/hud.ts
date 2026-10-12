@@ -1,4 +1,4 @@
-import { TICK_HZ } from "@/core/clock";
+import { TICK_HZ } from "@/realtime/core/clock";
 import { playerOf, type World } from "@/realtime/sim/world";
 
 export interface HudModel {

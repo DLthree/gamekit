@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { formatContentError } from "@/content/errors";
 import { loadContentDir, REPO_CONTENT_DIR } from "@/content/load-node";
-import { tickSeconds } from "@/core/clock";
 import { kite } from "@/game/kite-bot";
 import { HERO } from "@/game/links";
 import { worldFor } from "@/game/setup";
+import { tickSeconds } from "@/realtime/core/clock";
 import { applyEvents } from "@/realtime/present/feedback";
 import { createPresentation } from "@/realtime/present/presentation";
 import { step } from "@/realtime/sim/step";

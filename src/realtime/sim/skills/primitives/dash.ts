@@ -1,4 +1,4 @@
-import { TICK_S, ticks } from "@/core/clock";
+import { TICK_S, ticks } from "@/realtime/core/clock";
 import { getActor } from "@/realtime/sim/actors/store";
 import { skillStat } from "@/realtime/sim/skills/instance";
 import type { Delivery, World } from "@/realtime/sim/world";

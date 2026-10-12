@@ -1,6 +1,5 @@
 import type { UrlOptions } from "@/agent/url-options";
 import type { Content } from "@/content/types";
-import { TICK_HZ, tickSeconds } from "@/core/clock";
 import type { Vec } from "@/core/vec";
 import { BOTS, type BotId } from "@/game/bots";
 import type { WaveReport } from "@/game/report";
@@ -8,6 +7,7 @@ import type { Scenario } from "@/game/scenario";
 import { worldFor } from "@/game/setup";
 import { buildAim } from "@/realtime/app/aim";
 import { GameLoop } from "@/realtime/app/loop";
+import { TICK_HZ, tickSeconds } from "@/realtime/core/clock";
 import { type ControlElements, type ControlState, Controls } from "@/realtime/input/controls";
 import type { SkillTrace } from "@/realtime/input/skill-button";
 import { ActorDraws } from "@/realtime/present/anim/actors";

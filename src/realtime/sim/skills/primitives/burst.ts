@@ -1,7 +1,7 @@
-import { ticks } from "@/core/clock";
 import { nextFloat } from "@/core/rng";
 import type { Vec } from "@/core/vec";
 import type { BurstNode } from "@/realtime/content/schema/skill";
+import { ticks } from "@/realtime/core/clock";
 import { skillStat } from "@/realtime/sim/skills/instance";
 import { insideArena } from "@/realtime/sim/spawn-points";
 import { queueVolume } from "@/realtime/sim/spawn-queue";

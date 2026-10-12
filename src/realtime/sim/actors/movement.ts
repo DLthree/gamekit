@@ -1,6 +1,6 @@
-import { TICK_S } from "@/core/clock";
 import { clampLength } from "@/core/vec";
 import type { MovementRules } from "@/realtime/content/schema/rules";
+import { TICK_S } from "@/realtime/core/clock";
 import type { Actor } from "@/realtime/sim/actors/store";
 import type { Command } from "@/realtime/sim/command";
 import { playerOf, type World } from "@/realtime/sim/world";

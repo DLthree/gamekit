@@ -1,5 +1,5 @@
-import { ticks } from "@/core/clock";
 import { unit, type Vec } from "@/core/vec";
+import { ticks } from "@/realtime/core/clock";
 import type { Actor } from "@/realtime/sim/actors/store";
 import { nearestEnemy, playerGap } from "@/realtime/sim/combat/targeting";
 import { type SkillInstance, skillStat } from "@/realtime/sim/skills/instance";

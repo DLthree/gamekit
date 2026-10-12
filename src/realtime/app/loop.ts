@@ -1,4 +1,4 @@
-import { FixedClock, MAX_TICKS_PER_FRAME } from "@/core/clock";
+import { FixedClock, MAX_TICKS_PER_FRAME } from "@/realtime/core/clock";
 import type { CastCommand, Command } from "@/realtime/sim/command";
 import type { SimEvent } from "@/realtime/sim/events";
 import { step } from "@/realtime/sim/step";

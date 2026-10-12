@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { tickSeconds } from "@/core/clock";
+import { tickSeconds } from "@/realtime/core/clock";
 import { applyEvents } from "@/realtime/present/feedback";
 import { createPresentation } from "@/realtime/present/presentation";
 import {

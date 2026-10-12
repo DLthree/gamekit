@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { ticks } from "@/core/clock";
 import { OUTCOMES } from "@/game/vocab";
+import { ticks } from "@/realtime/core/clock";
 import { IDLE } from "@/realtime/sim/command";
 import { queueEnemy } from "@/realtime/sim/spawn-queue";
 import { step } from "@/realtime/sim/step";

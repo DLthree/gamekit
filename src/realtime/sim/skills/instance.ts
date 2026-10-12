@@ -1,9 +1,9 @@
-import { ticks } from "@/core/clock";
 import { DAMAGE_TYPES } from "@/game/vocab";
 import type { MergedSkill } from "@/realtime/content/loadout";
 import type { DeliveryNode, Skill } from "@/realtime/content/schema/skill";
 import type { DamageType, SlotId, SourcedMod, Tag } from "@/realtime/content/schema/vocab";
 import { hasSkillStat, SKILL_STAT_IDS, type SkillStatId } from "@/realtime/content/skill-stats";
+import { ticks } from "@/realtime/core/clock";
 import { type Resolved, resolveDamage, resolveStat } from "@/realtime/sim/stats/resolve";
 
 /** A skill's numbers for one wave: resolved once at world creation, snapshotted into volumes. */

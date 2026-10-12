@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ticks } from "@/core/clock";
+import { ticks } from "@/realtime/core/clock";
 import { playerOf } from "@/realtime/sim/world";
 import { ROLE_A } from "@/realtime/test/vocab";
 import { enemies, run, TEST_SCENARIO, testWorld } from "@/realtime/test/world";

@@ -1,10 +1,10 @@
 import type { Push } from "@/content/errors";
 import type { Content } from "@/content/types";
-import { ticks } from "@/core/clock";
 import { DAMAGE_TYPES } from "@/game/vocab";
 import type { BurstNode, DeliveryNode } from "@/realtime/content/schema/skill";
 import { ACTOR_STAT_IDS, type StatMod } from "@/realtime/content/schema/vocab";
 import type { SkillStatId } from "@/realtime/content/skill-stats";
+import { ticks } from "@/realtime/core/clock";
 
 const ACTOR_STATS: readonly string[] = ACTOR_STAT_IDS;
 const DAMAGE_TAGS: readonly string[] = DAMAGE_TYPES;

@@ -4,9 +4,9 @@
  * worker threads and prints `sweepTable(rows)`.
  */
 import type { SimContent } from "@/content/types";
-import { TICK_HZ } from "@/core/clock";
 import { kite } from "@/game/kite-bot";
 import { worldFor } from "@/game/setup";
+import { TICK_HZ } from "@/realtime/core/clock";
 import type { Outcome } from "@/realtime/sim/events";
 import { step } from "@/realtime/sim/step";
 

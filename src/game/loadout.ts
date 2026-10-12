@@ -1,8 +1,8 @@
 import type { SimContent } from "@/content/types";
-import { TICK_S } from "@/core/clock";
 import { ScenarioError } from "@/game/scenario";
 import { type AppliedModifier, mergeSkill, nodesOf } from "@/realtime/content/loadout";
 import type { SourcedMod } from "@/realtime/content/schema/vocab";
+import { TICK_S } from "@/realtime/core/clock";
 import { resolveSkill, type SkillInstance, skillStat } from "@/realtime/sim/skills/instance";
 import { resolveActorStats } from "@/realtime/sim/stats/resolve";
 import type { EnemyTemplate } from "@/realtime/sim/world";

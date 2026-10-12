@@ -1,5 +1,5 @@
-import { TICK_S } from "@/core/clock";
 import { clampLength, unit, type Vec } from "@/core/vec";
+import { TICK_S } from "@/realtime/core/clock";
 import type { Actor } from "@/realtime/sim/actors/store";
 import { nearestEnemy } from "@/realtime/sim/combat/targeting";
 import type { CastCommand, Command } from "@/realtime/sim/command";

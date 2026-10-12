@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ticks } from "@/core/clock";
+import { ticks } from "@/realtime/core/clock";
 import { run, testWorld } from "@/realtime/test/world";
 
 function threat(spawns: unknown[]) {

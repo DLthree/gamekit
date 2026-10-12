@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { ticks } from "@/core/clock";
 import type { SourcedMod, StatMod } from "@/realtime/content/schema/vocab";
+import { ticks } from "@/realtime/core/clock";
 import { STAT_CLAMPS } from "@/realtime/sim/stats/ids";
 import { resolveActorStats, resolveDamage, resolveStat } from "@/realtime/sim/stats/resolve";
 import { DMG_A, DMG_B, second, TAG_A, TAG_B, TAG_C } from "@/realtime/test/vocab";

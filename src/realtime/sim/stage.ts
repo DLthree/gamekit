@@ -1,5 +1,5 @@
-import { ticks } from "@/core/clock";
 import type { Stage } from "@/realtime/content/schema/stage";
+import { ticks } from "@/realtime/core/clock";
 import type { Id } from "@/realtime/core/ids";
 import { getActor } from "@/realtime/sim/actors/store";
 import type { World } from "@/realtime/sim/world";

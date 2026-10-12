@@ -1,7 +1,7 @@
 import type { TelemetryLine } from "@/agent/telemetry";
-import { TICK_HZ } from "@/core/clock";
 import type { WaveReport } from "@/game/report";
 import { type RealtimeRecord, realtimeLines } from "@/realtime/agent/telemetry";
+import { TICK_HZ } from "@/realtime/core/clock";
 import type { SoundStatus } from "@/realtime/present/sound";
 
 /**

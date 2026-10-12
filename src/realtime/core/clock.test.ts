@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { FixedClock, MAX_TICKS_PER_FRAME, tickSeconds, ticks } from "@/core/clock";
+import { FixedClock, MAX_TICKS_PER_FRAME, tickSeconds, ticks } from "@/realtime/core/clock";
 
 describe("ticks", () => {
   it("converts seconds to whole 60 Hz ticks", () => {

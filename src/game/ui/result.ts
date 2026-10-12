@@ -1,6 +1,6 @@
-import { TICK_HZ } from "@/core/clock";
 import type { WaveReport } from "@/game/report";
 import type { Scenario } from "@/game/scenario";
+import { TICK_HZ } from "@/realtime/core/clock";
 import { actionButton } from "@/ui/button";
 import { showPage } from "@/ui/page";
 import { idWords } from "@/ui/vocabulary";

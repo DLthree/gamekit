@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { TICK_S } from "@/core/clock";
 import { kite } from "@/game/kite-bot";
+import { TICK_S } from "@/realtime/core/clock";
 import { IDLE } from "@/realtime/sim/command";
 import { summarize } from "@/realtime/sim/snapshot";
 import { step } from "@/realtime/sim/step";

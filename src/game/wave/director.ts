@@ -1,5 +1,5 @@
-import { TICK_S, ticks } from "@/core/clock";
 import type { TimedSpawn } from "@/game/schema/threat";
+import { TICK_S, ticks } from "@/realtime/core/clock";
 import { edgePoint, fieldPoints, ringPoints } from "@/realtime/sim/spawn-points";
 import { queueEnemy } from "@/realtime/sim/spawn-queue";
 import { tickStage } from "@/realtime/sim/stage";

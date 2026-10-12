@@ -1,4 +1,4 @@
-import { tickSeconds } from "@/core/clock";
+import { tickSeconds } from "@/realtime/core/clock";
 import { bodyHeight } from "@/realtime/present/anim/creatures";
 import { startShake } from "@/realtime/present/camera";
 import { buildColorOf, emit, jitter } from "@/realtime/present/fx/emit";
