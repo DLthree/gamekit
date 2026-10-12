@@ -23,3 +23,14 @@ describe("timeline", () => {
     expect(() => timeline("char=wizard", 5)).toThrow(/not a cell/);
   });
 });
+
+describe("timeline overrides", () => {
+  it("runs the content the overrides make", () => {
+    const short = timeline(PERF_QUERY, 600, ["characters/wizard.stats.life=1000000"]);
+    expect(short.at(-1)).toMatch(/^\d+ ended survived$/);
+  });
+
+  it("names a bad override's file", () => {
+    expect(() => timeline(PERF_QUERY, 5, ["threats/nope.durationS=2"])).toThrow(/threats\/nope/);
+  });
+});

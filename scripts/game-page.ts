@@ -37,13 +37,15 @@ export async function withGameBrowser<T>(
 
 /**
  * A scenario query made reproducible for a tool: telemetry off and seed 7 unless the query says
- * otherwise (dev boots with telemetry on and a random seed), then manual=1&agent=1 so the tool
- * steps the sim itself and reads its events.
+ * otherwise (dev boots with telemetry on and a random seed), each of a tool's `--o` content
+ * overrides added as an `o=` (src/content/overrides.ts), then manual=1&agent=1 so the tool steps
+ * the sim itself and reads its events.
  */
-export function toolQuery(query: string): string {
+export function toolQuery(query: string, overrides: readonly string[] = []): string {
   const params = new URLSearchParams(query);
   if (!params.has("telemetry")) params.set("telemetry", "0");
   if (!params.has("seed")) params.set("seed", "7");
+  for (const o of overrides) params.append("o", o);
   params.set("manual", "1");
   params.set("agent", "1");
   return params.toString();
@@ -80,6 +82,13 @@ export function settleFrame(page: Page): Promise<unknown> {
       new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(() => done(null)))),
   );
 }
+
+/** The `--o <kind>/<id>.<path>=<json>` option every tool takes (repeatable), as parseArgs reads it. */
+export const OVERRIDE_OPTION: { type: "string"; multiple: true; default: string[] } = {
+  type: "string",
+  multiple: true,
+  default: [],
+};
 
 /** A file-name-safe form of a query. */
 export function queryName(query: string): string {

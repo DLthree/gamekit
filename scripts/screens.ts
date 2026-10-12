@@ -1,5 +1,5 @@
 /**
- * pnpm screens [--screen NAME|all] [--device desktop|deck|phone|phone-landscape|all] [--out DIR]
+ * pnpm screens [--screen NAME|all] [--device desktop|deck|phone|phone-landscape|all] [--o PATCH ...] [--out DIR]
  *
  * Screenshots the game's pages that are not a moment of a wave (the game's SCREENS in
  * src/game/links.ts: its grid, pause, result, error…) at every device size, on the shot tools'
@@ -9,16 +9,17 @@
 import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import { DEVICES, openPage, toolQuery, withGameBrowser } from "@scripts/game-page";
+import { DEVICES, OVERRIDE_OPTION, openPage, toolQuery, withGameBrowser } from "@scripts/game-page";
 import { SCREENS } from "@/game/links";
 
 const NAMES = Object.keys(SCREENS);
-const USAGE = `usage: pnpm screens [--screen ${NAMES.join("|")}|all] [--device ${DEVICES.join("|")}|all] [--out DIR]`;
+const USAGE = `usage: pnpm screens [--screen ${NAMES.join("|")}|all] [--device ${DEVICES.join("|")}|all] [--o PATCH ...] [--out DIR]`;
 
 const { values } = parseArgs({
   options: {
     screen: { type: "string", default: "all" },
     device: { type: "string", default: "all" },
+    o: OVERRIDE_OPTION,
     out: { type: "string", default: "shots/screens" },
   },
 });
@@ -43,7 +44,7 @@ await withGameBrowser("pnpm screens", async (browser, base) => {
     const spec = SCREENS[name];
     for (const device of devices) {
       const { page, errors } = await openPage(browser, device);
-      await page.goto(`${base}/?${toolQuery(spec.query)}`);
+      await page.goto(`${base}/?${toolQuery(spec.query, values.o)}`);
       await page.waitForFunction(() => !["boot", undefined].includes(window.__game?.flow().screen));
       if (spec.act !== undefined) await page.evaluate(spec.act);
       await page.waitForFunction((s) => window.__game?.flow().screen === s, spec.screen);

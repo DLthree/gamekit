@@ -1,5 +1,5 @@
 /**
- * pnpm shot "<query>" [--tick N] [--name NAME] [--deck | --phone [--landscape]]
+ * pnpm shot "<query>" [--tick N] [--o PATCH ...] [--name NAME] [--deck | --phone [--landscape]]
  * A PNG of the game at tick N plus a JSON sidecar, in shots/. WebKit at desktop size (Desktop
  * Safari, the release target) by default; --deck is a Steam Deck's 1280x800, --phone an iPhone
  * 14, portrait unless --landscape. The query is made reproducible (scripts/game-page.ts).
@@ -9,6 +9,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import {
   type Device,
+  OVERRIDE_OPTION,
   openPage,
   queryName,
   settleFrame,
@@ -17,13 +18,14 @@ import {
 } from "@scripts/game-page";
 import { PERF_QUERY } from "@/game/links";
 
-const USAGE = `usage: pnpm shot "<query>" [--tick 600] [--name NAME] [--deck | --phone [--landscape]]
+const USAGE = `usage: pnpm shot "<query>" [--tick 600] [--o PATCH ...] [--name NAME] [--deck | --phone [--landscape]]
   e.g. pnpm shot "${PERF_QUERY}"`;
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
   options: {
     tick: { type: "string", default: "600" },
+    o: OVERRIDE_OPTION,
     name: { type: "string" },
     deck: { type: "boolean", default: false },
     phone: { type: "boolean", default: false },
@@ -50,7 +52,7 @@ if (!Number.isInteger(tick) || tick < 0) fail(`--tick ${values.tick}: expected a
 
 await withGameBrowser(`pnpm shot ${query}`, async (browser, base) => {
   const { page, errors } = await openPage(browser, device);
-  await page.goto(`${base}/?${toolQuery(query)}`);
+  await page.goto(`${base}/?${toolQuery(query, values.o)}`);
   await page.waitForFunction(() => ["wave", "error"].includes(window.__game?.flow().screen ?? ""));
   const screen = await page.evaluate(() => window.__game?.flow().screen);
   if (screen === "error") {
@@ -85,6 +87,7 @@ await withGameBrowser(`pnpm shot ${query}`, async (browser, base) => {
   }).trim();
   const sidecar = {
     query,
+    overrides: values.o,
     tick,
     device,
     commit,

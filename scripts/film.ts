@@ -1,5 +1,5 @@
 /**
- * pnpm film "<query>" [--at S] [--frames N] [--every MS] [--crop x,y,w,h] [--viewport desktop|deck|phone|phone-landscape] [--compare "<query>"] [--out DIR]
+ * pnpm film "<query>" [--at S] [--frames N] [--every MS] [--crop x,y,w,h] [--viewport desktop|deck|phone|phone-landscape] [--compare "<query>"] [--o PATCH ...] [--out DIR]
  *
  * A strip of frames of the game: N PNGs from second S, one every MS, plus strip.png tiling them in
  * a row (with --compare, a second row from the other query, frame for frame under the first: a
@@ -17,6 +17,7 @@ import { parseArgs } from "node:util";
 import type { Browser, Page } from "@playwright/test";
 import {
   DEVICES,
+  OVERRIDE_OPTION,
   openPage,
   queryName,
   settleFrame,
@@ -26,7 +27,7 @@ import {
 import { TICK_HZ } from "@/core/clock";
 import { PERF_QUERY } from "@/game/links";
 
-const USAGE = `usage: pnpm film "<query>" [--at 5] [--frames 8] [--every 100] [--crop x,y,w,h] [--viewport ${DEVICES.join("|")}] [--compare "<query>"] [--out DIR]
+const USAGE = `usage: pnpm film "<query>" [--at 5] [--frames 8] [--every 100] [--crop x,y,w,h] [--viewport ${DEVICES.join("|")}] [--compare "<query>"] [--o PATCH ...] [--out DIR]
   e.g. pnpm film "${PERF_QUERY}" --at 4 --frames 8 --every 100`;
 
 const { values, positionals } = parseArgs({
@@ -38,6 +39,7 @@ const { values, positionals } = parseArgs({
     crop: { type: "string" },
     viewport: { type: "string", default: "desktop" },
     compare: { type: "string" },
+    o: OVERRIDE_OPTION,
     out: { type: "string" },
   },
 });
@@ -75,7 +77,7 @@ const rows = values.compare === undefined ? [query] : [query, values.compare];
 /** Films one query into `<out>/<prefix>NN.png`; returns the frame paths. */
 async function film(browser: Browser, base: string, q: string, prefix: string): Promise<string[]> {
   const { page, errors } = await openPage(browser, device);
-  await page.goto(`${base}/?${toolQuery(q)}`);
+  await page.goto(`${base}/?${toolQuery(q, values.o)}`);
   await page.waitForFunction(() => !["boot", undefined].includes(window.__game?.flow().screen));
   const screen = await page.evaluate(() => window.__game?.flow().screen);
   if (screen === "error") throw new Error(`${q}: ${await page.locator("#error").innerText()}`);

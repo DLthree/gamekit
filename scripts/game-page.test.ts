@@ -29,3 +29,10 @@ describe("queryName", () => {
     expect(queryName("char=a&build=1&o=rules/feel.x=2")).toBe("char=a_build=1_o=rules_feel_x=2");
   });
 });
+
+describe("toolQuery overrides", () => {
+  it("adds each --o as an o= after the query's own", () => {
+    const q = new URLSearchParams(toolQuery("o=a/b.c=1", ["d/e.f=2", 'g/h.i="x"']));
+    expect(q.getAll("o")).toEqual(["a/b.c=1", "d/e.f=2", 'g/h.i="x"']);
+  });
+});
